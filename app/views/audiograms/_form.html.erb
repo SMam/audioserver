@@ -1,0 +1,465 @@
+<%= form_for(@audiogram) do |f| %>
+  <% if @audiogram.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@audiogram.errors.count, "error") %> prohibited this audiogram from being saved:</h2>
+
+      <ul>
+      <% @audiogram.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :patient %><br />
+    <%= f.text_field :patient %>
+  </div>
+  <div class="field">
+    <%= f.label :examiner %><br />
+    <%= f.text_field :examiner %>
+  </div>
+  <div class="field">
+    <%= f.label :examdate %><br />
+    <%= f.datetime_select :examdate %>
+  </div>
+  <div class="field">
+    <%= f.label :comment %><br />
+    <%= f.text_field :comment %>
+  </div>
+  <div class="field">
+    <%= f.label :image_location %><br />
+    <%= f.text_field :image_location %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_125 %><br />
+    <%= f.text_field :ac_rt_125 %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_250 %><br />
+    <%= f.text_field :ac_rt_250 %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_500 %><br />
+    <%= f.text_field :ac_rt_500 %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_1k %><br />
+    <%= f.text_field :ac_rt_1k %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_2k %><br />
+    <%= f.text_field :ac_rt_2k %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_4k %><br />
+    <%= f.text_field :ac_rt_4k %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_8k %><br />
+    <%= f.text_field :ac_rt_8k %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_125 %><br />
+    <%= f.text_field :ac_lt_125 %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_250 %><br />
+    <%= f.text_field :ac_lt_250 %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_500 %><br />
+    <%= f.text_field :ac_lt_500 %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_1k %><br />
+    <%= f.text_field :ac_lt_1k %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_2k %><br />
+    <%= f.text_field :ac_lt_2k %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_4k %><br />
+    <%= f.text_field :ac_lt_4k %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_8k %><br />
+    <%= f.text_field :ac_lt_8k %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_rt_250 %><br />
+    <%= f.text_field :bc_rt_250 %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_rt_500 %><br />
+    <%= f.text_field :bc_rt_500 %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_rt_1k %><br />
+    <%= f.text_field :bc_rt_1k %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_rt_2k %><br />
+    <%= f.text_field :bc_rt_2k %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_rt_4k %><br />
+    <%= f.text_field :bc_rt_4k %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_rt_8k %><br />
+    <%= f.text_field :bc_rt_8k %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_lt_250 %><br />
+    <%= f.text_field :bc_lt_250 %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_lt_500 %><br />
+    <%= f.text_field :bc_lt_500 %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_lt_1k %><br />
+    <%= f.text_field :bc_lt_1k %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_lt_2k %><br />
+    <%= f.text_field :bc_lt_2k %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_lt_4k %><br />
+    <%= f.text_field :bc_lt_4k %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_lt_8k %><br />
+    <%= f.text_field :bc_lt_8k %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_125_scaleout %><br />
+    <%= f.check_box :ac_rt_125_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_250_scaleout %><br />
+    <%= f.check_box :ac_rt_250_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_500_scaleout %><br />
+    <%= f.check_box :ac_rt_500_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_1k_scaleout %><br />
+    <%= f.check_box :ac_rt_1k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_2k_scaleout %><br />
+    <%= f.check_box :ac_rt_2k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_4k_scaleout %><br />
+    <%= f.check_box :ac_rt_4k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_rt_8k_scaleout %><br />
+    <%= f.check_box :ac_rt_8k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_125_scaleout %><br />
+    <%= f.check_box :ac_lt_125_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_250_scaleout %><br />
+    <%= f.check_box :ac_lt_250_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_500_scaleout %><br />
+    <%= f.check_box :ac_lt_500_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_1k_scaleout %><br />
+    <%= f.check_box :ac_lt_1k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_2k_scaleout %><br />
+    <%= f.check_box :ac_lt_2k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_4k_scaleout %><br />
+    <%= f.check_box :ac_lt_4k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :ac_lt_8k_scaleout %><br />
+    <%= f.check_box :ac_lt_8k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_rt_250_scaleout %><br />
+    <%= f.check_box :bc_rt_250_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_rt_500_scaleout %><br />
+    <%= f.check_box :bc_rt_500_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_rt_1k_scaleout %><br />
+    <%= f.check_box :bc_rt_1k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_rt_2k_scaleout %><br />
+    <%= f.check_box :bc_rt_2k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_rt_4k_scaleout %><br />
+    <%= f.check_box :bc_rt_4k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_rt_8k_scaleout %><br />
+    <%= f.check_box :bc_rt_8k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_lt_250_scaleout %><br />
+    <%= f.check_box :bc_lt_250_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_lt_500_scaleout %><br />
+    <%= f.check_box :bc_lt_500_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_lt_1k_scaleout %><br />
+    <%= f.check_box :bc_lt_1k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_lt_2k_scaleout %><br />
+    <%= f.check_box :bc_lt_2k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_lt_4k_scaleout %><br />
+    <%= f.check_box :bc_lt_4k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :bc_lt_8k_scaleout %><br />
+    <%= f.check_box :bc_lt_8k_scaleout %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_125 %><br />
+    <%= f.text_field :mask_ac_rt_125 %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_250 %><br />
+    <%= f.text_field :mask_ac_rt_250 %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_500 %><br />
+    <%= f.text_field :mask_ac_rt_500 %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_1k %><br />
+    <%= f.text_field :mask_ac_rt_1k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_2k %><br />
+    <%= f.text_field :mask_ac_rt_2k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_4k %><br />
+    <%= f.text_field :mask_ac_rt_4k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_8k %><br />
+    <%= f.text_field :mask_ac_rt_8k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_125 %><br />
+    <%= f.text_field :mask_ac_lt_125 %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_250 %><br />
+    <%= f.text_field :mask_ac_lt_250 %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_500 %><br />
+    <%= f.text_field :mask_ac_lt_500 %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_1k %><br />
+    <%= f.text_field :mask_ac_lt_1k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_2k %><br />
+    <%= f.text_field :mask_ac_lt_2k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_4k %><br />
+    <%= f.text_field :mask_ac_lt_4k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_8k %><br />
+    <%= f.text_field :mask_ac_lt_8k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_rt_250 %><br />
+    <%= f.text_field :mask_bc_rt_250 %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_rt_500 %><br />
+    <%= f.text_field :mask_bc_rt_500 %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_rt_1k %><br />
+    <%= f.text_field :mask_bc_rt_1k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_rt_2k %><br />
+    <%= f.text_field :mask_bc_rt_2k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_rt_4k %><br />
+    <%= f.text_field :mask_bc_rt_4k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_rt_8k %><br />
+    <%= f.text_field :mask_bc_rt_8k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_lt_250 %><br />
+    <%= f.text_field :mask_bc_lt_250 %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_lt_500 %><br />
+    <%= f.text_field :mask_bc_lt_500 %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_lt_1k %><br />
+    <%= f.text_field :mask_bc_lt_1k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_lt_2k %><br />
+    <%= f.text_field :mask_bc_lt_2k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_lt_4k %><br />
+    <%= f.text_field :mask_bc_lt_4k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_lt_8k %><br />
+    <%= f.text_field :mask_bc_lt_8k %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_125_type %><br />
+    <%= f.text_field :mask_ac_rt_125_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_250_type %><br />
+    <%= f.text_field :mask_ac_rt_250_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_500_type %><br />
+    <%= f.text_field :mask_ac_rt_500_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_1k_type %><br />
+    <%= f.text_field :mask_ac_rt_1k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_2k_type %><br />
+    <%= f.text_field :mask_ac_rt_2k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_4k_type %><br />
+    <%= f.text_field :mask_ac_rt_4k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_rt_8k_type %><br />
+    <%= f.text_field :mask_ac_rt_8k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_125_type %><br />
+    <%= f.text_field :mask_ac_lt_125_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_250_type %><br />
+    <%= f.text_field :mask_ac_lt_250_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_500_type %><br />
+    <%= f.text_field :mask_ac_lt_500_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_1k_type %><br />
+    <%= f.text_field :mask_ac_lt_1k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_2k_type %><br />
+    <%= f.text_field :mask_ac_lt_2k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_4k_type %><br />
+    <%= f.text_field :mask_ac_lt_4k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_ac_lt_8k_type %><br />
+    <%= f.text_field :mask_ac_lt_8k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_rt_250_type %><br />
+    <%= f.text_field :mask_bc_rt_250_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_rt_500_type %><br />
+    <%= f.text_field :mask_bc_rt_500_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_rt_1k_type %><br />
+    <%= f.text_field :mask_bc_rt_1k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_rt_2k_type %><br />
+    <%= f.text_field :mask_bc_rt_2k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_rt_4k_type %><br />
+    <%= f.text_field :mask_bc_rt_4k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_rt_8k_type %><br />
+    <%= f.text_field :mask_bc_rt_8k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_lt_250_type %><br />
+    <%= f.text_field :mask_bc_lt_250_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_lt_500_type %><br />
+    <%= f.text_field :mask_bc_lt_500_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_lt_1k_type %><br />
+    <%= f.text_field :mask_bc_lt_1k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_lt_2k_type %><br />
+    <%= f.text_field :mask_bc_lt_2k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_lt_4k_type %><br />
+    <%= f.text_field :mask_bc_lt_4k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :mask_bc_lt_8k_type %><br />
+    <%= f.text_field :mask_bc_lt_8k_type %>
+  </div>
+  <div class="field">
+    <%= f.label :manual_input %><br />
+    <%= f.check_box :manual_input %>
+  </div>
+  <div class="field">
+    <%= f.label :audiometer %><br />
+    <%= f.text_field :audiometer %>
+  </div>
+  <div class="field">
+    <%= f.label :hospital %><br />
+    <%= f.text_field :hospital %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
