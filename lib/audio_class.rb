@@ -9,8 +9,8 @@ require './AA79S.rb'
 
 RAILS_ROOT = ".." if not defined? RAILS_ROOT
 
-#Image_parts_location = RAILS_ROOT+"/lib/images/" # !!! 必要に応じて変更を !!!
-Image_parts_location = "./images/" # とりあえず
+#Image_parts_location = RAILS_ROOT+"/lib/assets/" # !!! 必要に応じて変更を !!!
+Image_parts_location = "./assets/" # とりあえず
 
 # railsの場合，directoryの相対表示の起点は rails/audiserv であるようだ
 Overdraw_times = 2  # 重ね書きの回数．まずは2回，つまり1回前の検査までとする

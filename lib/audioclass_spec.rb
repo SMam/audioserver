@@ -24,7 +24,7 @@ cs = cooked_sample # 長いのでエイリアス
 
 describe Audio do
   before :each do
-    @bg_file = "./images/background.png"
+    @bg_file = "./assets/background.png"
     @output_file = "./output.png"
 
     File::delete(@output_file) if File::exists?(@output_file)
