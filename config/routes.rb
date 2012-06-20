@@ -1,9 +1,9 @@
 Audioserver::Application.routes.draw do
   resources :examiners
 
-  resources :patients
-
-  resources :audiograms
+  resources :patients do
+    resources :audiograms
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
