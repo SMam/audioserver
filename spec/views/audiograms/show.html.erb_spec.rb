@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe "audiograms/show" do
   before(:each) do
+    @patient = FactoryGirl.create(:patient)
     @audiogram = assign(:audiogram, stub_model(Audiogram,
       :patient => nil,
       :examiner => nil,

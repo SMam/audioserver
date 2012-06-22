@@ -233,13 +233,15 @@
     <td><%= audiogram.manual_input %></td>
     <td><%= audiogram.audiometer %></td>
     <td><%= audiogram.hospital %></td>
-    <td><%= link_to 'Show', audiogram %></td>
-    <td><%= link_to 'Edit', edit_audiogram_path(audiogram) %></td>
-    <td><%= link_to 'Destroy', audiogram, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= link_to 'Show', @patient_audiogram %></td>
+    <td><%# = link_to 'Show', audiogram %></td>
+    <td><%= link_to 'Edit', edit_patient_audiogram_path(@patient, audiogram) %></td>
+    <td><%# = link_to 'Edit', edit_audiogram_path(audiogram) %></td>
+    <td><%= link_to 'Destroy', @patient_audiogram, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Audiogram', new_audiogram_path %>
+<%= link_to 'New Audiogram', new_patient_audiogram_path(@patient) %>

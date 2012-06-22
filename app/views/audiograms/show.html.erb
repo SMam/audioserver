@@ -561,5 +561,5 @@
 </p>
 
 
-<%= link_to 'Edit', edit_audiogram_path(@audiogram) %> |
-<%= link_to 'Back', audiograms_path %>
+<%= link_to 'Edit', edit_patient_audiogram_path(@patient.to_param, @audiogram) %> |
+<%= link_to 'Back', @patient_audiograms_path %>

@@ -23,11 +23,10 @@ class AudiogramsController < ApplicationController
     end
   end
 
-  # GET /audiograms/new
+  # GET /patients/:patient_id/audiograms/new
   # GET /audiograms/new.json
-# ------------------------------------ not implimented for former ver?
-=begin
   def new
+    @patient = Patient.find(params[:patient_id])
     @audiogram = Audiogram.new
 
     respond_to do |format|
@@ -35,7 +34,6 @@ class AudiogramsController < ApplicationController
       format.json { render json: @audiogram }
     end
   end
-=end
 
   # GET /patients/:patient_id/audiograms/1/edit
   def edit
@@ -51,7 +49,7 @@ class AudiogramsController < ApplicationController
 
     respond_to do |format|
       if @audiogram.save
-        format.html { redirect_to @audiogram, notice: 'Audiogram was successfully created.' }
+        format.html { redirect_to [@patient, @audiogram], notice: 'Audiogram was successfully created.' }
         format.json { render json: @audiogram, status: :created, location: @audiogram }
       else
         format.html { render action: "new" } # ----------------- ???
@@ -68,7 +66,7 @@ class AudiogramsController < ApplicationController
 
     respond_to do |format|
       if @audiogram.update_attributes(params[:audiogram])
-        format.html { redirect_to @audiogram, notice: 'Audiogram was successfully updated.' }
+        format.html { redirect_to [@patient, @audiogram], notice: 'Audiogram was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" } # -------------------- ???

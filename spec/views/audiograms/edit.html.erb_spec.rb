@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe "audiograms/edit" do
   before(:each) do
+    @patient = FactoryGirl.create(:patient)
     @audiogram = assign(:audiogram, stub_model(Audiogram,
       :patient => nil,
       :examiner => nil,
@@ -121,7 +122,8 @@ describe "audiograms/edit" do
     render
 
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "form", :action => audiograms_path(@audiogram), :method => "post" do
+#    #assert_select "form", :action => audiograms_path(@audiogram), :method => "post" do
+    assert_select "form", :action => patient_audiograms_path([@patient, @audiogram]), :method => "post" do
       assert_select "input#audiogram_patient", :name => "audiogram[patient]"
       assert_select "input#audiogram_examiner", :name => "audiogram[examiner]"
       assert_select "input#audiogram_comment", :name => "audiogram[comment]"
