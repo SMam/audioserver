@@ -13,6 +13,16 @@ class PatientsController < ApplicationController
   # GET /patients/1
   # GET /patients/1.json
   def show
+  # --------------------------------------------- これを以下の様に変更するか
+=begin
+    # @patient = Patient.find(params[:id])
+
+    respond_to do |format|
+      format.html {redirect_to "/patients/#{params[:id]}/audiograms"}
+      format.json { render json: @patient }
+    end
+=end
+  # ---------------------------------------------
     @patient = Patient.find(params[:id])
 
     respond_to do |format|
@@ -80,4 +90,27 @@ class PatientsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # POST /direct_create
+  # create audiogram directly from http request
+  # http://host.ip/direct_create/hp_id?data="..."&examdate="..."&comment="..."
+  def direct_create
+    id = params["hp_id"]
+    data = params["data"]
+    puts "#{id}:#{data}"
+
+    respond_to do |format|
+      format.html { redirect_to patients_url }
+      format.json { head :no_content }
+    end
+  end
+
+  # GET /by_hp_id/:hp_id
+  # get index by hp_id
+  def by_hp_id
+
+  end
+
+  private
+
 end
