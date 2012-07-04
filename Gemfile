@@ -42,6 +42,7 @@ group :test, :development do
 end
 
 gem "thin"
+gem "chunky_png"
 
 group :test do
   gem "factory_girl_rails", "~> 3.4.0"

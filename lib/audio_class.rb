@@ -5,12 +5,13 @@
 #  0.20120519 : chunky_PNGのgemを使用、ruby1.9対応
 
 require 'chunky_png'
-require './AA79S.rb'
+require 'AA79S.rb'
 
 RAILS_ROOT = ".." if not defined? RAILS_ROOT
 
 #Image_parts_location = RAILS_ROOT+"/lib/assets/" # !!! 必要に応じて変更を !!!
-Image_parts_location = "./assets/" # とりあえず
+#Image_parts_location = "./assets/" # とりあえず
+Image_parts_location = "lib/assets/" # とりあえず
 
 # railsの場合，directoryの相対表示の起点は rails/audiserv であるようだ
 Overdraw_times = 2  # 重ね書きの回数．まずは2回，つまり1回前の検査までとする

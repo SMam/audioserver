@@ -3,6 +3,9 @@
 
 def valid_id?(id_str)
   id  = id_str.delete("^0-9") # remove non-number
+  if id == ""
+    return false
+  end
   if id.length > 10
     return false
   end

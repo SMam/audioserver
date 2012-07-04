@@ -171,6 +171,7 @@ describe PatientsController do
         @valid_hp_id = 19
         @invalid_hp_id = 18
 	@examdate = Time.now.strftime("%Y:%m:%d-%H:%M:%S")
+	@audiometer = "audiometer"
 	@datatype = "audiogram"
 	@comment = "comment"
         @raw_audiosample = "7@/          /  080604  //   0   30 ,  10   35 ,  20   40 ,          ,  30   45 ,          ,  40   50 ,          ,  50   55 ,          ,  60   60 ,          , -10   55 ,  -5   55 ,          ,   0   55 ,          ,   5   55 ,          ,  10   55 ,          ,  15   55 ,  4>  4<,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,/P"
@@ -182,23 +183,23 @@ describe PatientsController do
       it "正しいパラメータの場合、Audiogramのアイテム数が1増えること" do
         expect {
           post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
-                                :datatype => @datatype, :comment => @comment, \
-                                :data => @raw_audiosample}
+                                :audiometer => @audiometer, :datatype => @datatype, \
+                                :comment => @comment, :data => @raw_audiosample}
          }.to change(Audiogram, :count).by(1)
       end
 
       it "正しいパラメータの場合、HTTP status code 204を返すこと" do
         post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
-                              :datatype => @datatype, :comment => @comment, \
-                              :data => @raw_audiosample}
+                              :audiometer => @audiometer, :datatype => @datatype, \
+                              :comment => @comment, :data => @raw_audiosample}
         response.status.should  be(204)
       end
 
       it "正しいパラメータの場合、所定の位置にグラフとサムネイルが作られること" do
         post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
-                              :datatype => @datatype, :comment => @comment, \
-                              :data => @raw_audiosample}
-	img_loc = "app/assets/images/#{assigns(:audiogram).image_location}
+                              :audiometer => @audiometer, :datatype => @datatype, \
+                              :comment => @comment, :data => @raw_audiosample}
+	img_loc = "app/assets/images/#{assigns(:audiogram).image_location}"
 	thumb_loc = img_loc.sub("graphs", "thumbnails")
 	File::exists?(img_loc).should be_true
 	File::exists?(thumb_loc).should be_true
@@ -208,21 +209,29 @@ describe PatientsController do
 
       it "不正なhp_idの場合、HTTP status code 400を返すこと" do
         post :direct_create, {:hp_id => @invalid_hp_id, :examdate => @examdate, \
-                              :datatype => @datatype, :comment => @comment, \
-                              :data => @raw_audiosample}
+                              :audiometer => @audiometer, :datatype => @datatype, \
+                              :comment => @comment, :data => @raw_audiosample}
+        response.status.should  be(400)
+      end
+
+      it "audiometerの入力がない場合、HTTP status code 400を返すこと" do
+        post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
+                              :datatype => @datatype, \
+                              :comment => @comment, :data => @raw_audiosample}
         response.status.should  be(400)
       end
 
       it "dataがない場合、HTTP status code 400を返すこと" do
         post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
-                              :datatype => @datatype, :comment => @comment}
+                              :audiometer => @audiometer, :datatype => @datatype, \
+                              :comment => @comment}
         response.status.should  be(400)
       end
 
       it "data形式が不正の場合、HTTP status code 400を返すこと" do
         post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
-                              :datatype => @datatype, :comment => @comment, \
-                              :data => "abcde"}
+                              :audiometer => @audiometer, :datatype => @datatype, \
+                              :comment => @comment, :data => "no valid data"}
         response.status.should  be(400)
       end
 
@@ -232,8 +241,8 @@ describe PatientsController do
         end
         expect {
           post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
-                                :datatype => @datatype, :comment => @comment, \
-                                :data => @raw_audiosample}
+                                :audiometer => @audiometer, :datatype => @datatype, \
+                                :comment => @comment, :data => @raw_audiosample}
          }.to change(Patient, :count).by(1)
       end
 
@@ -243,8 +252,8 @@ describe PatientsController do
         end
         expect {
           post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
-                                :datatype => @datatype, :comment => @comment, \
-                                :data => @raw_audiosample}
+                                :audiometer => @audiometer, :datatype => @datatype, \
+                                :comment => @comment, :data => @raw_audiosample}
          }.to change(Audiogram, :count).by(1)
       end
 

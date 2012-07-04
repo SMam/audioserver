@@ -14,4 +14,9 @@
 /log/*.log
 /tmp
 
+# Ignore audiogram image files
+/app/assets/images
+# except below
+!/app/assets/images/rails.png
+
 /SMam-audioserver*

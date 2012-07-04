@@ -9,7 +9,11 @@ class Audiodata
                               # *args で不定長の引数を受けられる
     if mode == "raw"
       @made_from_rawdata = true
-      expand_rawdata("raw", data[0]) # 生データから左右各周波数データに展開
+      if data[0][0..2] ==  "7@"
+        expand_rawdata("raw", data[0]) # 生データから左右各周波数データに展開
+      else
+        raise "format error"
+      end
     elsif mode == "chop"
       expand_rawdata("chop", data[0]) # 生データから左右各周波数データに展開
     else # 処理済データの場合: dataは [0]=ra_data, [1]=la_data, [2]=rb_data, [3]=lb_data,
