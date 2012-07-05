@@ -263,4 +263,36 @@ describe PatientsController do
 
     end
   end
+
+  describe "GET by_hp_id" do
+    context "validな hp_idで requestした場合" do
+      before do
+        @patient = Patient.create! valid_attributes
+        @hp_id = @patient.hp_id
+        get :by_hp_id, {:hp_id => @hp_id}, valid_session
+      end
+
+      it "正しく @patientとしてassignされること" do
+        assigns(:patient).should eq(@patient)
+      end
+
+      it "redirects to the patient" do
+        response.should redirect_to(@patient)
+      end
+    end
+
+    it "存在しない、validな hp_idで requestした場合、HTTP status code 404を返すこと" do
+      patient = Patient.create! valid_attributes
+      hp_id = patient.hp_id
+      patient.delete
+      get :by_hp_id, {:hp_id => hp_id}, valid_session
+      response.status.should  be(404)
+    end
+
+    it "invalidな hp_idで requestした場合、HTTP status code 400を返すこと" do
+      @invalid_hp_id = 18
+      get :by_hp_id, {:hp_id => @invalid_hp_id}, valid_session
+      response.status.should  be(400)
+    end
+  end
 end
