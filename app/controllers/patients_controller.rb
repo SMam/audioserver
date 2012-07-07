@@ -137,6 +137,27 @@ class PatientsController < ApplicationController
   # GET /by_hp_id/:hp_id
   # get index by hp_id
   def by_hp_id
+    if hp_id = valid_id?(params[:hp_id])
+      if @patient = Patient.find_by_hp_id(hp_id)
+        respond_to do |format|
+          format.html { redirect_to(@patient) }
+          format.json { head :no_content }
+        end
+      else
+        respond_to do |format|
+          format.html { render :file => "#{Rails.root}/public/404", :format => :html,\
+                               :status => :not_found }
+	  format.json  { head :not_found }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { render :file => "#{Rails.root}/public/404", :format => :hrml,\
+                             :status => :bad_request }
+	  format.json  { head :bad_request }
+        end
+      #render :file => "#{Rails.root}/public/400.html", :status => '400'
+    end
 
   end
 

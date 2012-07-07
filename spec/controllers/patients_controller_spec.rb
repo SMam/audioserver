@@ -25,7 +25,8 @@ describe PatientsController do
   # Patient. As you add validations to Patient, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {:hp_id => '19'}
+#    {:hp_id => '19'}
+    {:hp_id => valid_id?('19')}
   end
   
   # This should return the minimal set of values that should be in the session
