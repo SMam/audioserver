@@ -10,21 +10,21 @@ FactoryGirl.define do
     hospital "NEMC"
     image_location nil
     manual_input nil
+#    ac_rt_125 
+#    ac_rt_250 
+    ac_rt_500   10
+    ac_rt_1k    20
+    ac_rt_2k    30
+    ac_rt_4k    40
+#    ac_rt_8k 
+#    ac_lt_125 
+#    ac_lt_250 
+    ac_lt_500   15
+    ac_lt_1k    25
+    ac_lt_2k    30
+    ac_lt_4k    45
+#    ac_lt_8k 
 =begin
-    ac_rt_125 
-    ac_rt_250 
-    ac_rt_500 
-    ac_rt_1k 
-    ac_rt_2k 
-    ac_rt_4k 
-    ac_rt_8k 
-    ac_lt_125 
-    ac_lt_250 
-    ac_lt_500 
-    ac_lt_1k 
-    ac_lt_2k 
-    ac_lt_4k 
-    ac_lt_8k 
     ac_rt_125_scaleout 
     ac_rt_250_scaleout 
     ac_rt_500_scaleout 
