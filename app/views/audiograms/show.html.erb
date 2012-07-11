@@ -1,565 +1,77 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Patient:</b>
-  <%= @audiogram.patient %>
-</p>
-
-<p>
-  <b>Examiner:</b>
-  <%= @audiogram.examiner %>
-</p>
-
-<p>
-  <b>Examdate:</b>
-  <%= @audiogram.examdate %>
-</p>
-
-<p>
-  <b>Comment:</b>
-  <%= @audiogram.comment %>
-</p>
-
-<p>
-  <b>Image location:</b>
-  <%= @audiogram.image_location %>
-</p>
-
-<p>
-  <b>Ac rt 125:</b>
-  <%= @audiogram.ac_rt_125 %>
-</p>
-
-<p>
-  <b>Ac rt 250:</b>
-  <%= @audiogram.ac_rt_250 %>
-</p>
-
-<p>
-  <b>Ac rt 500:</b>
-  <%= @audiogram.ac_rt_500 %>
-</p>
-
-<p>
-  <b>Ac rt 1k:</b>
-  <%= @audiogram.ac_rt_1k %>
-</p>
-
-<p>
-  <b>Ac rt 2k:</b>
-  <%= @audiogram.ac_rt_2k %>
-</p>
-
-<p>
-  <b>Ac rt 4k:</b>
-  <%= @audiogram.ac_rt_4k %>
-</p>
-
-<p>
-  <b>Ac rt 8k:</b>
-  <%= @audiogram.ac_rt_8k %>
-</p>
-
-<p>
-  <b>Ac lt 125:</b>
-  <%= @audiogram.ac_lt_125 %>
-</p>
-
-<p>
-  <b>Ac lt 250:</b>
-  <%= @audiogram.ac_lt_250 %>
-</p>
-
-<p>
-  <b>Ac lt 500:</b>
-  <%= @audiogram.ac_lt_500 %>
-</p>
-
-<p>
-  <b>Ac lt 1k:</b>
-  <%= @audiogram.ac_lt_1k %>
-</p>
-
-<p>
-  <b>Ac lt 2k:</b>
-  <%= @audiogram.ac_lt_2k %>
-</p>
-
-<p>
-  <b>Ac lt 4k:</b>
-  <%= @audiogram.ac_lt_4k %>
-</p>
-
-<p>
-  <b>Ac lt 8k:</b>
-  <%= @audiogram.ac_lt_8k %>
-</p>
-
-<p>
-  <b>Bc rt 250:</b>
-  <%= @audiogram.bc_rt_250 %>
-</p>
-
-<p>
-  <b>Bc rt 500:</b>
-  <%= @audiogram.bc_rt_500 %>
-</p>
-
-<p>
-  <b>Bc rt 1k:</b>
-  <%= @audiogram.bc_rt_1k %>
-</p>
-
-<p>
-  <b>Bc rt 2k:</b>
-  <%= @audiogram.bc_rt_2k %>
-</p>
-
-<p>
-  <b>Bc rt 4k:</b>
-  <%= @audiogram.bc_rt_4k %>
-</p>
-
-<p>
-  <b>Bc rt 8k:</b>
-  <%= @audiogram.bc_rt_8k %>
-</p>
-
-<p>
-  <b>Bc lt 250:</b>
-  <%= @audiogram.bc_lt_250 %>
-</p>
-
-<p>
-  <b>Bc lt 500:</b>
-  <%= @audiogram.bc_lt_500 %>
-</p>
-
-<p>
-  <b>Bc lt 1k:</b>
-  <%= @audiogram.bc_lt_1k %>
-</p>
-
-<p>
-  <b>Bc lt 2k:</b>
-  <%= @audiogram.bc_lt_2k %>
-</p>
-
-<p>
-  <b>Bc lt 4k:</b>
-  <%= @audiogram.bc_lt_4k %>
-</p>
-
-<p>
-  <b>Bc lt 8k:</b>
-  <%= @audiogram.bc_lt_8k %>
-</p>
-
-<p>
-  <b>Ac rt 125 scaleout:</b>
-  <%= @audiogram.ac_rt_125_scaleout %>
-</p>
-
-<p>
-  <b>Ac rt 250 scaleout:</b>
-  <%= @audiogram.ac_rt_250_scaleout %>
-</p>
-
-<p>
-  <b>Ac rt 500 scaleout:</b>
-  <%= @audiogram.ac_rt_500_scaleout %>
-</p>
-
-<p>
-  <b>Ac rt 1k scaleout:</b>
-  <%= @audiogram.ac_rt_1k_scaleout %>
-</p>
-
-<p>
-  <b>Ac rt 2k scaleout:</b>
-  <%= @audiogram.ac_rt_2k_scaleout %>
-</p>
-
-<p>
-  <b>Ac rt 4k scaleout:</b>
-  <%= @audiogram.ac_rt_4k_scaleout %>
-</p>
-
-<p>
-  <b>Ac rt 8k scaleout:</b>
-  <%= @audiogram.ac_rt_8k_scaleout %>
-</p>
-
-<p>
-  <b>Ac lt 125 scaleout:</b>
-  <%= @audiogram.ac_lt_125_scaleout %>
-</p>
-
-<p>
-  <b>Ac lt 250 scaleout:</b>
-  <%= @audiogram.ac_lt_250_scaleout %>
-</p>
-
-<p>
-  <b>Ac lt 500 scaleout:</b>
-  <%= @audiogram.ac_lt_500_scaleout %>
-</p>
-
-<p>
-  <b>Ac lt 1k scaleout:</b>
-  <%= @audiogram.ac_lt_1k_scaleout %>
-</p>
-
-<p>
-  <b>Ac lt 2k scaleout:</b>
-  <%= @audiogram.ac_lt_2k_scaleout %>
-</p>
-
-<p>
-  <b>Ac lt 4k scaleout:</b>
-  <%= @audiogram.ac_lt_4k_scaleout %>
-</p>
-
-<p>
-  <b>Ac lt 8k scaleout:</b>
-  <%= @audiogram.ac_lt_8k_scaleout %>
-</p>
-
-<p>
-  <b>Bc rt 250 scaleout:</b>
-  <%= @audiogram.bc_rt_250_scaleout %>
-</p>
-
-<p>
-  <b>Bc rt 500 scaleout:</b>
-  <%= @audiogram.bc_rt_500_scaleout %>
-</p>
-
-<p>
-  <b>Bc rt 1k scaleout:</b>
-  <%= @audiogram.bc_rt_1k_scaleout %>
-</p>
-
-<p>
-  <b>Bc rt 2k scaleout:</b>
-  <%= @audiogram.bc_rt_2k_scaleout %>
-</p>
-
-<p>
-  <b>Bc rt 4k scaleout:</b>
-  <%= @audiogram.bc_rt_4k_scaleout %>
-</p>
-
-<p>
-  <b>Bc rt 8k scaleout:</b>
-  <%= @audiogram.bc_rt_8k_scaleout %>
-</p>
-
-<p>
-  <b>Bc lt 250 scaleout:</b>
-  <%= @audiogram.bc_lt_250_scaleout %>
-</p>
-
-<p>
-  <b>Bc lt 500 scaleout:</b>
-  <%= @audiogram.bc_lt_500_scaleout %>
-</p>
-
-<p>
-  <b>Bc lt 1k scaleout:</b>
-  <%= @audiogram.bc_lt_1k_scaleout %>
-</p>
-
-<p>
-  <b>Bc lt 2k scaleout:</b>
-  <%= @audiogram.bc_lt_2k_scaleout %>
-</p>
-
-<p>
-  <b>Bc lt 4k scaleout:</b>
-  <%= @audiogram.bc_lt_4k_scaleout %>
-</p>
-
-<p>
-  <b>Bc lt 8k scaleout:</b>
-  <%= @audiogram.bc_lt_8k_scaleout %>
-</p>
-
-<p>
-  <b>Mask ac rt 125:</b>
-  <%= @audiogram.mask_ac_rt_125 %>
-</p>
-
-<p>
-  <b>Mask ac rt 250:</b>
-  <%= @audiogram.mask_ac_rt_250 %>
-</p>
-
-<p>
-  <b>Mask ac rt 500:</b>
-  <%= @audiogram.mask_ac_rt_500 %>
-</p>
-
-<p>
-  <b>Mask ac rt 1k:</b>
-  <%= @audiogram.mask_ac_rt_1k %>
-</p>
-
-<p>
-  <b>Mask ac rt 2k:</b>
-  <%= @audiogram.mask_ac_rt_2k %>
-</p>
-
-<p>
-  <b>Mask ac rt 4k:</b>
-  <%= @audiogram.mask_ac_rt_4k %>
-</p>
-
-<p>
-  <b>Mask ac rt 8k:</b>
-  <%= @audiogram.mask_ac_rt_8k %>
-</p>
-
-<p>
-  <b>Mask ac lt 125:</b>
-  <%= @audiogram.mask_ac_lt_125 %>
-</p>
-
-<p>
-  <b>Mask ac lt 250:</b>
-  <%= @audiogram.mask_ac_lt_250 %>
-</p>
-
-<p>
-  <b>Mask ac lt 500:</b>
-  <%= @audiogram.mask_ac_lt_500 %>
-</p>
-
-<p>
-  <b>Mask ac lt 1k:</b>
-  <%= @audiogram.mask_ac_lt_1k %>
-</p>
-
-<p>
-  <b>Mask ac lt 2k:</b>
-  <%= @audiogram.mask_ac_lt_2k %>
-</p>
-
-<p>
-  <b>Mask ac lt 4k:</b>
-  <%= @audiogram.mask_ac_lt_4k %>
-</p>
-
-<p>
-  <b>Mask ac lt 8k:</b>
-  <%= @audiogram.mask_ac_lt_8k %>
-</p>
-
-<p>
-  <b>Mask bc rt 250:</b>
-  <%= @audiogram.mask_bc_rt_250 %>
-</p>
-
-<p>
-  <b>Mask bc rt 500:</b>
-  <%= @audiogram.mask_bc_rt_500 %>
-</p>
-
-<p>
-  <b>Mask bc rt 1k:</b>
-  <%= @audiogram.mask_bc_rt_1k %>
-</p>
-
-<p>
-  <b>Mask bc rt 2k:</b>
-  <%= @audiogram.mask_bc_rt_2k %>
-</p>
-
-<p>
-  <b>Mask bc rt 4k:</b>
-  <%= @audiogram.mask_bc_rt_4k %>
-</p>
-
-<p>
-  <b>Mask bc rt 8k:</b>
-  <%= @audiogram.mask_bc_rt_8k %>
-</p>
-
-<p>
-  <b>Mask bc lt 250:</b>
-  <%= @audiogram.mask_bc_lt_250 %>
-</p>
-
-<p>
-  <b>Mask bc lt 500:</b>
-  <%= @audiogram.mask_bc_lt_500 %>
-</p>
-
-<p>
-  <b>Mask bc lt 1k:</b>
-  <%= @audiogram.mask_bc_lt_1k %>
-</p>
-
-<p>
-  <b>Mask bc lt 2k:</b>
-  <%= @audiogram.mask_bc_lt_2k %>
-</p>
-
-<p>
-  <b>Mask bc lt 4k:</b>
-  <%= @audiogram.mask_bc_lt_4k %>
-</p>
-
-<p>
-  <b>Mask bc lt 8k:</b>
-  <%= @audiogram.mask_bc_lt_8k %>
-</p>
-
-<p>
-  <b>Mask ac rt 125 type:</b>
-  <%= @audiogram.mask_ac_rt_125_type %>
-</p>
-
-<p>
-  <b>Mask ac rt 250 type:</b>
-  <%= @audiogram.mask_ac_rt_250_type %>
-</p>
-
-<p>
-  <b>Mask ac rt 500 type:</b>
-  <%= @audiogram.mask_ac_rt_500_type %>
-</p>
-
-<p>
-  <b>Mask ac rt 1k type:</b>
-  <%= @audiogram.mask_ac_rt_1k_type %>
-</p>
-
-<p>
-  <b>Mask ac rt 2k type:</b>
-  <%= @audiogram.mask_ac_rt_2k_type %>
-</p>
-
-<p>
-  <b>Mask ac rt 4k type:</b>
-  <%= @audiogram.mask_ac_rt_4k_type %>
-</p>
-
-<p>
-  <b>Mask ac rt 8k type:</b>
-  <%= @audiogram.mask_ac_rt_8k_type %>
-</p>
-
-<p>
-  <b>Mask ac lt 125 type:</b>
-  <%= @audiogram.mask_ac_lt_125_type %>
-</p>
-
-<p>
-  <b>Mask ac lt 250 type:</b>
-  <%= @audiogram.mask_ac_lt_250_type %>
-</p>
-
-<p>
-  <b>Mask ac lt 500 type:</b>
-  <%= @audiogram.mask_ac_lt_500_type %>
-</p>
-
-<p>
-  <b>Mask ac lt 1k type:</b>
-  <%= @audiogram.mask_ac_lt_1k_type %>
-</p>
-
-<p>
-  <b>Mask ac lt 2k type:</b>
-  <%= @audiogram.mask_ac_lt_2k_type %>
-</p>
-
-<p>
-  <b>Mask ac lt 4k type:</b>
-  <%= @audiogram.mask_ac_lt_4k_type %>
-</p>
-
-<p>
-  <b>Mask ac lt 8k type:</b>
-  <%= @audiogram.mask_ac_lt_8k_type %>
-</p>
-
-<p>
-  <b>Mask bc rt 250 type:</b>
-  <%= @audiogram.mask_bc_rt_250_type %>
-</p>
-
-<p>
-  <b>Mask bc rt 500 type:</b>
-  <%= @audiogram.mask_bc_rt_500_type %>
-</p>
-
-<p>
-  <b>Mask bc rt 1k type:</b>
-  <%= @audiogram.mask_bc_rt_1k_type %>
-</p>
-
-<p>
-  <b>Mask bc rt 2k type:</b>
-  <%= @audiogram.mask_bc_rt_2k_type %>
-</p>
-
-<p>
-  <b>Mask bc rt 4k type:</b>
-  <%= @audiogram.mask_bc_rt_4k_type %>
-</p>
-
-<p>
-  <b>Mask bc rt 8k type:</b>
-  <%= @audiogram.mask_bc_rt_8k_type %>
-</p>
-
-<p>
-  <b>Mask bc lt 250 type:</b>
-  <%= @audiogram.mask_bc_lt_250_type %>
-</p>
-
-<p>
-  <b>Mask bc lt 500 type:</b>
-  <%= @audiogram.mask_bc_lt_500_type %>
-</p>
-
-<p>
-  <b>Mask bc lt 1k type:</b>
-  <%= @audiogram.mask_bc_lt_1k_type %>
-</p>
-
-<p>
-  <b>Mask bc lt 2k type:</b>
-  <%= @audiogram.mask_bc_lt_2k_type %>
-</p>
-
-<p>
-  <b>Mask bc lt 4k type:</b>
-  <%= @audiogram.mask_bc_lt_4k_type %>
-</p>
-
-<p>
-  <b>Mask bc lt 8k type:</b>
-  <%= @audiogram.mask_bc_lt_8k_type %>
-</p>
-
-<p>
-  <b>Manual input:</b>
-  <%= @audiogram.manual_input %>
-</p>
-
-<p>
-  <b>Audiometer:</b>
-  <%= @audiogram.audiometer %>
-</p>
-
-<p>
-  <b>Hospital:</b>
-  <%= @audiogram.hospital %>
-</p>
-
-
-<%= link_to 'Edit', edit_patient_audiogram_path(@patient.to_param, @audiogram) %> |
-<%= link_to 'Back', @patient_audiograms_path %>
+<h1>ID: <%=h reg_id(@patient.hp_id) %>
+<%= link_to '[結果一覧へ]', patient_audiograms_path(@patient) %> </h1>
+検査日: <%=h @audiogram.examdate %> / 修正日: <%=h @audiogram.updated_at %>
+オージオメータ: <%=h @audiogram.audiometer %>
+
+<table>
+<tr><td colspan="9"><%= image_tag(@audiogram.image_location) %></td>
+    <td rowspan="1">
+      <table>
+      <tr><th colspan="2">平均値 mean</th></tr>
+      <tr><th colspan="2">3分法</th></tr>
+      <tr><th>Rt:</th><td><%=h mean("3", @audiogram)[:R] %></td></tr>
+      <tr><th>Lt:</th><td><%=h mean("3", @audiogram)[:L] %></td></tr>
+      <tr><th colspan="2"></th></tr>
+      <% mean4 = mean("4", @audiogram) %>
+      <% mean4R = mean("4R", @audiogram) %>
+      <% mean4_match = (mean4 == mean4R) %>
+      <tr><th colspan="2">4分法<%=h "<br>(cut offなし)" if not mean4_match %></th></tr>
+      <tr><th>Rt:</th><td><%=h mean4[:R] %>
+                          <%=h "(#{mean4R[:R]})" if not mean4_match %>)</td></tr>
+      <tr><th>Lt:</th><td><%=h mean4[:L] %>
+                          <%=h "(#{mean4R[:L]})" if not mean4_match %>)</td></tr>
+      <tr><th colspan="2"></th></tr>
+      <tr><th colspan ="2">6分法</th></tr>
+      <tr><th>Rt:</th><td><%=h mean("6", @audiogram)[:R] %></td></tr>
+      <tr><th>Lt:</th><td><%=h mean("6", @audiogram)[:L] %></td></tr>
+      </table>
+    </td></tr>
+<tr><td>
+      <tr><th colspan="9">マスキング条件</th> <th>検査コメント</th></tr>
+      <tr> <th>mode</th> <th>side</th> <th>125Hz</th> <th>250Hz</th> <th>500Hz</th> 
+                            <th>1kHz</th> <th>2kHz</th> <th>4kHz</th> <th>8kHz</th>
+           <td rowspan="5"><%=h @audiogram.comment %></td></tr>
+      <tr><td>Air</td> <td>Rt</td>
+          <td><%=h @audiogram.mask_ac_rt_125.round %></td>
+          <td><%=h @audiogram.mask_ac_rt_250.round %></td>
+          <td><%=h @audiogram.mask_ac_rt_500.round %></td>
+          <td><%=h @audiogram.mask_ac_rt_1k.round %></td>
+          <td><%=h @audiogram.mask_ac_rt_2k.round %></td>
+          <td><%=h @audiogram.mask_ac_rt_4k.round %></td>
+          <td><%=h @audiogram.mask_ac_rt_8k.round %></td></tr>
+      <tr><td></td> <td>Lt</td>
+          <td><%=h @audiogram.mask_ac_lt_125.round %></td>
+          <td><%=h @audiogram.mask_ac_lt_250.round %></td>
+          <td><%=h @audiogram.mask_ac_lt_500.round %></td>
+          <td><%=h @audiogram.mask_ac_lt_1k.round %></td>
+          <td><%=h @audiogram.mask_ac_lt_2k.round %></td>
+          <td><%=h @audiogram.mask_ac_lt_4k.round %></td>
+          <td><%=h @audiogram.mask_ac_lt_8k.round %></td></tr>
+      <tr><td>Bone</td> <td>Rt</td>
+           <td></td>
+           <td><%=h @audiogram.mask_bc_rt_250.round %></td>
+           <td><%=h @audiogram.mask_bc_rt_500.round %></td>
+           <td><%=h @audiogram.mask_bc_rt_1k.round %></td>
+           <td><%=h @audiogram.mask_bc_rt_2k.round %></td>
+           <td><%=h @audiogram.mask_bc_rt_4k.round %></td>
+           <td><%=h @audiogram.mask_bc_rt_8k.round %></td></tr>
+      <tr><td></td> <td>Lt</td>
+           <td></td>
+           <td><%=h @audiogram.mask_bc_lt_250.round %></td>
+           <td><%=h @audiogram.mask_bc_lt_500.round %></td>
+           <td><%=h @audiogram.mask_bc_lt_1k.round %></td>
+           <td><%=h @audiogram.mask_bc_lt_2k.round %></td>
+           <td><%=h @audiogram.mask_bc_lt_4k.round %></td>
+           <td><%=h @audiogram.mask_bc_lt_8k.round %></td></tr>
+    </td>
+</table>
+
+<%=h @audiogram.hospital %>
+
+<p>
+<form name="Form1" style="margin:1ex">
+    <input type="button" name="PrintButton" value="印刷" onclick="printout()"/>　
+</form>
+<%= link_to '検査一覧へ to Index', patient_audiograms_path(@patient) %> <br>
