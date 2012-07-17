@@ -1,247 +1,49 @@
-<h1>Listing audiograms</h1>
+<h1>Listing audiograms for <%= reg_id(@patient.hp_id) %></h1>
 
 <table>
-  <tr>
-    <th>Patient</th>
-    <th>Examiner</th>
-    <th>Examdate</th>
-    <th>Comment</th>
-    <th>Image location</th>
-    <th>Ac rt 125</th>
-    <th>Ac rt 250</th>
-    <th>Ac rt 500</th>
-    <th>Ac rt 1k</th>
-    <th>Ac rt 2k</th>
-    <th>Ac rt 4k</th>
-    <th>Ac rt 8k</th>
-    <th>Ac lt 125</th>
-    <th>Ac lt 250</th>
-    <th>Ac lt 500</th>
-    <th>Ac lt 1k</th>
-    <th>Ac lt 2k</th>
-    <th>Ac lt 4k</th>
-    <th>Ac lt 8k</th>
-    <th>Bc rt 250</th>
-    <th>Bc rt 500</th>
-    <th>Bc rt 1k</th>
-    <th>Bc rt 2k</th>
-    <th>Bc rt 4k</th>
-    <th>Bc rt 8k</th>
-    <th>Bc lt 250</th>
-    <th>Bc lt 500</th>
-    <th>Bc lt 1k</th>
-    <th>Bc lt 2k</th>
-    <th>Bc lt 4k</th>
-    <th>Bc lt 8k</th>
-    <th>Ac rt 125 scaleout</th>
-    <th>Ac rt 250 scaleout</th>
-    <th>Ac rt 500 scaleout</th>
-    <th>Ac rt 1k scaleout</th>
-    <th>Ac rt 2k scaleout</th>
-    <th>Ac rt 4k scaleout</th>
-    <th>Ac rt 8k scaleout</th>
-    <th>Ac lt 125 scaleout</th>
-    <th>Ac lt 250 scaleout</th>
-    <th>Ac lt 500 scaleout</th>
-    <th>Ac lt 1k scaleout</th>
-    <th>Ac lt 2k scaleout</th>
-    <th>Ac lt 4k scaleout</th>
-    <th>Ac lt 8k scaleout</th>
-    <th>Bc rt 250 scaleout</th>
-    <th>Bc rt 500 scaleout</th>
-    <th>Bc rt 1k scaleout</th>
-    <th>Bc rt 2k scaleout</th>
-    <th>Bc rt 4k scaleout</th>
-    <th>Bc rt 8k scaleout</th>
-    <th>Bc lt 250 scaleout</th>
-    <th>Bc lt 500 scaleout</th>
-    <th>Bc lt 1k scaleout</th>
-    <th>Bc lt 2k scaleout</th>
-    <th>Bc lt 4k scaleout</th>
-    <th>Bc lt 8k scaleout</th>
-    <th>Mask ac rt 125</th>
-    <th>Mask ac rt 250</th>
-    <th>Mask ac rt 500</th>
-    <th>Mask ac rt 1k</th>
-    <th>Mask ac rt 2k</th>
-    <th>Mask ac rt 4k</th>
-    <th>Mask ac rt 8k</th>
-    <th>Mask ac lt 125</th>
-    <th>Mask ac lt 250</th>
-    <th>Mask ac lt 500</th>
-    <th>Mask ac lt 1k</th>
-    <th>Mask ac lt 2k</th>
-    <th>Mask ac lt 4k</th>
-    <th>Mask ac lt 8k</th>
-    <th>Mask bc rt 250</th>
-    <th>Mask bc rt 500</th>
-    <th>Mask bc rt 1k</th>
-    <th>Mask bc rt 2k</th>
-    <th>Mask bc rt 4k</th>
-    <th>Mask bc rt 8k</th>
-    <th>Mask bc lt 250</th>
-    <th>Mask bc lt 500</th>
-    <th>Mask bc lt 1k</th>
-    <th>Mask bc lt 2k</th>
-    <th>Mask bc lt 4k</th>
-    <th>Mask bc lt 8k</th>
-    <th>Mask ac rt 125 type</th>
-    <th>Mask ac rt 250 type</th>
-    <th>Mask ac rt 500 type</th>
-    <th>Mask ac rt 1k type</th>
-    <th>Mask ac rt 2k type</th>
-    <th>Mask ac rt 4k type</th>
-    <th>Mask ac rt 8k type</th>
-    <th>Mask ac lt 125 type</th>
-    <th>Mask ac lt 250 type</th>
-    <th>Mask ac lt 500 type</th>
-    <th>Mask ac lt 1k type</th>
-    <th>Mask ac lt 2k type</th>
-    <th>Mask ac lt 4k type</th>
-    <th>Mask ac lt 8k type</th>
-    <th>Mask bc rt 250 type</th>
-    <th>Mask bc rt 500 type</th>
-    <th>Mask bc rt 1k type</th>
-    <th>Mask bc rt 2k type</th>
-    <th>Mask bc rt 4k type</th>
-    <th>Mask bc rt 8k type</th>
-    <th>Mask bc lt 250 type</th>
-    <th>Mask bc lt 500 type</th>
-    <th>Mask bc lt 1k type</th>
-    <th>Mask bc lt 2k type</th>
-    <th>Mask bc lt 4k type</th>
-    <th>Mask bc lt 8k type</th>
-    <th>Manual input</th>
-    <th>Audiometer</th>
-    <th>Hospital</th>
+  <tr class="colored">
     <th></th>
-    <th></th>
+    <th>検査日 Examdate</th>
+    <th>検査図 Thumbnail</th>
+    <th>4分法平均 mean4</th>
+    <th>コメント Comment</th>
     <th></th>
   </tr>
 
+<%# form_tag :action => 'select' do %>
+
 <% @audiograms.each do |audiogram| %>
-  <tr>
-    <td><%= audiogram.patient %></td>
-    <td><%= audiogram.examiner %></td>
-    <td><%= audiogram.examdate %></td>
+  <tr class="<%= cycle("", "colored") %>">
+    <!-- cycle は周期的に繰り返す文字列を出力する -->
+    <td><%#= check_box_tag "selected[]", audiogram.id %><br><a href="#search" %>▼</a></td>
+    <td><%= audiogram.examdate.strftime("%Y/%m/%d") %><br><%= audiogram.examdate.strftime("%X") %></td>
+    <td><%= link_to(image_tag(audiogram.image_location.sub("graphs", "thumbnails")),\
+      :action => "show", :id => audiogram.id )%></td>
+    <td>R: <%= mean("4R", audiogram)[:R] %><br>L: <%= mean("4R", audiogram)[:L] %></td>
+      <!-- helper method is put at app/helpers/audiograms_helper.rb -->
     <td><%= audiogram.comment %></td>
-    <td><%= audiogram.image_location %></td>
-    <td><%= audiogram.ac_rt_125 %></td>
-    <td><%= audiogram.ac_rt_250 %></td>
-    <td><%= audiogram.ac_rt_500 %></td>
-    <td><%= audiogram.ac_rt_1k %></td>
-    <td><%= audiogram.ac_rt_2k %></td>
-    <td><%= audiogram.ac_rt_4k %></td>
-    <td><%= audiogram.ac_rt_8k %></td>
-    <td><%= audiogram.ac_lt_125 %></td>
-    <td><%= audiogram.ac_lt_250 %></td>
-    <td><%= audiogram.ac_lt_500 %></td>
-    <td><%= audiogram.ac_lt_1k %></td>
-    <td><%= audiogram.ac_lt_2k %></td>
-    <td><%= audiogram.ac_lt_4k %></td>
-    <td><%= audiogram.ac_lt_8k %></td>
-    <td><%= audiogram.bc_rt_250 %></td>
-    <td><%= audiogram.bc_rt_500 %></td>
-    <td><%= audiogram.bc_rt_1k %></td>
-    <td><%= audiogram.bc_rt_2k %></td>
-    <td><%= audiogram.bc_rt_4k %></td>
-    <td><%= audiogram.bc_rt_8k %></td>
-    <td><%= audiogram.bc_lt_250 %></td>
-    <td><%= audiogram.bc_lt_500 %></td>
-    <td><%= audiogram.bc_lt_1k %></td>
-    <td><%= audiogram.bc_lt_2k %></td>
-    <td><%= audiogram.bc_lt_4k %></td>
-    <td><%= audiogram.bc_lt_8k %></td>
-    <td><%= audiogram.ac_rt_125_scaleout %></td>
-    <td><%= audiogram.ac_rt_250_scaleout %></td>
-    <td><%= audiogram.ac_rt_500_scaleout %></td>
-    <td><%= audiogram.ac_rt_1k_scaleout %></td>
-    <td><%= audiogram.ac_rt_2k_scaleout %></td>
-    <td><%= audiogram.ac_rt_4k_scaleout %></td>
-    <td><%= audiogram.ac_rt_8k_scaleout %></td>
-    <td><%= audiogram.ac_lt_125_scaleout %></td>
-    <td><%= audiogram.ac_lt_250_scaleout %></td>
-    <td><%= audiogram.ac_lt_500_scaleout %></td>
-    <td><%= audiogram.ac_lt_1k_scaleout %></td>
-    <td><%= audiogram.ac_lt_2k_scaleout %></td>
-    <td><%= audiogram.ac_lt_4k_scaleout %></td>
-    <td><%= audiogram.ac_lt_8k_scaleout %></td>
-    <td><%= audiogram.bc_rt_250_scaleout %></td>
-    <td><%= audiogram.bc_rt_500_scaleout %></td>
-    <td><%= audiogram.bc_rt_1k_scaleout %></td>
-    <td><%= audiogram.bc_rt_2k_scaleout %></td>
-    <td><%= audiogram.bc_rt_4k_scaleout %></td>
-    <td><%= audiogram.bc_rt_8k_scaleout %></td>
-    <td><%= audiogram.bc_lt_250_scaleout %></td>
-    <td><%= audiogram.bc_lt_500_scaleout %></td>
-    <td><%= audiogram.bc_lt_1k_scaleout %></td>
-    <td><%= audiogram.bc_lt_2k_scaleout %></td>
-    <td><%= audiogram.bc_lt_4k_scaleout %></td>
-    <td><%= audiogram.bc_lt_8k_scaleout %></td>
-    <td><%= audiogram.mask_ac_rt_125 %></td>
-    <td><%= audiogram.mask_ac_rt_250 %></td>
-    <td><%= audiogram.mask_ac_rt_500 %></td>
-    <td><%= audiogram.mask_ac_rt_1k %></td>
-    <td><%= audiogram.mask_ac_rt_2k %></td>
-    <td><%= audiogram.mask_ac_rt_4k %></td>
-    <td><%= audiogram.mask_ac_rt_8k %></td>
-    <td><%= audiogram.mask_ac_lt_125 %></td>
-    <td><%= audiogram.mask_ac_lt_250 %></td>
-    <td><%= audiogram.mask_ac_lt_500 %></td>
-    <td><%= audiogram.mask_ac_lt_1k %></td>
-    <td><%= audiogram.mask_ac_lt_2k %></td>
-    <td><%= audiogram.mask_ac_lt_4k %></td>
-    <td><%= audiogram.mask_ac_lt_8k %></td>
-    <td><%= audiogram.mask_bc_rt_250 %></td>
-    <td><%= audiogram.mask_bc_rt_500 %></td>
-    <td><%= audiogram.mask_bc_rt_1k %></td>
-    <td><%= audiogram.mask_bc_rt_2k %></td>
-    <td><%= audiogram.mask_bc_rt_4k %></td>
-    <td><%= audiogram.mask_bc_rt_8k %></td>
-    <td><%= audiogram.mask_bc_lt_250 %></td>
-    <td><%= audiogram.mask_bc_lt_500 %></td>
-    <td><%= audiogram.mask_bc_lt_1k %></td>
-    <td><%= audiogram.mask_bc_lt_2k %></td>
-    <td><%= audiogram.mask_bc_lt_4k %></td>
-    <td><%= audiogram.mask_bc_lt_8k %></td>
-    <td><%= audiogram.mask_ac_rt_125_type %></td>
-    <td><%= audiogram.mask_ac_rt_250_type %></td>
-    <td><%= audiogram.mask_ac_rt_500_type %></td>
-    <td><%= audiogram.mask_ac_rt_1k_type %></td>
-    <td><%= audiogram.mask_ac_rt_2k_type %></td>
-    <td><%= audiogram.mask_ac_rt_4k_type %></td>
-    <td><%= audiogram.mask_ac_rt_8k_type %></td>
-    <td><%= audiogram.mask_ac_lt_125_type %></td>
-    <td><%= audiogram.mask_ac_lt_250_type %></td>
-    <td><%= audiogram.mask_ac_lt_500_type %></td>
-    <td><%= audiogram.mask_ac_lt_1k_type %></td>
-    <td><%= audiogram.mask_ac_lt_2k_type %></td>
-    <td><%= audiogram.mask_ac_lt_4k_type %></td>
-    <td><%= audiogram.mask_ac_lt_8k_type %></td>
-    <td><%= audiogram.mask_bc_rt_250_type %></td>
-    <td><%= audiogram.mask_bc_rt_500_type %></td>
-    <td><%= audiogram.mask_bc_rt_1k_type %></td>
-    <td><%= audiogram.mask_bc_rt_2k_type %></td>
-    <td><%= audiogram.mask_bc_rt_4k_type %></td>
-    <td><%= audiogram.mask_bc_rt_8k_type %></td>
-    <td><%= audiogram.mask_bc_lt_250_type %></td>
-    <td><%= audiogram.mask_bc_lt_500_type %></td>
-    <td><%= audiogram.mask_bc_lt_1k_type %></td>
-    <td><%= audiogram.mask_bc_lt_2k_type %></td>
-    <td><%= audiogram.mask_bc_lt_4k_type %></td>
-    <td><%= audiogram.mask_bc_lt_8k_type %></td>
-    <td><%= audiogram.manual_input %></td>
-    <td><%= audiogram.audiometer %></td>
-    <td><%= audiogram.hospital %></td>
-    <td><%= link_to 'Show', @patient_audiogram %></td>
-    <td><%# = link_to 'Show', audiogram %></td>
-    <td><%= link_to 'Edit', edit_patient_audiogram_path(@patient, audiogram) %></td>
-    <td><%# = link_to 'Edit', edit_audiogram_path(audiogram) %></td>
-    <td><%= link_to 'Destroy', @patient_audiogram, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
+    <!-- td><%#= audiogram.manual_input %></td -->
+    <td><%= link_to 'Show', :action => "show", :id => audiogram.id %><br>
+        <% if audiogram.manual_input %><%= link_to 'Edit', edit_patient_audiogram_path(audiogram) %>
+        <% else %><%= "cannot edit" %><% end %><br>
+        <%= link_to 'Destroy', [audiogram.patient, audiogram], :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
 <% end %>
 </table>
 
-<br />
+<a name="search"></a>
+<%#= submit_tag 'select 2 audiograms' %>
+<%# end %>
 
-<%= link_to 'New Audiogram', new_patient_audiogram_path(@patient) %>
+<br />
+<!-- hr -->
+
+<%#= link_to "New audiogram for ID:#{reg_id(@patient.hp_id)}", :action => "new_for_id", \
+      :id => @selected_id %>
+
+<%# form_tag :action => 'search' do %>
+  <%#= text_field "condition", "key" %>
+  <%#= submit_tag 'Search' %>
+<%# end %>
+
+<%= link_to 'Examination List', patient_path(@patient) %>

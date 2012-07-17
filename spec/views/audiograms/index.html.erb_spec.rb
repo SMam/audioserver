@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'spec_helper'
 
 describe "audiograms/index" do
@@ -22,10 +23,11 @@ describe "audiograms/index" do
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "h1", :text => "Listing audiograms for #{reg_id(@patient.hp_id)}", :count => 1
-    assert_select "tr>td",\
-      :text => "#{@examdate.strftime("%Y/%m/%d")}\n#{@examdate.strftime("%X")}", :count => 2
-    assert_select "tr>td",\
-      :text => "R: #{mean("4R", @audiogram_stub)[:R]}\nL: #{mean("4R", @audiogram_stub)[:L]}",\
+    assert_select "tr>td", :text => Regexp.new("#{@examdate.strftime("%Y/%m/%d")}"), :count => 2
+    assert_select "tr>td", :text => Regexp.new("#{@examdate.strftime("%X")}"), :count => 2
+    assert_select "tr>td", :text => Regexp.new("R:.+#{mean("4R", @audiogram_stub)[:R]}"),\
+      :count => 2
+    assert_select "tr>td", :text => Regexp.new("L:.+#{mean("4R", @audiogram_stub)[:L]}"),\
       :count => 2
     assert_select "tr>td>a>img", :count => 2
     thumb_location = "assets/#{@audiogram_stub.image_location.sub("graphs", "thumbnails")}"
