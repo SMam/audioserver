@@ -21,7 +21,7 @@ describe "patients/show" do
       )
   end
 
-  context "patientに属するデータがない場合" do
+  context "patientに属するAudiogramがない場合" do
     before do
       @patient.audiograms = []
       assign(:patient, @patient)
@@ -32,7 +32,7 @@ describe "patients/show" do
       # Run the generator again with the --webrat flag if you want to use webrat matchers
       rendered.should match(Regexp.new(reg_id(@patient.hp_id)))
                                                       # hp_idがxxx-xxxx-xx-xで表示されること
-      rendered.should match(/No Otolaryngological data/)
+      rendered.should match(/No Audiogram/)
       rendered.should_not match(/Audiograms/)
     end
   end
