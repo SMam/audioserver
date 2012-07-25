@@ -2,18 +2,21 @@
 
 <h1>ID: <%=h reg_id(@patient.hp_id) %></h1>
 
-<% if @patient.audiograms.length > 0 %>
+<% if (count = @patient.audiograms.length) > 0 %>
   <% recent = @patient.audiograms.sort {|a,b| b.examdate <=> a.examdate} %>
-  <h2>Audiograms</h2>
+  <% i = 0 %>
+  <h2>Audiogram<%= "s" if count > 1 %> (<%= count %> exam<%= "s" if count > 1 %>)</h2>
   <table>
     <tr>
       <% recent.each do |a| %>
-        <td><%= a.examdate.strftime("%Y/%m/%d") %></td>
+        <td id="recent<%= i %>"><%= a.examdate.strftime("%Y/%m/%d") %></td>
+	<% i += 1 %>
       <% end %>
     </tr>
     <tr>
       <% recent.each do |a| %>
-        <td><%= link_to(image_tag(a.image_location.sub("graphs", "thumbnails")), :action => "show", :id => a.id )%></td>
+        <td><%= link_to(image_tag(a.image_location.sub("graphs", "thumbnails")),\
+	        :action => "show", :id => a.id )%></td>
       <% end %>
     </tr>
     <tr>
