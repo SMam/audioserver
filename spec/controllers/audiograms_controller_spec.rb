@@ -210,8 +210,11 @@ describe AudiogramsController do
     end
 
     context "basic認証をpassしない場合" do
-      it "does not destroy the requested audiogram" do
+      before do
         request.env['HTTP_AUTHORIZATION'] = @wrong_auth
+      end
+
+      it "does not destroy the requested audiogram" do
         expect {
           delete :destroy, {:patient_id => @patient.to_param, :id => @audiogram.to_param},\
             valid_session
@@ -219,7 +222,6 @@ describe AudiogramsController do
       end
 
       it "does not redirect to the audiograms list" do
-        request.env['HTTP_AUTHORIZATION'] = @wrong_auth
         delete :destroy, {:patient_id => @patient.to_param, :id => @audiogram.to_param},\
           valid_session
         response.should_not redirect_to(patient_audiograms_url)
@@ -227,8 +229,11 @@ describe AudiogramsController do
     end
 
     context "basic認証をpassする場合" do
-      it "destroys the requested audiogram" do
+      before do
         request.env['HTTP_AUTHORIZATION'] = @right_auth
+      end
+
+      it "destreys the requested audiogram" do
         expect {
           delete :destroy, {:patient_id => @patient.to_param, :id => @audiogram.to_param},\
             valid_session
@@ -236,7 +241,6 @@ describe AudiogramsController do
       end
 
       it "redirects to the audiograms list" do
-        request.env['HTTP_AUTHORIZATION'] = @right_auth
         delete :destroy, {:patient_id => @patient.to_param, :id => @audiogram.to_param},\
           valid_session
 #        response.should redirect_to(@audiograms_url)

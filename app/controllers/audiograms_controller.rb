@@ -1,4 +1,10 @@
 class AudiogramsController < ApplicationController
+
+  USERNAME = "audioadmin"
+  PASSWORD = "audioadmin"
+  http_basic_authenticate_with :name => USERNAME, :password => PASSWORD,\
+    :only => ["edit", "destroy"]
+
   # GET /patients/:patient_id/audiograms
   # GET /audiograms.json
   def index
