@@ -23,6 +23,8 @@ describe "audiograms/index" do
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "h1", :text => "Listing audiograms for #{reg_id(@patient.hp_id)}", :count => 1
+    # @patientへのlinkが表示されること
+    assert_select "h1>a", :href => Regexp.new("patients/#{@patient.to_param}")
     assert_select "tr>td", :text => Regexp.new("#{@examdate.strftime("%Y/%m/%d")}"), :count => 2
     assert_select "tr>td", :text => Regexp.new("#{@examdate.strftime("%X")}"), :count => 2
     assert_select "tr>td", :text => Regexp.new("R:.+#{mean("4R", @audiogram_stub)[:R]}"),\
