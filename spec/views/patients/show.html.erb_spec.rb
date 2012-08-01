@@ -71,6 +71,8 @@ describe "patients/show" do
                                                       # hp_idがxxx-xxxx-xx-xで表示されること
       rendered.should_not match(/No Otolaryngological data/)
       rendered.should match(Regexp.new("Audiograms.+(3.+exams)"))
+      # @patientのaudiogramのindexへのlinkが表示されること
+      assert_select "h2>a", :href => Regexp.new("patients/#{@patient.to_param}/audiograms")
       # 3回分のAudiogramを表示
       assert_select "tr>td", :text => Regexp.new("R:.+#{mean("4R", @audiogram_stub0)[:R]}"),\
         :count => 3
@@ -86,6 +88,9 @@ describe "patients/show" do
         Regexp.new("#{(@examdate).strftime("%Y/%m/%d")}"), :count => 1
       assert_select "tr>td#recent2", :text =>\
         Regexp.new("#{(@examdate-3600*24).strftime("%Y/%m/%d")}"), :count => 1
+      # 個々のAudiogramへのlinkが表示されること
+      assert_select "tr>td>a", :href =>\
+         Regexp.new("patients/#{@patient.to_param}/audiograms/#{@audiogram_stub1.to_param}")
     end
   end
 

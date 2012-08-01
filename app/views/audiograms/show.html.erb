@@ -19,9 +19,9 @@
       <% mean4_match = (mean4 == mean4R) %>
       <tr><th colspan="2">4分法<%=h "<br>(cut offなし)" if not mean4_match %></th></tr>
       <tr><th>Rt:</th><td><%=h mean4[:R] %>
-                          <%=h "(#{mean4R[:R]})" if not mean4_match %>)</td></tr>
+                          <%=h "(#{mean4R[:R]})" if not mean4_match %></td></tr>
       <tr><th>Lt:</th><td><%=h mean4[:L] %>
-                          <%=h "(#{mean4R[:L]})" if not mean4_match %>)</td></tr>
+                          <%=h "(#{mean4R[:L]})" if not mean4_match %></td></tr>
       <tr><th colspan="2"></th></tr>
       <tr><th colspan ="2">6分法</th></tr>
       <tr><th>Rt:</th><td><%=h mean("6", @audiogram)[:R] %></td></tr>

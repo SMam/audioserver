@@ -5,7 +5,9 @@
 <% if (count = @patient.audiograms.length) > 0 %>
   <% recent = @patient.audiograms.sort {|a,b| b.examdate <=> a.examdate} %>
   <% i = 0 %>
-  <h2>Audiogram<%= "s" if count > 1 %> (<%= count %> exam<%= "s" if count > 1 %>)</h2>
+  <h2><%= link_to "Audiogram#{"s" if count > 1} (#{count} exam#{"s" if count > 1})",\
+	  :controller => "audiograms", :action => "index",\
+          :patient_id => @patient.to_param  %></h2>
   <table>
     <tr>
       <% recent.each do |a| %>
@@ -16,7 +18,8 @@
     <tr>
       <% recent.each do |a| %>
         <td><%= link_to(image_tag(a.image_location.sub("graphs", "thumbnails")),\
-	        :action => "show", :id => a.id )%></td>
+	        :controller => "audiograms", :action => "show",\
+		:patient_id => @patient.to_param, :id => a.id )%></td>
       <% end %>
     </tr>
     <tr>
