@@ -183,4 +183,42 @@ describe "audiograms/show" do
       rendered.should match(/cut off/)            # cut off値表示がある
     end
   end
+
+  context "1kHzと4kHzの気導のみデータがある場合" do
+    before(:each) do
+      @audiogram.ac_rt_125 = @audiogram.ac_rt_250 = @audiogram.ac_rt_500 =\
+      @audiogram.ac_rt_2k  = @audiogram.ac_rt_8k  = nil
+      @audiogram.ac_lt_125 = @audiogram.ac_lt_250 = @audiogram.ac_lt_500 =\
+      @audiogram.ac_lt_2k  = @audiogram.ac_lt_8k  = nil
+      @audiogram.bc_rt_250 = @audiogram.bc_rt_500 = @audiogram.bc_rt_1k  =\
+      @audiogram.bc_rt_2k  = @audiogram.bc_rt_4k  = @audiogram.bc_rt_8k  = nil
+      @audiogram.bc_lt_250 = @audiogram.bc_lt_500 = @audiogram.bc_lt_1k  =\
+      @audiogram.bc_lt_2k  = @audiogram.bc_lt_4k  = @audiogram.bc_lt_8k  = nil
+      @audiogram.mask_ac_rt_125 = @audiogram.mask_ac_rt_250 = @audiogram.mask_ac_rt_500 =\
+      @audiogram.mask_ac_rt_2k  = @audiogram.mask_ac_rt_8k  = nil
+      @audiogram.mask_ac_lt_125 = @audiogram.mask_ac_lt_250 = @audiogram.mask_ac_lt_500 =\
+      @audiogram.mask_ac_lt_2k  = @audiogram.mask_ac_lt_8k  = nil
+      @audiogram.mask_bc_rt_250 = @audiogram.mask_bc_rt_500 = @audiogram.mask_bc_rt_1k  =\
+      @audiogram.mask_bc_rt_2k  = @audiogram.mask_bc_rt_4k  = @audiogram.mask_bc_rt_8k  = nil
+      @audiogram.mask_bc_lt_250 = @audiogram.mask_bc_lt_500 = @audiogram.mask_bc_lt_1k  =\
+      @audiogram.mask_bc_lt_2k  = @audiogram.mask_bc_lt_4k  = @audiogram.mask_bc_lt_8k  = nil
+    end
+
+    it "renders attributes in <p>" do
+      render
+      # Run the generator again with the --webrat flag if you want to use webrat matchers
+      rendered.should match(Regexp.new(reg_id(@patient.hp_id)))
+                                                  # hp_idがxxx-xxxx-xx-xで表示されること
+      rendered.should match(/\+0900/)             # 検査時刻がJSTで表示されること
+      rendered.should match(Regexp.new(mean("3", @audiogram)[:R].to_s)) # 3分法が表示される
+      rendered.should match(Regexp.new(mean("3", @audiogram)[:L].to_s))
+      rendered.should match(Regexp.new(mean("4", @audiogram)[:R].to_s)) # 4分法
+      rendered.should match(Regexp.new(mean("4", @audiogram)[:L].to_s))
+      rendered.should match(Regexp.new(mean("4R",@audiogram)[:R].to_s)) # 4分法(cut offあり)
+      rendered.should match(Regexp.new(mean("4R",@audiogram)[:L].to_s))
+      rendered.should match(Regexp.new(mean("6", @audiogram)[:R].to_s)) # 6分法
+      rendered.should match(Regexp.new(mean("6", @audiogram)[:L].to_s))
+      rendered.should_not match(/cut off/)            # cut off値表示がある
+    end
+  end
 end
