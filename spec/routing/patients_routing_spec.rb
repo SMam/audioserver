@@ -36,11 +36,11 @@ describe PatientsController do
     end
 
     it "routes to #by_hp_id" do
-      get("/patients/by_hp_id/1").should route_to("patients#by_hp_id", :id => "1")
+      get("/patients/by_hp_id/1").should route_to("patients#by_hp_id", :hp_id => "1")
     end
 
     it "routes to #by_hp_id for audiograms/index_of_id/:hp_id" do
-      get("/audiograms/index_of_id/1").should route_to("patients#by_hp_id", :id => "1")
+      get("/audiograms/index_of_id/1").should route_to("patients#by_hp_id", :hp_id => "1")
     end
 
   end

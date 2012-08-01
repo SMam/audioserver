@@ -3,7 +3,11 @@ Audioserver::Application.routes.draw do
 
   resources :patients do
     resources :audiograms
+    post 'direct_create' => 'patients#direct_create', :on => :collection
+    get  'by_hp_id/:hp_id' => 'patients#by_hp_id', :on => :collection
   end
+
+  get  'audiograms/index_of_id/:hp_id' => 'patients#by_hp_id'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
