@@ -112,4 +112,26 @@ describe "patients/show" do
     end
   end
 
+  context "Audiogramが10ある場合" do
+    before do
+      9.times do
+        @patient.audiograms << @audiogram_stub0
+      end
+      @patient.audiograms << @audiogram_stub1
+      # stub1 がもっとも新しい
+      assign(:patient, @patient)
+    end
+
+    it "renders attributes in <p>" do
+      render
+      # Run the generator again with the --webrat flag if you want to use webrat matchers
+      rendered.should match(Regexp.new("Audiograms.+(10.+exams)"))
+      # 1+4回分のAudiogramを表示(残りは表示されないこと)
+      assert_select "tr>td", :text =>\
+        Regexp.new("#{(@examdate+3600*24).strftime("%Y/%m/%d")}"), :count => 1   # stub1
+      assert_select "tr>td", :text =>\
+        Regexp.new("#{(@examdate).strftime("%Y/%m/%d")}"), :count => 4           # stub0
+      assert_select "tr>td>a>img", :count => 5
+    end
+  end
 end
