@@ -167,20 +167,28 @@ describe PatientsController do
     # datatype は今のところ audiogram, impedance, images
     # params は params[:hp_id][:datatype][:examdate][:comment][:data]
 
-    context "datatypeがaudiogramの場合" do
-      before do
-        @valid_hp_id = 19
-        @invalid_hp_id = 18
-	@examdate = Time.now.strftime("%Y:%m:%d-%H:%M:%S")
-	@audiometer = "audiometer"
-	@datatype = "audiogram"
-	@comment = "comment"
-        @raw_audiosample = "7@/          /  080604  //   0   30 ,  10   35 ,  20   40 ,          ,  30   45 ,          ,  40   50 ,          ,  50   55 ,          ,  60   60 ,          , -10   55 ,  -5   55 ,          ,   0   55 ,          ,   5   55 ,          ,  10   55 ,          ,  15   55 ,  4>  4<,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,/P"
- #  125 250 500  1k  2k  4k  8k
- #R   0  10  20  30  40  50  60
- #L  30  35  40  45  50  55  60
-      end
+    before do
+      @valid_hp_id = 19
+      @invalid_hp_id = 18
+      @examdate = Time.now.strftime("%Y:%m:%d-%H:%M:%S")
+      @audiometer = "audiometer"
+      @datatype = "audiogram"
+      @comment = "comment"
+      @raw_audiosample = "7@/          /  080604  //   0   30 ,  10   35 ,  20   40 ,          ,  30   45 ,          ,  40   50 ,          ,  50   55 ,          ,  60   60 ,          , -10   55 ,  -5   55 ,          ,   0   55 ,          ,   5   55 ,          ,  10   55 ,          ,  15   55 ,  4>  4<,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,/P"
+      #  125 250 500  1k  2k  4k  8k
+      #R   0  10  20  30  40  50  60
+      #L  30  35  40  45  50  55  60
+    end
 
+    context "datatypeがない場合" do
+      it "HTTP status code 400を返すこと" do
+        post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
+                              :audiometer => @audiometer, :comment => @comment, :data => @raw_audiosample}
+        response.status.should  be(400)
+      end
+    end
+
+    context "datatypeがaudiogramの場合" do
       it "正しいパラメータの場合、Audiogramのアイテム数が1増えること" do
         expect {
           post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
