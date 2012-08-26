@@ -19,4 +19,8 @@
 # except below
 !/app/assets/images/rails.png
 
+# Ignore temporary pngs in lib/*png made by tests
+/lib/output.png
+/lib/result.png
+
 /SMam-audioserver*
