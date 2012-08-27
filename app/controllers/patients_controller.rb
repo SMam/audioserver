@@ -20,16 +20,6 @@ class PatientsController < ApplicationController
   # GET /patients/1
   # GET /patients/1.json
   def show
-  # --------------------------------------------- これを以下の様に変更するか
-=begin
-    # @patient = Patient.find(params[:id])
-
-    respond_to do |format|
-      format.html {redirect_to "/patients/#{params[:id]}/audiograms"}
-      format.json { render json: @patient }
-    end
-=end
-  # ---------------------------------------------
     @patient = Patient.find(params[:id])
 
     respond_to do |format|
@@ -109,15 +99,20 @@ class PatientsController < ApplicationController
     end
 
     if @patient.save
-      @audiogram = @patient.audiograms.create
-      @audiogram.examdate = Time.local *params[:examdate].split(/:|-/)
-      @audiogram.audiometer = params[:audiometer]
-      @audiogram.comment = params[:comment]
-      @audiogram.manual_input = false
-      if params[:data] && set_data(params[:data])
-        build_graph
-        if @audiogram.save
-          render :nothing => true, :status => 204
+      case params[:datatype]
+      when "audiogram"
+        @audiogram = @patient.audiograms.create
+        @audiogram.examdate = Time.local *params[:examdate].split(/:|-/)
+        @audiogram.audiometer = params[:audiometer]
+        @audiogram.comment = params[:comment]
+        @audiogram.manual_input = false
+        if params[:data] && set_data(params[:data])
+          build_graph
+          if @audiogram.save
+            render :nothing => true, :status => 204
+          else
+            render :nothing => true, :status => 400
+          end
         else
           render :nothing => true, :status => 400
         end
