@@ -18,7 +18,8 @@ class Rs232c
       status = timeout(timelimit) do   # timeout処理
         while ( c = sp.read(1) ) do    # RS-232C in
           stream << c
-          return stream if c[0] == 0x3 # "R"[0] #=> 82 と文字コードがとれる
+          return stream if c.getbyte(0) == 0x3 # "R".getbyte(0) #=> 82 で文字コード取得(ruby19)
+                                               # ruby18 では "R"[0] #=> 82 であった
         end
       end
     rescue Timeout::Error
