@@ -78,8 +78,8 @@ class Bitmap
       dy = y2 - y1
       dot_length = 4
       step = (Math::sqrt ( dx * dx + dy * dy )) / dot_length
-      sx = (dx / step).round
-      sy = (dy / step).round
+      sx = dx / step
+      sy = dy / step
       c = rgb
       x_line_end = y_line_end = false
       x_to = x1
@@ -97,7 +97,7 @@ class Bitmap
           y_to = y2
           y_line_end = true
         end
-        @png.line(x_from,y_from,x_to,y_to,c)
+        @png.line(x_from.round, y_from.round, x_to.round, y_to.round, c)
         c = (c == WHITE)? rgb: WHITE
       end  
     end
