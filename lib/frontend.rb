@@ -276,7 +276,7 @@ class Exam_window
 
   def reset_properties
     @id_entry.text = ""
-    @image = Gtk::Image.new(@blank_png)
+    @image.pixbuf = @blank_png
     @state = "scan"
     @msg_label.set_markup(@markup_msg.show(@state))
     @comment_retry.active = false
