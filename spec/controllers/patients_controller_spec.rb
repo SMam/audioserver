@@ -266,6 +266,34 @@ describe PatientsController do
          }.to change(Audiogram, :count).by(1)
       end
 
+      context "comment内容による @patient.audiogram.commentの変化について" do
+        def direct_create_with_comment(com)
+          @comment = com
+          post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
+                                :audiometer => @audiometer, :datatype => @datatype, \
+                                :comment => @comment, :data => @raw_audiosample}
+          @patient = Patient.last
+	end
+
+        before do
+          Audiogram.all.size.should == 0
+          Patient.all.size.should == 0
+	end
+
+        it "1つのcommentがある場合、それに応じたコメントが記録されること" do
+	  direct_create_with_comment("RETRY_")
+          @patient.audiograms.last.comment.should match(/再検査(RETRY)/)
+	  direct_create_with_comment("MASK_")
+          @patient.audiograms.last.comment.should match(/マスキング変更(MASK)/)
+	  direct_create_with_comment("PATCH_")
+          @patient.audiograms.last.comment.should match(/パッチテスト(PATCH)/)
+	  direct_create_with_comment("MED_")
+          @patient.audiograms.last.comment.should match(/薬剤投与後(MED)/)
+	  direct_create_with_comment("OTHER:幾つかのコメント_")
+          @patient.audiograms.last.comment.should match(/^・幾つかのコメント/)
+        end
+      end
+
       it "examdateが設定されていない場合..." do
         pending "どうしたものかまだ思案中"
       end

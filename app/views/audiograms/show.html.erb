@@ -17,7 +17,7 @@
       <% mean4 = mean("4", @audiogram) %>
       <% mean4R = mean("4R", @audiogram) %>
       <% mean4_match = (mean4 == mean4R) %>
-      <tr><th colspan="2">4分法<%=h "<br>(cut offなし)" if not mean4_match %></th></tr>
+      <tr><th colspan="2">4分法<% if not mean4_match %><br>(cut offなし)<% end %></th></tr>
       <tr><th>Rt:</th><td><%=h mean4[:R] %>
                           <%=h "(#{mean4R[:R]})" if not mean4_match %></td></tr>
       <tr><th>Lt:</th><td><%=h mean4[:L] %>
