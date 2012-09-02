@@ -1,7 +1,10 @@
+#coding: UTF-8
+
 class PatientsController < ApplicationController
   #skip_before_filter :verify_authenticity_token, :only => [:direct_create]
   require 'audio_class.rb'
   require 'id_validation.rb'
+  require 'strscan'
 
   Thumbnail_size = "160x160"
   #Number_of_selection = 2 #Overdraw_times   # for overdrawing of audiograms
@@ -104,7 +107,7 @@ class PatientsController < ApplicationController
         @audiogram = @patient.audiograms.create
         @audiogram.examdate = Time.local *params[:examdate].split(/:|-/)
         @audiogram.audiometer = params[:audiometer]
-        @audiogram.comment = params[:comment]
+        @audiogram.comment = parse_comment(params[:comment])
         @audiogram.manual_input = false
         if params[:data] && set_data(params[:data])
           build_graph
@@ -360,6 +363,29 @@ class PatientsController < ApplicationController
       end
       return "#{base_dir}#{base_name}-#{ver_str}.png"
     end
+  end
+
+  def parse_comment(comment)
+    ss = StringScanner.new(comment)
+    result = String.new
+    until ss.eos? do
+      case
+      when ss.scan(/RETRY_/)
+        result += "再検査(RETRY)/"
+      when ss.scan(/MASK_/)
+        result += "マスキング変更(MASK)/"
+      when ss.scan(/PATCH_/)
+        result += "パッチテスト(PATCH)/"
+      when ss.scan(/MED_/)
+        result += "薬剤投与後(MED)/"
+      when ss.scan(/OTHER:(.*)_/)
+        result += "\n"
+	result += "・#{ss[1]}"
+      else
+	break
+      end
+    end
+    return result
   end
 
   def build_graph

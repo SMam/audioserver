@@ -281,15 +281,24 @@ describe PatientsController do
 	end
 
         it "1つのcommentがある場合、それに応じたコメントが記録されること" do
-	  direct_create_with_comment("RETRY_")
-          @patient.audiograms.last.comment.should match(/再検査(RETRY)/)
-	  direct_create_with_comment("MASK_")
-          @patient.audiograms.last.comment.should match(/マスキング変更(MASK)/)
-	  direct_create_with_comment("PATCH_")
-          @patient.audiograms.last.comment.should match(/パッチテスト(PATCH)/)
-	  direct_create_with_comment("MED_")
-          @patient.audiograms.last.comment.should match(/薬剤投与後(MED)/)
-	  direct_create_with_comment("OTHER:幾つかのコメント_")
+          direct_create_with_comment("RETRY_")
+          @patient.audiograms.last.comment.should =~ /再検査\(RETRY\)/
+          direct_create_with_comment("MASK_")
+          @patient.audiograms.last.comment.should match(/マスキング変更\(MASK\)/)
+          direct_create_with_comment("PATCH_")
+          @patient.audiograms.last.comment.should match(/パッチテスト\(PATCH\)/)
+          direct_create_with_comment("MED_")
+          @patient.audiograms.last.comment.should match(/薬剤投与後\(MED\)/)
+          direct_create_with_comment("OTHER:幾つかのコメント_")
+          @patient.audiograms.last.comment.should match(/^・幾つかのコメント/)
+        end
+
+        it "2つのcommentがある場合、それに応じたコメントが記録されること" do
+	  direct_create_with_comment("RETRY_MASK_")
+          @patient.audiograms.last.comment.should =~ /再検査\(RETRY\)/
+          @patient.audiograms.last.comment.should match(/マスキング変更\(MASK\)/)
+	  direct_create_with_comment("MED_OTHER:幾つかのコメント_")
+          @patient.audiograms.last.comment.should match(/薬剤投与後\(MED\)/)
           @patient.audiograms.last.comment.should match(/^・幾つかのコメント/)
         end
       end
