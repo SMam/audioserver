@@ -27,45 +27,53 @@
       <tr><th>Rt:</th><td><%=h mean("6", @audiogram)[:R] %></td></tr>
       <tr><th>Lt:</th><td><%=h mean("6", @audiogram)[:L] %></td></tr>
       </table>
+</td></tr>
+<tr><th colspan="9">マスキング条件</th> <th>検査コメント</th></tr>
+<tr><th>mode</th> <th>side</th> <th>125Hz</th> <th>250Hz</th> <th>500Hz</th> 
+                                 <th>1kHz</th> <th>2kHz</th> <th>4kHz</th> <th>8kHz</th>
+    <td rowspan="5">
+      <%= form_tag(:controller => "audiograms", :action => "edit_comment") do %>
+        <div class="field">
+          <%= text_field_tag "comment", @audiogram.comment %>
+        </div>
+        <div class="actions">
+          <%= submit_tag("コメント更新") %>
+        </div>  
+      <% end %>
+<%# =h @audiogram.comment %>
     </td></tr>
-<tr><td>
-      <tr><th colspan="9">マスキング条件</th> <th>検査コメント</th></tr>
-      <tr> <th>mode</th> <th>side</th> <th>125Hz</th> <th>250Hz</th> <th>500Hz</th> 
-                            <th>1kHz</th> <th>2kHz</th> <th>4kHz</th> <th>8kHz</th>
-           <td rowspan="5"><%=h @audiogram.comment %></td></tr>
-      <tr><td>Air</td> <td>Rt</td>
-          <td><%=h @audiogram.mask_ac_rt_125.round if @audiogram.mask_ac_rt_125 %></td>
-          <td><%=h @audiogram.mask_ac_rt_250.round if @audiogram.mask_ac_rt_250 %></td>
-          <td><%=h @audiogram.mask_ac_rt_500.round if @audiogram.mask_ac_rt_500 %></td>
-          <td><%=h @audiogram.mask_ac_rt_1k.round if @audiogram.mask_ac_rt_1k %></td>
-          <td><%=h @audiogram.mask_ac_rt_2k.round if @audiogram.mask_ac_rt_2k %></td>
-          <td><%=h @audiogram.mask_ac_rt_4k.round if @audiogram.mask_ac_rt_4k %></td>
-          <td><%=h @audiogram.mask_ac_rt_8k.round if @audiogram.mask_ac_rt_8k %></td></tr>
-      <tr><td></td> <td>Lt</td>
-          <td><%=h @audiogram.mask_ac_lt_125.round if @audiogram.mask_ac_lt_125 %></td>
-          <td><%=h @audiogram.mask_ac_lt_250.round if @audiogram.mask_ac_lt_250 %></td>
-          <td><%=h @audiogram.mask_ac_lt_500.round if @audiogram.mask_ac_lt_500 %></td>
-          <td><%=h @audiogram.mask_ac_lt_1k.round if @audiogram.mask_ac_lt_1k %></td>
-          <td><%=h @audiogram.mask_ac_lt_2k.round if @audiogram.mask_ac_lt_2k %></td>
-          <td><%=h @audiogram.mask_ac_lt_4k.round if @audiogram.mask_ac_lt_4k %></td>
-          <td><%=h @audiogram.mask_ac_lt_8k.round if @audiogram.mask_ac_lt_8k %></td></tr>
-      <tr><td>Bone</td> <td>Rt</td>
-           <td></td>
-           <td><%=h @audiogram.mask_bc_rt_250.round if @audiogram.mask_bc_rt_250 %></td>
-           <td><%=h @audiogram.mask_bc_rt_500.round if @audiogram.mask_bc_rt_500 %></td>
-           <td><%=h @audiogram.mask_bc_rt_1k.round if @audiogram.mask_bc_rt_1k %></td>
-           <td><%=h @audiogram.mask_bc_rt_2k.round if @audiogram.mask_bc_rt_2k %></td>
-           <td><%=h @audiogram.mask_bc_rt_4k.round if @audiogram.mask_bc_rt_4k %></td>
-           <td><%=h @audiogram.mask_bc_rt_8k.round if @audiogram.mask_bc_rt_8k %></td></tr>
-      <tr><td></td> <td>Lt</td>
-           <td></td>
-           <td><%=h @audiogram.mask_bc_lt_250.round if @audiogram.mask_bc_lt_250 %></td>
-           <td><%=h @audiogram.mask_bc_lt_500.round if @audiogram.mask_bc_lt_500 %></td>
-           <td><%=h @audiogram.mask_bc_lt_1k.round if @audiogram.mask_bc_lt_1k %></td>
-           <td><%=h @audiogram.mask_bc_lt_2k.round if @audiogram.mask_bc_lt_2k %></td>
-           <td><%=h @audiogram.mask_bc_lt_4k.round if @audiogram.mask_bc_lt_4k %></td>
-           <td><%=h @audiogram.mask_bc_lt_8k.round if @audiogram.mask_bc_lt_8k %></td></tr>
-    </td>
+<tr><td>Air</td> <td>Rt</td>
+    <td><%=h @audiogram.mask_ac_rt_125.round if @audiogram.mask_ac_rt_125 %></td>
+    <td><%=h @audiogram.mask_ac_rt_250.round if @audiogram.mask_ac_rt_250 %></td>
+    <td><%=h @audiogram.mask_ac_rt_500.round if @audiogram.mask_ac_rt_500 %></td>
+    <td><%=h @audiogram.mask_ac_rt_1k.round if @audiogram.mask_ac_rt_1k %></td>
+    <td><%=h @audiogram.mask_ac_rt_2k.round if @audiogram.mask_ac_rt_2k %></td>
+    <td><%=h @audiogram.mask_ac_rt_4k.round if @audiogram.mask_ac_rt_4k %></td>
+    <td><%=h @audiogram.mask_ac_rt_8k.round if @audiogram.mask_ac_rt_8k %></td></tr>
+<tr><td></td> <td>Lt</td>
+    <td><%=h @audiogram.mask_ac_lt_125.round if @audiogram.mask_ac_lt_125 %></td>
+    <td><%=h @audiogram.mask_ac_lt_250.round if @audiogram.mask_ac_lt_250 %></td>
+    <td><%=h @audiogram.mask_ac_lt_500.round if @audiogram.mask_ac_lt_500 %></td>
+    <td><%=h @audiogram.mask_ac_lt_1k.round if @audiogram.mask_ac_lt_1k %></td>
+    <td><%=h @audiogram.mask_ac_lt_2k.round if @audiogram.mask_ac_lt_2k %></td>
+    <td><%=h @audiogram.mask_ac_lt_4k.round if @audiogram.mask_ac_lt_4k %></td>
+    <td><%=h @audiogram.mask_ac_lt_8k.round if @audiogram.mask_ac_lt_8k %></td></tr>
+<tr><td>Bone</td> <td>Rt</td>
+    <td></td>
+    <td><%=h @audiogram.mask_bc_rt_250.round if @audiogram.mask_bc_rt_250 %></td>
+    <td><%=h @audiogram.mask_bc_rt_500.round if @audiogram.mask_bc_rt_500 %></td>
+    <td><%=h @audiogram.mask_bc_rt_1k.round if @audiogram.mask_bc_rt_1k %></td>
+    <td><%=h @audiogram.mask_bc_rt_2k.round if @audiogram.mask_bc_rt_2k %></td>
+    <td><%=h @audiogram.mask_bc_rt_4k.round if @audiogram.mask_bc_rt_4k %></td>
+    <td><%=h @audiogram.mask_bc_rt_8k.round if @audiogram.mask_bc_rt_8k %></td></tr>
+<tr><td></td> <td>Lt</td>
+    <td></td>
+    <td><%=h @audiogram.mask_bc_lt_250.round if @audiogram.mask_bc_lt_250 %></td>
+    <td><%=h @audiogram.mask_bc_lt_500.round if @audiogram.mask_bc_lt_500 %></td>
+    <td><%=h @audiogram.mask_bc_lt_1k.round if @audiogram.mask_bc_lt_1k %></td>
+    <td><%=h @audiogram.mask_bc_lt_2k.round if @audiogram.mask_bc_lt_2k %></td>
+    <td><%=h @audiogram.mask_bc_lt_4k.round if @audiogram.mask_bc_lt_4k %></td>
+    <td><%=h @audiogram.mask_bc_lt_8k.round if @audiogram.mask_bc_lt_8k %></td></tr>
 </table>
 
 <%=h @audiogram.hospital %>

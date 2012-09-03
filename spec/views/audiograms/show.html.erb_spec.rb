@@ -221,4 +221,19 @@ describe "audiograms/show" do
       rendered.should_not match(/cut off/)            # cut off値表示がある
     end
   end
+
+  context "有効なcommentがある場合" do
+    before(:each) do
+      @audiogram.comment = "再検査(RETRY)/"
+    end
+
+    it "renders attributes in <p>" do
+      render
+      # Run the generator again with the --webrat flag if you want to use webrat matchers
+      rendered.should match(Regexp.new(reg_id(@patient.hp_id)))
+                                                  # hp_idがxxx-xxxx-xx-xで表示されること
+      assert_select "table>tr>td>form input[value=?]", @audiogram.comment
+                                                  # comment内容が form/input内に表示される
+    end
+  end
 end
