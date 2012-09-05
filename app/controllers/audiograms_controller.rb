@@ -93,4 +93,17 @@ class AudiogramsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # PUT /patients/:patient_id/audiograms/1/edit_comment
+  def edit_comment
+    @patient = Patient.find(params[:patient_id])
+    @audiogram = @patient.audiograms.find(params[:id])
+    @audiogram.comment = params[:comment]
+    @audiogram.save
+
+    respond_to do |format|
+      format.html { redirect_to [@patient, @audiogram] }
+      format.json { render json: @audiogram, status: :created, location: @audiogram }
+    end
+  end
 end

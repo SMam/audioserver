@@ -2,7 +2,9 @@ Audioserver::Application.routes.draw do
   resources :examiners
 
   resources :patients do
-    resources :audiograms
+    resources :audiograms do
+      put  'edit_comment', :on => :member
+    end
     post 'direct_create' => 'patients#direct_create', :on => :collection
     get  'by_hp_id/:hp_id' => 'patients#by_hp_id', :on => :collection
   end

@@ -250,4 +250,29 @@ describe AudiogramsController do
     end
   end
 
+  describe "PUT edit_comment" do # /patients/:patient_id/audiograms/:id/edit_comment
+    before do
+      @old_comment = "Old comment"
+      @new_comment = "New comment"
+      audiogram = Audiogram.create! valid_attributes
+      audiogram.comment = @old_comment
+      audiogram.save
+      @patient.audiograms << audiogram
+      @audiogram = @patient.audiograms.first
+    end
+
+    it "commentを更新できること" do
+      @patient.audiograms.length.should == 1
+      @audiogram.comment.should == @old_comment
+      put :edit_comment, {:patient_id => @patient.to_param, :id => @audiogram.to_param, \
+	                  :comment => @new_comment}, valid_session
+      @audiogram.reload.comment.should == @new_comment
+    end
+
+    it "redirects to show the audiogram" do
+      put :edit_comment, {:patient_id => @patient.to_param, :id => @audiogram.to_param, \
+	                  :comment => @new_comment}, valid_session
+      response.should redirect_to(patient_audiogram_url)
+    end
+  end
 end
