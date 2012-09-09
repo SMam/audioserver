@@ -85,49 +85,6 @@ class PatientsController < ApplicationController
     end
   end
 
-=begin
-  # POST /direct_create
-  # create audiogram directly from http request
-  # データなどはmultipart/form-dataの形式で送信する
-  def direct_create
-    hp_id = valid_id?(params[:hp_id]) || "invalid_id"
-    if not @patient = Patient.find_by_hp_id(hp_id)
-      @patient = Patient.new
-      @patient.hp_id = hp_id
-    end
-
-    if @patient.save
-      case params[:datatype]
-      when "audiogram"
-        @audiogram = @patient.audiograms.create
-        @audiogram.examdate = Time.local *params[:examdate].split(/:|-/)
-        @audiogram.audiometer = params[:audiometer]
-        @audiogram.comment = parse_comment(params[:comment])
-        @audiogram.manual_input = false
-        if params[:data] && set_data(params[:data])
-          build_graph
-          if @audiogram.save
-            render :nothing => true, :status => 204
-          else
-            render :nothing => true, :status => 400
-          end
-        else
-          render :nothing => true, :status => 400
-        end
-      else
-        render :nothing => true, :status => 400
-      end
-    else
-      render :nothing => true, :status => 400
-    end
-
-#    respond_to do |format|
-#      format.html { redirect_to patients_url }
-#      format.json { head :no_content }
-#    end
-  end
-=end
-
   # GET /by_hp_id/:hp_id
   # get index by hp_id
   def by_hp_id

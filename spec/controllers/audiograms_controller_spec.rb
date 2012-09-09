@@ -254,7 +254,7 @@ describe AudiogramsController do
         request.env['HTTP_AUTHORIZATION'] = @right_auth
       end
 
-      it "destreys the requested audiogram" do
+      it "destroys the requested audiogram" do
         expect {
           delete :destroy, {:patient_id => @patient.to_param, :id => @audiogram.to_param},\
             valid_session
@@ -353,7 +353,7 @@ describe AudiogramsController do
         response.status.should  be(400)
       end
 
-      it "hp_idが存在しないものの場合、Patientのアイテム数が1増えること" do
+      it "hp_idが存在しないものの場合、新たにPatientのインスタンスを作る(Patientのアイテム数が1増える)こと" do
         if patient_to_delete = Patient.find_by_hp_id(@valid_hp_id)
           patient_to_delete.destroy
         end
@@ -364,7 +364,7 @@ describe AudiogramsController do
         }.to change(Patient, :count).by(1)
       end
 
-      it "hp_idが存在しないものの場合、Audiogramのアイテム数が1増えること" do
+      it "hp_idが存在しないものの場合、(新たにPatientを作成し) Audiogramのアイテム数が1増えること" do
         if patient_to_delete = Patient.find_by_hp_id(@valid_hp_id)
           patient_to_delete.destroy
         end
