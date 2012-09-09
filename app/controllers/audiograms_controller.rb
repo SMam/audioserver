@@ -1,5 +1,6 @@
 # coding: UTF-8
 class AudiogramsController < ApplicationController
+  require 'audio_class.rb'
 
   USERNAME = "audioadmin"
   PASSWORD = "audioadmin"
@@ -393,5 +394,45 @@ class AudiogramsController < ApplicationController
                                    ra_mask, la_mask, rb_mask, lb_mask)
   end
 
+# 以下はまだ使用するかどうか分からない. 重ね書きに関する関数
+
+  def build_overdrawn_graph(audiogram, *pre_audiograms) ###########################みてない
+    # recieve undefined(不定長) data with *pre_audiogram
+    a = Audio.new(convert_to_audiodata(audiogram))
+    p_as = Array.new     # (p)re(_a)udiogram(s) ???? p_as
+    pre_audiograms.each do |pre_audiogram|
+      p_as << convert_to_audiodata(pre_audiogram)
+    end
+    a.predraw(p_as)
+    a.draw
+    buf = a.to_graph_string
+    tmp_file = "public/images/#{Rails.env}/graphs/tmp.ppm"
+    tmp_file_png = "public/images/#{Rails.env}/graphs/tmp.png"
+    File.open(tmp_file, "wb") do |f|                       # write temporally as ppm-file
+      f.puts buf
+    end
+    system("convert #{tmp_file} #{tmp_file_png}")   # convert with ImageMagick
+  end
+
+  def select_recent_audiograms(params) # from newer data to older ###############みてない
+    audiograms = Array.new
+    if params[:selected]
+      for id in params[:selected]
+        audiograms << Audiogram.find(id.to_i)
+      end
+      n = audiograms.length
+      limit_n = Number_of_selection
+
+      if n > (limit_n-1)
+        audiograms.sort! do |s1, s2|
+          s2.examdate <=> s1.examdate
+        end
+        for i in limit_n..(n-1)
+          audiograms.delete_at(limit_n)
+        end
+      end
+    end
+    return audiograms
+  end
 
 end
