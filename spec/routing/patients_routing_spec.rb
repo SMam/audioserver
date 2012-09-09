@@ -31,10 +31,6 @@ describe PatientsController do
       delete("/patients/1").should route_to("patients#destroy", :id => "1")
     end
 
-    it "routes to #direct_create" do
-      post("/patients/direct_create").should route_to("patients#direct_create")
-    end
-
     it "routes to #by_hp_id" do
       get("/patients/by_hp_id/1").should route_to("patients#by_hp_id", :hp_id => "1")
     end

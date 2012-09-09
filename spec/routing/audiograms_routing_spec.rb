@@ -32,5 +32,9 @@ describe AudiogramsController do
       delete("/patients/1/audiograms/2").should route_to("audiograms#destroy", :patient_id => "1", :id => "2")
     end
 
+    it "routes to #direct_create" do
+      post("/audiograms/direct_create").should route_to("audiograms#direct_create")
+    end
+
   end
 end
