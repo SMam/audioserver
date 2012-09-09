@@ -8,7 +8,7 @@ require './com_RS232C_AA79S'
 require './audio_class'
 
 SERVER_IP = '127.0.0.1' #SERVER_IP = '172.16.41.20' #SERVER_IP = '192.168.1.6'
-SERVER_URI = "http://#{SERVER_IP}:3000/patients/direct_create/"
+SERVER_URI = "http://#{SERVER_IP}:3000/audiograms/direct_create/"
 AUDIOMETER = "AA-79S"
 
 if defined? Rails
