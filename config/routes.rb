@@ -5,8 +5,12 @@ Audioserver::Application.routes.draw do
     resources :audiograms do
       put  'edit_comment', :on => :member
     end
-    post 'direct_create' => 'patients#direct_create', :on => :collection
+#    post 'direct_create' => 'patients#direct_create', :on => :collection
     get  'by_hp_id/:hp_id' => 'patients#by_hp_id', :on => :collection
+  end
+
+  resources :audiograms, :only => 'direct_create'  do
+    post 'direct_create', :on => :collection
   end
 
   get  'audiograms/index_of_id/:hp_id' => 'patients#by_hp_id'

@@ -52,7 +52,6 @@ describe AudiogramsController do
 
   describe "GET show" do
     before do
-      require "#{Rails.root}/app/controllers/patients_controller"
       @audiogram = Audiogram.create! valid_attributes
       @audiogram.examdate = Time.now
       exam_year = @audiogram.examdate.strftime("%Y")
@@ -272,7 +271,6 @@ describe AudiogramsController do
     end
   end
 
-#-------------------------------------------------
   describe "POST direct_create" do
     # POST /audiograms/direct_create
     # params は params[:hp_id][:datatype][:examdate][:audiometer][:comment][:data]
@@ -378,17 +376,16 @@ describe AudiogramsController do
       end
 
       context "comment内容による @patient.audiogram.commentの変化について" do
-        def direct_create_with_comment(com)
-          @comment = com
-          post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
-                                :audiometer => @audiometer, :datatype => @datatype, \
-                                :comment => @comment, :data => @raw_audiosample}
-          @patient = Patient.last
-        end
-
         before do
-          Audiogram.all.size.should == 0
-          Patient.all.size.should == 0
+          @patient.hp_id = valid_id?(@patient.hp_id)
+	  @patient.save
+	end
+
+        def direct_create_with_comment(com)
+          post :direct_create, {:hp_id => @patient.hp_id, :examdate => @examdate, \
+                                :audiometer => @audiometer, :datatype => @datatype, \
+                                :comment => com, :data => @raw_audiosample}
+          @patient.reload
         end
 
         it "1つのcommentがある場合、それに応じたコメントが記録されること" do
@@ -420,12 +417,6 @@ describe AudiogramsController do
 
     end
   end
-
-#-------------------------------------------------
-
-
-
-
 
   describe "PUT edit_comment" do # /patients/:patient_id/audiograms/:id/edit_comment
     before do
