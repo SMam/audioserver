@@ -17,7 +17,7 @@
     <!-- cycle は周期的に繰り返す文字列を出力する -->
     <td><%#= check_box_tag "selected[]", audiogram.id %><br><a href="#search" %>▼</a></td>
     <td><%= audiogram.examdate.strftime("%Y/%m/%d") %><br><%= audiogram.examdate.strftime("%X") %></td>
-    <td><%= link_to(image_tag(audiogram.image_location.sub("graphs", "thumbnails")),\
+    <td><%= link_to(image_tag("images/"+audiogram.image_location.sub("graphs", "thumbnails")),\
       :action => "show", :id => audiogram.id )%></td>
     <td>R: <%= mean("4R", audiogram)[:R] %><br>L: <%= mean("4R", audiogram)[:L] %></td>
       <!-- helper method is put at app/helpers/audiograms_helper.rb -->

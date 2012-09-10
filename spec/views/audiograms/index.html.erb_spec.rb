@@ -32,7 +32,7 @@ describe "audiograms/index" do
     assert_select "tr>td", :text => Regexp.new("L:.+#{mean("4R", @audiogram_stub)[:L]}"),\
       :count => 2
     assert_select "tr>td>a>img", :count => 2
-    thumb_location = "assets/#{@audiogram_stub.image_location.sub("graphs", "thumbnails")}"
+    thumb_location = "assets/images/#{@audiogram_stub.image_location.sub("graphs", "thumbnails")}"
     rendered.should =~ Regexp.new("#{thumb_location}.+#{thumb_location}", Regexp::MULTILINE)
     assert_select "tr>td", :text => "Comment".to_s, :count => 2
   end
