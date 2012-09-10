@@ -55,15 +55,19 @@ describe AudiogramsController do
       @audiogram = Audiogram.create! valid_attributes
       @audiogram.examdate = Time.now
       exam_year = @audiogram.examdate.strftime("%Y")
-      base_dir = "#{Rails.env}/graphs/#{exam_year}/"
-      @audiogram.image_location = "#{base_dir}#{@audiogram.examdate.strftime("%Y%m%d-%H%M%S")}.png"
+      base_dir = "#{Rails.env}/graphs/#{exam_year}"
+      @audiogram.image_location = "#{base_dir}/#{@audiogram.examdate.strftime("%Y%m%d-%H%M%S")}.png"
       image_root = "app/assets/images"
       image_dir = "#{Rails.root}/#{image_root}/#{Rails.env}/graphs/#{exam_year}" 
       @image_file = "#{Rails.root}/#{image_root}/#{@audiogram.image_location}"
-      Dir::mkdir(image_dir) if not File.exist?(image_dir)
+      Dir::mkdir("#{Rails.root}/#{image_root}/#{Rails.env}")\
+        if not File.exists?("#{Rails.root}/#{image_root}/#{Rails.env}") 
+      Dir::mkdir("#{Rails.root}/#{image_root}/#{Rails.env}/graphs")\
+        if not File.exists?("#{Rails.root}/#{image_root}/#{Rails.env}/graphs") 
+      Dir::mkdir(image_dir) if not File.exists?(image_dir)
       File::delete(@image_file) if File.exist?(@image_file)
       File::open(@image_file, "w") do |f|
-        f.puts " "
+        f.write (@test_str = "test_string")
       end
       @patient.audiograms << @audiogram
     end
@@ -73,8 +77,18 @@ describe AudiogramsController do
       assigns(:audiogram).should eq(@audiogram)
     end
 
+    it "聴検の画像が保存されている場合、画像が更新されないこと" do
+      get :show, {:patient_id => @patient.to_param, :id => @audiogram.to_param}, valid_session
+      content = String.new
+      File::open(@image_file) do |f|
+        content = f.read
+      end
+      content.should == @test_str
+    end
+
     it "聴検の画像が保存されていない場合、画像を作成すること" do
       File::delete(@image_file) if File.exist?(@image_file)
+      File.exist?(@image_file).should_not be_true
       get :show, {:patient_id => @patient.to_param, :id => @audiogram.to_param}, valid_session
       File.exist?(@image_file).should be_true
     end
