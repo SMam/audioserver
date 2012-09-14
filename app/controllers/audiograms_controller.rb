@@ -291,6 +291,7 @@ class AudiogramsController < ApplicationController
     base_dir = "#{Rails.env}/graphs/#{exam_year}/"
     @audiogram.image_location = make_filename(base_dir, \
                                 @audiogram.examdate.strftime("%Y%m%d-%H%M%S"))
+    @audiogram.save
     thumbnail_location = @audiogram.image_location.sub("graphs", "thumbnails")
     create_dir_if_not_exist("#{Image_root}/#{Rails.env}")
     create_dir_if_not_exist("#{Image_root}/#{Rails.env}/graphs")

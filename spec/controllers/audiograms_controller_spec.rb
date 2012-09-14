@@ -87,10 +87,13 @@ describe AudiogramsController do
     end
 
     it "聴検の画像が保存されていない場合、画像を作成すること" do
-      File::delete(@image_file) if File.exist?(@image_file)
-      File.exist?(@image_file).should_not be_true
+      @audiogram.image_location = "DummyImageLocation"
+      @audiogram.save
+      @audiogram.image_location.should == "DummyImageLocation"
       get :show, {:patient_id => @patient.to_param, :id => @audiogram.to_param}, valid_session
       File.exist?(@image_file).should be_true
+      @audiogram.reload
+      @audiogram.image_location.should_not == "DummyImageLocation"
     end
   end
 
