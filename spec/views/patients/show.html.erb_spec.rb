@@ -79,7 +79,7 @@ describe "patients/show" do
       assert_select "tr>td", :text => Regexp.new("L:.+#{mean("4R", @audiogram_stub0)[:L]}"),\
         :count => 3
       assert_select "tr>td>a>img", :count => 3
-      thumb_location = "assets/images/#{@audiogram_stub0.image_location.sub("graphs", "thumbnails")}"
+      thumb_location = "assets/#{@audiogram_stub0.image_location.sub("graphs", "thumbnails")}"
       rendered.should =~ Regexp.new("#{thumb_location}.+#{thumb_location}", Regexp::MULTILINE)
       # 最新のAudiogramが最初に表示されること
       assert_select "tr>td#recent0", :text =>\

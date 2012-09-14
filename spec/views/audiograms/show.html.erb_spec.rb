@@ -68,7 +68,7 @@ describe "audiograms/show" do
       rendered.should match(Regexp.new(reg_id(@patient.hp_id)))
                                                   # hp_idがxxx-xxxx-xx-xで表示されること
       rendered.should match(/\+0900/)             # 検査時刻がJSTで表示されること
-      rendered.should =~ Regexp.new("assets/images/#{@audiogram.image_location}")
+      rendered.should =~ Regexp.new("assets/#{@audiogram.image_location}")
       rendered.should match(/Comment/)
       rendered.should match(Regexp.new(mean("3", @audiogram)[:R].to_s)) # 3分法が表示される
       rendered.should match(Regexp.new(mean("3", @audiogram)[:L].to_s))

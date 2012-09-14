@@ -18,7 +18,7 @@
     </tr>
     <tr>
       <% recent.each do |a| %>
-        <td><%= link_to(image_tag("images/"+a.image_location.sub("graphs", "thumbnails")),\
+        <td><%= link_to(image_tag(a.image_location.sub("graphs", "thumbnails")),\
 	        :controller => "audiograms", :action => "show",\
 		:patient_id => @patient.to_param, :id => a.id )%></td>
       <% end %>
