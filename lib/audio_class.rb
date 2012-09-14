@@ -88,11 +88,11 @@ class Bitmap
       until x_line_end && y_line_end do
         x_from = x_to
         y_from = y_to
-        if (x_to = x_from+sx) > x2  # x_from + sx が x_to を越えないように
+        if (x_to = x_from+sx) >= x2  # x_from + sx が x_to を越えないように
           x_to = x2
           x_line_end = true
         end
-        if (y_to = y_from+sy)*sign_modifier > y2*sign_modifier 
+        if (y_to = y_from+sy)*sign_modifier >= y2*sign_modifier 
 	                            # y_from + sy が y_to を越えないように(符号補正つき)
           y_to = y2
           y_line_end = true

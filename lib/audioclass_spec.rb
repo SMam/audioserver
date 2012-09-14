@@ -18,6 +18,11 @@ cooked_sample = {:ra => ["0","10","20","30","40","50","60"],\
                  :rm => ["b0","b10","b20","b30","b40","b50","b60"],\
                  :lm => ["w1","w11","w21","w31","w41","w51","w61"]}
 cs = cooked_sample # 長いのでエイリアス
+cooked_sample2 = {:ra => ["0","0","0","0","0","0","0"],\
+                 :la => ["0","0","0","0","0","0","0"],\
+                 :rm => ["b0","b0","b0","b0","b0","b0","b0"],\
+                 :lm => ["b0","b0","b0","b0","b0","b0","b0"]}
+cs2 = cooked_sample2 # 長いのでエイリアス
 # cooked sample usage
 #   d = Audiodata.new("cooked", ra,la,ra,la,rm,lm,lm,rm)
 #   a = Audio.new(d)
@@ -139,6 +144,19 @@ describe Audio do
     it 'reg_mean4(正規化したもの)の出力が正しいこと' do
       @a.reg_mean4[:rt].should == 30.0
       @a.reg_mean4[:lt].should == 47.0
+    end
+  end
+
+  context 'Audioを隣り合った周波数で同じ値を持つcooked dataで作成した場合' do
+    before do
+      @a = Audio.new(Audiodata.new("cooked", \
+                                  cs2[:ra],cs2[:la],cs2[:ra],cs2[:la],\
+				  cs2[:rm],cs2[:lm],cs2[:lm],cs2[:rm]))
+      @a.draw(@output_file)
+    end
+
+    it 'ファイル出力されること' do
+      File::exists?(@output_file).should be_true
     end
   end
 end
