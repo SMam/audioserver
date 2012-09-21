@@ -28,7 +28,7 @@ class Audiodata
           case d[:data][i].class.to_s
           when "Hash"                        # Hash なら {:data, :scaleout} のデータ形式
             if d[:data][i][:data].class.to_s == "Fixnum"
-              d[:data][i][:data] = d[:data][i][:data].prec_f
+              d[:data][i][:data] = d[:data][i][:data].to_f
             end
             if d[:data][i][:data].class.to_s == "Float"
               if d[:data][i][:scaleout] == nil or d[:data][i][:scaleout] == false
