@@ -40,6 +40,8 @@ class DBConverter
   end
 
   def remake_audiograms
+    n=0
+    nn = @db.execute( "SELECT COUNT(id) FROM audiograms" )
     @db.execute( "select #{audiogram_items} from audiograms" ) do |r|
       ra = Array.new; la = Array.new; rb = Array.new; lb = Array.new
       for i in 5..11 do
@@ -58,9 +60,16 @@ class DBConverter
       end 
       audiogram = Audio.new(Audiodata.new("cooked", ra,la,rb,lb))
       output_file = "#{App_assets_img_location}/#{r[4]}"
+      output_dir = File::dirname(output_file)
+      FileUtils.mkdir_p(output_dir) if not File.exists?(output_dir)
+      thumb_dir = output_dir.sub("graphs","thumbnails")
+      FileUtils.mkdir_p(thumb_dir) if not File.exists?(thumb_dir)
       audiogram.draw(output_file)
       thumb_size = "160x160"
       system("convert -geometry #{thumb_size} #{output_file} #{output_file.sub("graphs", "thumbnails")}")
+
+      n+=1
+      puts "#{n}/#{nn}"
     end
   end
 
@@ -137,9 +146,9 @@ if ($0 == __FILE__)
     env = "development"
   end
   db_file = "../db/#{env}.sqlite3"
-  dest = "#{db_file}.bak"
+  dest = "#{db_file}.converted"
   FileUtils.cp(db_file, dest)
 
-  db = SQLite3::Database.new(db_file)
-  DBConverter.new(db, "production").convert
+  db = SQLite3::Database.new(dest)
+  DBConverter.new(db, env).execute
 end
