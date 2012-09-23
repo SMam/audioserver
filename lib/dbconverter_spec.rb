@@ -55,6 +55,13 @@ describe DBConverter do
 		'f', 'f', 'f', 'f', 'f', 'f')")
   end
 
+  describe "DBConverter#adjust_minus9" do
+    it "正しく9時間前の時刻を返すことができる" do
+      date_str = "2012-09-05 03:45:30.272610"
+      DBConverter.new(@db, "test").adjust_minus9(date_str).should match /2012-09-04 18:45:30.272610/
+    end
+  end
+
   describe "DBConverter#convert" do
     it 'convert the table PATIENTS' do
       DBConverter.new(@db, "test").convert
@@ -71,7 +78,8 @@ describe DBConverter do
         r[3].should match /2012-09-20 00:.0:20.+/
       end
       @db.execute("select image_location from audiograms") do |r|
-        r[0].should match /test\/graphs\/2012\/20120920-00.0.0.+png/
+        r[0].should match /test\/graphs\/2012\/20120920-09.0.0.+png/
+	# pngファイル名はlocal(+0900)なので、20120920-09.0.0となるべき
       end
     end
   end
@@ -84,9 +92,10 @@ describe DBConverter do
           File::delete(f) if File::ftype(f) == "file"
         end
       end
-      @graphfile1 = "#{App_assets_img_location}/#{@env}/graphs/2012/20120920-000000.png"
-      @graphfile2 = "#{App_assets_img_location}/#{@env}/graphs/2012/20120920-001000.png"
-      @graphfile3 = "#{App_assets_img_location}/#{@env}/graphs/2012/20120920-002000.png"
+      @graphfile1 = "#{App_assets_img_location}/#{@env}/graphs/2012/20120920-090000.png"
+      @graphfile2 = "#{App_assets_img_location}/#{@env}/graphs/2012/20120920-091000.png"
+      @graphfile3 = "#{App_assets_img_location}/#{@env}/graphs/2012/20120920-092000.png"
+	# pngファイル名はlocal(+0900)なので、20120920-09.0.0となるべき
       @thumbfile1 = @graphfile1.sub("graphs", "thumbnails")
       @thumbfile2 = @graphfile2.sub("graphs", "thumbnails")
       @thumbfile3 = @graphfile3.sub("graphs", "thumbnails")

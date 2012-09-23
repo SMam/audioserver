@@ -41,7 +41,7 @@ class DBConverter
 
   def remake_audiograms
     n=0
-    nn = @db.execute( "SELECT COUNT(id) FROM audiograms" )
+    nn = @db.execute( "SELECT COUNT(id) FROM audiograms" )[0][0]
     @db.execute( "select #{audiogram_items} from audiograms" ) do |r|
       ra = Array.new; la = Array.new; rb = Array.new; lb = Array.new
       for i in 5..11 do
@@ -73,7 +73,6 @@ class DBConverter
     end
   end
 
-  private
   def adjust_minus9(date_str) # style: e.g. "2012-09-05 03:45:30.272610"
     if /(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+).(\d+)/ =~ date_str
       t = Time.utc($1,$2,$3,$4,$5,$6,$7)
@@ -89,6 +88,7 @@ class DBConverter
     if /(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+).(\d+)/ =~ date_str
       t = Time.utc($1,$2,$3,$4,$5,$6,$7)
     end 
+    t = t.getlocal
     exam_year = t.strftime("%Y")
     base_dir = "#{@env}/graphs/#{exam_year}/"
     return make_filename(base_dir, t.strftime("%Y%m%d-%H%M%S"))
@@ -145,10 +145,14 @@ if ($0 == __FILE__)
   else
     env = "development"
   end
-  db_file = "../db/#{env}.sqlite3"
-  dest = "#{db_file}.converted"
-  FileUtils.cp(db_file, dest)
+  if not File.exists?("../app/assets/images/#{env}")
+    db_file = "../db/#{env}.sqlite3"
+    dest = "#{db_file}.converted"
+    FileUtils.cp(db_file, dest)
 
-  db = SQLite3::Database.new(dest)
-  DBConverter.new(db, env).execute
+    db = SQLite3::Database.new(dest)
+    DBConverter.new(db, env).execute
+  else
+    puts "As app/assets/images/#{env}/ exists, the operation is canceled."
+  end
 end
