@@ -79,7 +79,7 @@ describe DBConverter do
       end
       @db.execute("select image_location from audiograms") do |r|
         r[0].should match /test\/graphs\/2012\/20120920-09.0.0.+png/
-	# pngファイル名はlocal(+0900)なので、20120920-09.0.0となるべき
+        # pngファイル名はlocal(+0900)なので、20120920-09.0.0となるべき
       end
     end
   end
@@ -95,7 +95,7 @@ describe DBConverter do
       @graphfile1 = "#{App_assets_img_location}/#{@env}/graphs/2012/20120920-090000.png"
       @graphfile2 = "#{App_assets_img_location}/#{@env}/graphs/2012/20120920-091000.png"
       @graphfile3 = "#{App_assets_img_location}/#{@env}/graphs/2012/20120920-092000.png"
-	# pngファイル名はlocal(+0900)なので、20120920-09.0.0となるべき
+        # pngファイル名はlocal(+0900)なので、20120920-09.0.0となるべき
       @thumbfile1 = @graphfile1.sub("graphs", "thumbnails")
       @thumbfile2 = @graphfile2.sub("graphs", "thumbnails")
       @thumbfile3 = @graphfile3.sub("graphs", "thumbnails")

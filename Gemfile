@@ -48,5 +48,5 @@ group :test do
   gem "factory_girl_rails", "~> 3.4.0"
 end
 
-gem "gtk2", ">= 1.0.0"
+#gem "gtk2", ">= 1.0.0"
 gem "serialport", ">= 1.0.4"
