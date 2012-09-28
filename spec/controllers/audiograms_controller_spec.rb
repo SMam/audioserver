@@ -323,6 +323,13 @@ describe AudiogramsController do
         }.to change(Audiogram, :count).by(1)
       end
 
+      it "正しいパラメータの場合、maskingのデータが取得されること" do
+        post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
+                              :audiometer => @audiometer, :datatype => @datatype, \
+                              :comment => @comment, :data => @raw_audiosample}
+        assigns(:audiogram).mask_ac_rt_125.should_not be_nil
+      end
+
       it "正しいパラメータの場合、HTTP status code 204を返すこと" do
         post :direct_create, {:hp_id => @valid_hp_id, :examdate => @examdate, \
                               :audiometer => @audiometer, :datatype => @datatype, \

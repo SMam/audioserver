@@ -227,60 +227,60 @@ class AudiogramsController < ApplicationController
       lb_so[1], lb_so[2], lb_so[3], lb_so[4], lb_so[5], lb_so[6]
 
     #  Air-Rt, data type of :mask is Array, data-order: mask_type, mask_level
-    a.mask_ac_rt_125 = d[:ra][:mask][0][1].prec_f rescue nil    # Air-rt
+    a.mask_ac_rt_125 = d[:ra][:mask][0][1].to_f rescue nil    # Air-rt
     a.mask_ac_rt_125_type = d[:ra][:mask][0][0] rescue nil
-    a.mask_ac_rt_250 = d[:ra][:mask][1][1].prec_f rescue nil
+    a.mask_ac_rt_250 = d[:ra][:mask][1][1].to_f rescue nil
     a.mask_ac_rt_250_type = d[:ra][:mask][1][0] rescue nil
-    a.mask_ac_rt_500 = d[:ra][:mask][2][1].prec_f rescue nil
+    a.mask_ac_rt_500 = d[:ra][:mask][2][1].to_f rescue nil
     a.mask_ac_rt_500_type = d[:ra][:mask][2][0] rescue nil
-    a.mask_ac_rt_1k = d[:ra][:mask][3][1].prec_f rescue nil
+    a.mask_ac_rt_1k = d[:ra][:mask][3][1].to_f rescue nil
     a.mask_ac_rt_1k_type = d[:ra][:mask][3][0] rescue nil
-    a.mask_ac_rt_2k = d[:ra][:mask][4][1].prec_f rescue nil
+    a.mask_ac_rt_2k = d[:ra][:mask][4][1].to_f rescue nil
     a.mask_ac_rt_2k_type = d[:ra][:mask][4][0] rescue nil
-    a.mask_ac_rt_4k = d[:ra][:mask][5][1].prec_f rescue nil
+    a.mask_ac_rt_4k = d[:ra][:mask][5][1].to_f rescue nil
     a.mask_ac_rt_4k_type = d[:ra][:mask][5][0] rescue nil
-    a.mask_ac_rt_8k = d[:ra][:mask][6][1].prec_f rescue nil
+    a.mask_ac_rt_8k = d[:ra][:mask][6][1].to_f rescue nil
     a.mask_ac_rt_8k_type = d[:ra][:mask][6][0] rescue nil
 
-    a.mask_ac_lt_125 = d[:la][:mask][0][1].prec_f rescue nil    #  Air-Lt
+    a.mask_ac_lt_125 = d[:la][:mask][0][1].to_f rescue nil    #  Air-Lt
     a.mask_ac_lt_125_type = d[:la][:mask][0][0] rescue nil
-    a.mask_ac_lt_250 = d[:la][:mask][1][1].prec_f rescue nil
+    a.mask_ac_lt_250 = d[:la][:mask][1][1].to_f rescue nil
     a.mask_ac_lt_250_type = d[:la][:mask][1][0] rescue nil
-    a.mask_ac_lt_500 = d[:la][:mask][2][1].prec_f rescue nil
+    a.mask_ac_lt_500 = d[:la][:mask][2][1].to_f rescue nil
     a.mask_ac_lt_500_type = d[:la][:mask][2][0] rescue nil
-    a.mask_ac_lt_1k = d[:la][:mask][3][1].prec_f rescue nil
+    a.mask_ac_lt_1k = d[:la][:mask][3][1].to_f rescue nil
     a.mask_ac_lt_1k_type = d[:la][:mask][3][0] rescue nil
-    a.mask_ac_lt_2k = d[:la][:mask][4][1].prec_f rescue nil
+    a.mask_ac_lt_2k = d[:la][:mask][4][1].to_f rescue nil
     a.mask_ac_lt_2k_type = d[:la][:mask][4][0] rescue nil
-    a.mask_ac_lt_4k = d[:la][:mask][5][1].prec_f rescue nil
+    a.mask_ac_lt_4k = d[:la][:mask][5][1].to_f rescue nil
     a.mask_ac_lt_4k_type = d[:la][:mask][5][0] rescue nil
-    a.mask_ac_lt_8k = d[:la][:mask][6][1].prec_f rescue nil
+    a.mask_ac_lt_8k = d[:la][:mask][6][1].to_f rescue nil
     a.mask_ac_lt_8k_type = d[:la][:mask][6][0] rescue nil
 
-    a.mask_bc_rt_250 = d[:rb][:mask][1][1].prec_f rescue nil    #  Bone-Rt
+    a.mask_bc_rt_250 = d[:rb][:mask][1][1].to_f rescue nil    #  Bone-Rt
     a.mask_bc_rt_250_type = d[:rb][:mask][1][0] rescue nil
-    a.mask_bc_rt_500 = d[:rb][:mask][2][1].prec_f rescue nil
+    a.mask_bc_rt_500 = d[:rb][:mask][2][1].to_f rescue nil
     a.mask_bc_rt_500_type = d[:rb][:mask][2][0] rescue nil
-    a.mask_bc_rt_1k = d[:rb][:mask][3][1].prec_f rescue nil
+    a.mask_bc_rt_1k = d[:rb][:mask][3][1].to_f rescue nil
     a.mask_bc_rt_1k_type = d[:rb][:mask][3][0] rescue nil
-    a.mask_bc_rt_2k = d[:rb][:mask][4][1].prec_f rescue nil
+    a.mask_bc_rt_2k = d[:rb][:mask][4][1].to_f rescue nil
     a.mask_bc_rt_2k_type = d[:rb][:mask][4][0] rescue nil
-    a.mask_bc_rt_4k = d[:rb][:mask][5][1].prec_f rescue nil
+    a.mask_bc_rt_4k = d[:rb][:mask][5][1].to_f rescue nil
     a.mask_bc_rt_4k_type = d[:rb][:mask][5][0] rescue nil
-    a.mask_bc_rt_8k = d[:rb][:mask][6][1].prec_f rescue nil
+    a.mask_bc_rt_8k = d[:rb][:mask][6][1].to_f rescue nil
     a.mask_bc_rt_8k_type = d[:rb][:mask][6][0] rescue nil
 
-    a.mask_bc_lt_250 = d[:lb][:mask][1][1].prec_f rescue nil    #  Bone-Lt
+    a.mask_bc_lt_250 = d[:lb][:mask][1][1].to_f rescue nil    #  Bone-Lt
     a.mask_bc_lt_250_type = d[:lb][:mask][1][0] rescue nil
-    a.mask_bc_lt_500 = d[:lb][:mask][2][1].prec_f rescue nil
+    a.mask_bc_lt_500 = d[:lb][:mask][2][1].to_f rescue nil
     a.mask_bc_lt_500_type = d[:lb][:mask][2][0] rescue nil
-    a.mask_bc_lt_1k = d[:lb][:mask][3][1].prec_f rescue nil
+    a.mask_bc_lt_1k = d[:lb][:mask][3][1].to_f rescue nil
     a.mask_bc_lt_1k_type = d[:lb][:mask][3][0] rescue nil
-    a.mask_bc_lt_2k = d[:lb][:mask][4][1].prec_f rescue nil
+    a.mask_bc_lt_2k = d[:lb][:mask][4][1].to_f rescue nil
     a.mask_bc_lt_2k_type = d[:lb][:mask][4][0] rescue nil
-    a.mask_bc_lt_4k = d[:lb][:mask][5][1].prec_f rescue nil
+    a.mask_bc_lt_4k = d[:lb][:mask][5][1].to_f rescue nil
     a.mask_bc_lt_4k_type = d[:lb][:mask][5][0] rescue nil
-    a.mask_bc_lt_8k = d[:lb][:mask][6][1].prec_f rescue nil
+    a.mask_bc_lt_8k = d[:lb][:mask][6][1].to_f rescue nil
     a.mask_bc_lt_8k_type = d[:lb][:mask][6][0] rescue nil
 
     return a
