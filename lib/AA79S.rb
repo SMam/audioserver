@@ -216,31 +216,31 @@ puts "BCC error"
     scaleouts = Array.new
     for i in 0..2
       data = exam_data[offset+i*11..offset+4+i*11]
-      if /\(\s*((?:-|)\d+)\s*\)/ =~ data # カッコを伴う数字(負数も可)であれば
-        results << ($1.to_i + 0.0)
-        scaleouts << true
-      elsif /((?:-|)\d+)/ =~ data # 数字(負数も可)だけであれば
-        results << ($1.to_i + 0.0)
-        scaleouts << false
-      else    # 有効なデータがない場合     
-        results << nil
-        scaleouts << nil
-      end
+      r = data_to_result_and_scaleout(data)
+      results << r[0]
+      scaleouts << r[1]
     end
     for i in 0..3
       data = exam_data[offset+44+i*22..offset+48+i*22]
-      if /\(\s*((?:-|)\d+)\s*\)/ =~ data # カッコを伴う数字(負数も可)であれば
-        results << ($1.to_i + 0.0)
-        scaleouts << true
-      elsif /((?:-|)\d+)/ =~ data # 数字(負数も可)だけであれば
-        results << ($1.to_i + 0.0)
-        scaleouts << false
-      else    # 有効なデータがない場合
-        results << nil
-        scaleouts << nil
-      end
+      r = data_to_result_and_scaleout(data)
+      results << r[0]
+      scaleouts << r[1]
     end
     return results, scaleouts
+  end
+
+  def data_to_result_and_scaleout(data)
+    if /\(\s*((?:-|)\s*\d+)\s*\)/ =~ data # カッコを伴う数字(負数も可)であれば
+      result = $1.sub(" ","").to_f
+      scaleout = true
+    elsif /((?:-|)\s*\d+)/ =~ data # 数字(負数も可)だけであれば
+      result = $1.sub(" ","").to_f
+      scaleout = false
+    else    # 有効なデータがない場合
+      result = nil
+      scaleout = nil
+    end
+    return result, scaleout
   end
 
   def extract_maskdata(exam_data, offset)     # rawdataから 125,250,500,1k,2k,4k,8kHzの

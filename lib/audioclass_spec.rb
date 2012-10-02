@@ -9,6 +9,12 @@ rawsample_complete = "7@/          /  080604  //   0   30 ,  10   35 ,  20   40
 
 rawsample_incomplete = "7@/          /  080604  //          ,          ,          ,          ,  30   45 ,          ,          ,          ,  50   55 ,          ,          ,          , -10   55 ,  -5   55 ,          ,   0   55 ,          ,   5   55 ,          ,  10   55 ,          ,  15   55 ,  4>  4<,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,/C"
 rawsample_broken =""
+
+rawsample_minusdata = "7@/          /  121001  //  25   25 ,  20   20 ,  10   20 ,          , - 5   10 ,          ,   5   10 ,          ,  10   10 ,          ,   0    5 ,          ,   5   15 , - 5    5 ,          , - 5    5 ,          ,   0   10 ,          , - 5  -10 ,          , -10  -10 , 044 044, 044 044, 044 044,        , 044 044,        , 044 044,        , 044 044,        , 044 044,        , 04> 04>, 04> 04>,        , 04> 04>,        , 04> 04>,        , 04> 04>,        , 04> 04>,/D"
+#   125 250 500  1k  2k  4k  8k
+#RA  25  20  10  -5   5  10   0
+#LA  25  20  20  10  10  10   5
+
 # raw sample usage
 #   d = Audiodata.new("raw", data_string)
 #   a = Audio.new(d)
@@ -157,6 +163,17 @@ describe Audio do
 
     it 'ファイル出力されること' do
       File::exists?(@output_file).should be_true
+    end
+  end
+
+  context 'Audioを負の値(-5)が含まれるraw dataで作成した場合' do
+    it 'mean4の出力が正しいこと' do
+      a = Audio.new(Audiodata.new("raw", rawsample_minusdata))
+      a.mean4[:rt].should == ((10.0 -  5.0 *2 +  5.0) /4)
+      a.mean4[:lt].should == ((20.0 + 10.0 *2 + 10.0) /4)
+      #   125 250 500  1k  2k  4k  8k
+      #RA  25  20  10  -5   5  10   0
+      #LA  25  20  20  10  10  10   5
     end
   end
 end
