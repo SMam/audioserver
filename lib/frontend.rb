@@ -217,7 +217,12 @@ class Exam_window
         else
 	  @audioexam = AudioExam.new('flight')
 #          sent_data = receive_data
-          sent_data = Rs232c.new.get_data_from_audiometer  # from 'com_RS232C_AA79S.rb'
+          t = Time.now
+          loop do
+            sent_data = Rs232c.new.get_data_from_audiometer  # from 'com_RS232C_AA79S.rb'
+	    break if Time.now - t > 5
+            puts "buffer is not empty."
+	  end
 	end
         if sent_data == "Timeout"
           @state = "timeout"
