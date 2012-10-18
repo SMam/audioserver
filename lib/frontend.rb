@@ -4,7 +4,7 @@
 require 'gtk2'
 require 'net/http'
 require './id_validation'
-require './com_RS232C_AA79S'
+require './com_RS232C'
 require './audio_class'
 
 SERVER_IP = '127.0.0.1' #SERVER_IP = '172.16.41.20' #SERVER_IP = '192.168.1.6'
@@ -219,11 +219,11 @@ class Exam_window
 #          sent_data = receive_data
           t = Time.now
           loop do
-            sent_data = Rs232c.new.get_data_from_audiometer  # from 'com_RS232C_AA79S.rb'
+            sent_data = Rs232c.new.get_data_from_audiometer  # from 'com_RS232C.rb'
             break if Time.now - t > 5
             puts "buffer is not empty."
-	  end
-	end
+          end
+        end
         if sent_data == "Timeout"
           @state = "timeout"
           @msg_label.set_markup(@markup_msg.show(@state))
