@@ -37,7 +37,9 @@ class Rs232c
   end
 
   def get_data_from_audiometer
-    if not (port0_exist = File.exist?(@port0) || port1_exist = File.exist?(@port1))
+    port0_exist = File.exist?(@port0)
+    port1_exist = File.exist?(@port1)
+    if not (port0_exist || port1_exist)
       return "NoPort"
     end
 
@@ -53,14 +55,14 @@ class Rs232c
 
     loop do
       if not @q.empty?
-        t0.kill
-	t1.kill
+        t0.kill if t0
+        t1.kill if t1
         break
       end
     end
 
-    t0.join
-    t1.join 
+    t0.join if t0
+    t1.join if t1
     return @q.pop
   end
 end
@@ -68,8 +70,8 @@ end
 if ($0 == __FILE__)
   d = Rs232c.new.get_data_from_audiometer
   puts d
-#  File.open("./data.dat","w") do |f|
-#    f.puts(d)
-#  end
+  File.open("./data.dat","w") do |f|
+    f.puts(d)
+  end
 end
 
