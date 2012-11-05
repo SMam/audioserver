@@ -35,14 +35,14 @@ cs2 = cooked_sample2 # 長いのでエイリアス
 
 describe Audio do
   before :each do
-    @bg_file = "./assets/background.png"
+    @bg_file = "./assets/background_audiogram.png"
     @output_file = "./output.png"
 
     File::delete(@output_file) if File::exists?(@output_file)
   end
 
-  context 'background.pngがない場合' do
-    it '新しくbackground.pngを作ること' do
+  context 'background_audiogram.pngがない場合' do
+    it '新しくbackground_audiogram.pngを作ること' do
       File::delete(@bg_file) if File::exists?(@bg_file)
       a = Audio.new(Audiodata.new("raw", rawsample_complete))
       File::exists?(@bg_file).should be_true
@@ -59,7 +59,7 @@ describe Audio do
       File::exists?(@output_file).should be_true
     end
 
-    it '出力は background.pngと同じサイズであること' do
+    it '出力は background_audiogram.pngと同じサイズであること' do
       File::stat(@output_file).size.should == File::stat(@bg_file).size
     end
   end
@@ -99,7 +99,7 @@ describe Audio do
       rawsample_complete.index(@a.put_rawdata).should be_true
     end
 
-    it '出力は background.pngと異なったサイズであること' do
+    it '出力は background_audiogram.pngと異なったサイズであること' do
       File::stat(@output_file).size.should_not == File::stat(@bg_file).size
     end
   end

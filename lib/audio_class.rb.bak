@@ -17,10 +17,8 @@ end
 # railsの場合，directoryの相対表示の起点は rails/audiserv であるようだ
 Overdraw_times = 2  # 重ね書きの回数．まずは2回，つまり1回前の検査までとする
 
-class Audio < Bitmap
-  X_pos = [70,115,160,205,250,295,340]   # 各周波数別の横座標
-
-  def initialize(audiodata)              # 引数はFormatted_data のインスタンス
+class Background_bitmap < Bitmap
+  def initialize
     if File.exist?(Image_parts_location+"background_audiogram.png")
       @png = ChunkyPNG::Image.from_file(Image_parts_location+"background_audiogram.png")
     else
@@ -30,11 +28,6 @@ class Audio < Bitmap
       add_fonts
       @png.save(Image_parts_location+"background_audiogram.png", :fast_rgba)
     end
-    @audiodata = audiodata
-    @air_rt  = @audiodata.extract[:ra]
-    @air_lt  = @audiodata.extract[:la]
-    @bone_rt = @audiodata.extract[:rb]
-    @bone_lt = @audiodata.extract[:lb]
   end
 
   def draw_lines               # audiogramの縦横の線を引いている
@@ -88,6 +81,21 @@ class Audio < Bitmap
     end
     put_font(360, 358, "Hz")
   end
+end
+
+#----------------------------------------#
+#class Audio < Bitmap
+class Audio < Background_bitmap
+  X_pos = [70,115,160,205,250,295,340]   # 各周波数別の横座標
+
+  def initialize(audiodata)              # 引数はFormatted_data のインスタンス
+    @audiodata = audiodata
+    @air_rt  = @audiodata.extract[:ra]
+    @air_lt  = @audiodata.extract[:la]
+    @bone_rt = @audiodata.extract[:rb]
+    @bone_lt = @audiodata.extract[:lb]
+    super()
+  end
 
   def put_rawdata
     return @audiodata.put_rawdata
@@ -132,6 +140,7 @@ class Audio < Bitmap
     end
     rmean4_bs = {:rt => rmean4_rt, :lt => rmean4_lt}
   end
+
 
   def mean3          # 3分法
     if @air_rt[:data][2] and @air_rt[:data][3] and @air_rt[:data][4]
@@ -222,7 +231,9 @@ class Audio < Bitmap
           i += 1
           next
         end
+#        line_from = [X_pos[i],(threshold[i] / 10 * 24 + 69).prec_i]
         line_from = [X_pos[i],(threshold[i] / 10 * 24 + 69).to_i]
+                        # prec_i は float => integer のメソッド, 逆は prec_f #ruby1.9で廃止
         j = i + 1
         while j < 7
           if not threshold[j]
@@ -236,6 +247,7 @@ class Audio < Bitmap
             i += 1
             break
           else
+#            line_to = [X_pos[j],(threshold[j] / 10 * 24 + 69).prec_i]
             line_to = [X_pos[j],(threshold[j] / 10 * 24 + 69).to_i]
             case audiodata[:side]
             when "Rt"

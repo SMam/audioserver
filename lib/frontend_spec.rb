@@ -16,7 +16,7 @@ describe AudioExam do
     @comment = "a_comment"
     @raw_audiosample = Raw_audiosample
     @output_file = "./result.png"
-    @bg_file = "./assets/background.png"
+    @bg_file = "./assets/background_audiogram.png"
   end
 
   it "test mode/flight modeを使い分けられること" do
@@ -95,7 +95,7 @@ describe Exam_window do
     @hp_id = "19"
     @hyphened_hp_id = "0000-01-9"
     @invalid_hp_id = "18"
-    @blank_png = Gdk::Pixbuf.new(Assets_location + "background.png")
+    @blank_png = Gdk::Pixbuf.new(Assets_location + "background_audiogram.png")
   end
 
   context "button_id_entry を押した時に" do
@@ -110,7 +110,7 @@ describe Exam_window do
         @ew.audioexam.should_not be_nil
       end
 
-      it "image.pixbufがbackground.pngとは異なること" do
+      it "image.pixbufがbackground_audiogram.pngとは異なること" do
         @ew.image.pixbuf.pixels.should_not == @blank_png.pixels
       end
 
@@ -130,7 +130,7 @@ describe Exam_window do
         @ew.state.should == "timeout"
       end
 
-      it "image.pixbufがbackground.pngと変わらないこと" do
+      it "image.pixbufがbackground_audiogram.pngと変わらないこと" do
         @ew.image.pixbuf.pixels.should == @blank_png.pixels
       end
     end
@@ -146,7 +146,7 @@ describe Exam_window do
         @ew.state.should == "no_data"
       end
 
-      it "image.pixbufがbackground.pngと変わらないこと" do
+      it "image.pixbufがbackground_audiogram.pngと変わらないこと" do
         @ew.image.pixbuf.pixels.should == @blank_png.pixels
       end
     end
@@ -201,7 +201,7 @@ describe Exam_window do
         @ew.state.should == "scan"
       end
 
-      it "image.pixbufがbackground.pngとは異なる状態からbackground.pngに戻ること" do
+      it "image.pixbufがbackground_audiogram.pngとは異なる状態からbackground_audiogram.pngに戻ること" do
         @ew.image.pixbuf.pixels.should_not == @blank_png.pixels
         @ew.button_abort.signal_emit("clicked")
         @ew.image.pixbuf.pixels.should == @blank_png.pixels
@@ -254,7 +254,7 @@ describe Exam_window do
         @ew.state.should == "scan"
       end
 
-      it "image.pixbufがbackground.pngとは異なる状態からbackground.pngに戻ること" do
+      it "image.pixbufがbackground_audiogram.pngとは異なる状態からbackground_audiogram.pngに戻ること" do
         @ew.image.pixbuf.pixels.should == @blank_png.pixels
       end
 
@@ -278,10 +278,10 @@ describe Exam_window do
 
   context "image表示について" do
     before do
-      @blank_png = Gdk::Pixbuf.new(Assets_location + "background.png")
+      @blank_png = Gdk::Pixbuf.new(Assets_location + "background_audiogram.png")
     end
 
-    it "初期状態ではbackground.pngが表示されていること" do
+    it "初期状態ではbackground_audiogram.pngが表示されていること" do
       @ew.image.pixbuf.pixels.should == @blank_png.pixels
     end
   end

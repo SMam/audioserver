@@ -129,7 +129,7 @@ class Exam_window
     @win.signal_connect("destroy") { Gtk.main_quit }
     @state = "scan" 
       # @state also can be "receive", "transmit", "timeout", "invalid_id", "no_data"
-    @blank_png = Gdk::Pixbuf.new(Assets_location + "background.png")
+    @blank_png = Gdk::Pixbuf.new(Assets_location + "background_audiogram.png")
     @markup_msg = Markup_msg.new
     deploy_wigets
     set_logics
