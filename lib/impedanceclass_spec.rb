@@ -61,7 +61,7 @@ describe Impedance do
 	require 'digest/md5'
         @file_from_dump = './dump.png'
 	File::delete(@file_from_dump) if File::exists?(@file_from_dump)
-	p = ChunkyPNG::Image.from_datastream(@i.dump_png)
+	p = ChunkyPNG::Image.from_datastream(ChunkyPNG::Datastream.from_blob(@i.dump_png))
 	p.save(@file_from_dump, :fast_rgba)
         Digest::MD5.hexdigest(File.open(@output_file, 'rb').read).should ==\
           Digest::MD5.hexdigest(File.open(@file_from_dump, 'rb').read)

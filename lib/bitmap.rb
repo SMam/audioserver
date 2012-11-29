@@ -133,6 +133,6 @@ class Bitmap
   end
 
   def dump
-    return @png.to_datastream
+    return @png.to_datastream.to_blob
   end
 end
