@@ -17,7 +17,9 @@ else
   Assets_location = "./assets/"
 end
 
-class AudioExam
+#==================================================
+=begin
+class ImpedanceExam
   def initialize(* mode)
     case mode[0]
     when 'test','Test','TEST'
@@ -35,7 +37,7 @@ class AudioExam
     @data[:examdate] = examdate
     @data[:audiometer] = AUDIOMETER
     @data[:datatype] = "audiogram"
-    @data[:data] = data
+    @data[:data] = data[0]
     @data[:comment] = comment
   end
 
@@ -71,14 +73,84 @@ class AudioExam
         # header
         request["user-agent"] = "Ruby/#{RUBY_VERSION} MyHttpClient"
         request.set_content_type("multipart/form-data; boundary=image_boundary")
-	# body, following multipart/form-data manner
-	request.body = self.request_body
+        # body, following multipart/form-data manner
+        request.body = self.request_body
         response = http.request(request)
-        puts response
+#        puts response
       end
     when 'test'
-      puts 'On the test mode, no request is POST.\n ---'
-      puts self.request_body
+#      puts 'On the test mode, no request is POST.\n ---'
+#      puts self.request_body
+      return self.request_body
+    end
+  end
+end
+
+=end
+#==================================================
+
+class AudioExam
+  def initialize(* mode)
+    case mode[0]
+    when 'test','Test','TEST'
+      @mode = 'test'
+    else
+      @mode = 'flight'
+    end
+    @data = {:hp_id => '', :examdate => '', :data => '', :comment => ''}
+  end
+
+  attr_accessor :mode, :data
+
+  def set_data(hp_id, examdate, comment, data)
+    @data[:hp_id] = hp_id
+    @data[:examdate] = examdate
+    @data[:audiometer] = AUDIOMETER
+    @data[:datatype] = "audiogram"
+    @data[:data] = data[0]
+    @data[:comment] = comment
+  end
+
+  def output
+    a = Audio.new( Audiodata.new("raw", @data[:data]))
+    a.draw("./result.png")
+  end
+
+  def request_body
+    body = String.new
+    body << "--image_boundary\r\ncontent-disposition: form-data; "
+    body << "name=\"hp_id\";\r\n\r\n#{@data[:hp_id]}\r\n"
+    body << "--image_boundary\r\ncontent-disposition: form-data; "
+    body << "name=\"examdate\";\r\n\r\n#{@data[:examdate]}\r\n"
+    body << "--image_boundary\r\ncontent-disposition: form-data; "
+    body << "name=\"audiometer\";\r\n\r\n#{@data[:audiometer]}\r\n"
+    body << "--image_boundary\r\ncontent-disposition: form-data; "
+    body << "name=\"comment\";\r\n\r\n#{@data[:comment]}\r\n"
+    body << "--image_boundary\r\ncontent-disposition: form-data; "
+    body << "name=\"datatype\";\r\n\r\naudiogram\r\n"
+    body << "--image_boundary\r\ncontent-disposition: form-data; "
+    body << "name=\"data\";\r\n\r\n#{@data[:data]}\r\n"
+    body << "--image_boundary--\r\n"
+    return body
+  end
+
+  def transmit
+    case mode
+    when 'flight'
+      uri = URI.parse(SERVER_URI)
+      Net::HTTP.start(uri.host, uri.port) do |http|
+        request = Net::HTTP::Post.new(uri.path)
+        # header
+        request["user-agent"] = "Ruby/#{RUBY_VERSION} MyHttpClient"
+        request.set_content_type("multipart/form-data; boundary=image_boundary")
+        # body, following multipart/form-data manner
+        request.body = self.request_body
+        response = http.request(request)
+#        puts response
+      end
+    when 'test'
+#      puts 'On the test mode, no request is POST.\n ---'
+#      puts self.request_body
       return self.request_body
     end
   end
@@ -211,35 +283,43 @@ class Exam_window
       if valid_id?(@id_entry.text) and id_entry.text != ""
         @state = "receive"
         @msg_label.set_markup(@markup_msg.show(@state))
-	if @test_mode
-	  @audioexam = AudioExam.new('test')
-	  sent_data = @test_data
+        if @test_mode
+          sent_data = @test_data
+          @mode = 'test'
         else
-	  @audioexam = AudioExam.new('flight')
-#          sent_data = receive_data
           t = Time.now
           loop do
             sent_data = Rs232c.new.get_data_from_audiometer  # from 'com_RS232C.rb'
             break if Time.now - t > 5
             puts "buffer is not empty."
           end
+          @mode = 'flight'
         end
-        if sent_data == "Timeout"
+        if sent_data[0] == "Timeout"
           @state = "timeout"
           @msg_label.set_markup(@markup_msg.show(@state))
         else
-          @audioexam.set_data(@id_entry.text, Time.now.strftime("%Y:%m:%d-%H:%M:%S"),\
-            "comment", sent_data)
+          case sent_data[0][1]  # RS232Cからの最初のデータの機器番号
+                                # 5: ImpedanceAudiogram, 7: Audiogram
+          when '5'
+            @exam = ImpedanceExam.new(@mode)
+          when '7'
+            @exam = AudioExam.new(@mode)
+          else
+            @exam = nil
+          end
           begin
-            @audioexam.output
+            @exam.set_data(@id_entry.text, Time.now.strftime("%Y:%m:%d-%H:%M:%S"),\
+              "comment", sent_data)
+            @exam.output
           rescue
             @state = "no_data"
             @msg_label.set_markup(markup_msg.show(@state))
-	  else
+          else
             @image.pixbuf = Gdk::Pixbuf.new("./result.png")
             @state = "transmit"
             @msg_label.set_markup(markup_msg.show(@state))
-	  end
+          end
           system("mpg123 -q " + Assets_location + "se.mp3")
         end
       else
@@ -256,16 +336,16 @@ class Exam_window
       # @stateがtransmitの時は送る、それ以外 scan, receiveなどの時は何もしない
       case @state
       when "transmit"
-        if @audioexam.data[:id] != ''
+        if @exam.data[:id] != ''
           comment = ""
           comment += "RETRY_" if @comment_retry.active?
           comment += "MASK_"  if @comment_masking.active?
           comment += "PATCH_" if @comment_after_patch.active?
           comment += "MED_"   if @comment_after_med.active?
           comment += "OTHER:#{comment_other_entry.text}_"\
-	    if (@comment_other_check.active? or /\S+/ =~ @comment_other_entry.text)
-          @audioexam.data[:comment] = comment
-          @http_request = @audioexam.transmit
+            if (@comment_other_check.active? or /\S+/ =~ @comment_other_entry.text)
+          @exam.data[:comment] = comment
+          @http_request = @exam.transmit
           reset_properties
         else
           @state = "no_data"
@@ -290,7 +370,7 @@ class Exam_window
     @comment_after_med.active = false
     @comment_other_check.active = false
     @comment_other_entry.text = ""
-    @audioexam = AudioExam.new
+    @exam = AudioExam.new
     @win.set_focus(@id_entry)
   end
 
@@ -299,11 +379,11 @@ class Exam_window
     Gtk.main
   end
 
-  attr_accessor :id_entry, :button_id_entry, :markup_msg, :image, :state, :audioexam,\
+  attr_accessor :id_entry, :button_id_entry, :markup_msg, :image, :state, :exam,\
                 :test_mode, :test_data, :button_abort, :button_transmit,\
                 :comment_retry, :comment_masking, :comment_after_patch,\
                 :comment_after_med, :comment_other_check, :comment_other_entry,\
-		:http_request
+                :http_request
 end
 
 # -----

@@ -2,10 +2,26 @@
 
 require './frontend'
 
-Raw_audiosample = "7@/          /  080604  //   0   30 ,  10   35 ,  20   40 ,          ,  30   45 ,          ,  40   50 ,          ,  50   55 ,          ,  60   60 ,          , -10   55 ,  -5   55 ,          ,   0   55 ,          ,   5   55 ,          ,  10   55 ,          ,  15   55 ,  4>  4<,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,/P"
+Raw_audiosample = ["7@/          /  080604  //   0   30 ,  10   35 ,  20   40 ,          ,  30   45 ,          ,  40   50 ,          ,  50   55 ,          ,  60   60 ,          , -10   55 ,  -5   55 ,          ,   0   55 ,          ,   5   55 ,          ,  10   55 ,          ,  15   55 ,  4>  4<,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,/P"]
 #  125 250 500  1k  2k  4k  8k
 #R   0  10  20  30  40  50  60
 #L  30  35  40  45  50  55  60
+
+=begin
+describe ImpedanceExam do
+  before do
+    @impedanceexam = ImpedanceExam.new('test')
+    @hp_id = 19
+    @examdate = Time.now.strftime("%Y:%m:%d-%H:%M:%S")
+    @audiometer = "RS-22"
+    @comment = "a_comment"
+#    @raw_impedancesample = Raw_audiosample
+    @output_file = "./result.png"
+#    @bg_file = "./assets/background_audiogram.png"
+  end
+
+end
+=end
 
 describe AudioExam do
   before do
@@ -38,7 +54,7 @@ describe AudioExam do
       @audioexam.data[:audiometer].should == @audiometer
       @audioexam.data[:comment].should == @comment
       @audioexam.data[:datatype].should == "audiogram"
-      @audioexam.data[:data].should == @raw_audiosample
+      @audioexam.data[:data].should == @raw_audiosample[0]
     end
 
     it 'Audiogramが生成されること' do
@@ -107,7 +123,7 @@ describe Exam_window do
       end
 
       it "AudioExamのインスタンスが生成されること" do
-        @ew.audioexam.should_not be_nil
+        @ew.exam.should_not be_nil
       end
 
       it "image.pixbufがbackground_audiogram.pngとは異なること" do
@@ -122,7 +138,7 @@ describe Exam_window do
     context "valid ID、かつ dataがTimeoutであった場合" do
       before do
         @ew.id_entry.text = @hp_id
-        @ew.test_data = "Timeout"
+        @ew.test_data = ["Timeout"]
         @ew.button_id_entry.signal_emit("clicked")
       end
 
@@ -138,7 +154,7 @@ describe Exam_window do
     context "valid ID、かつ聴検dataが不正であった場合" do
       before do
         @ew.id_entry.text = @hp_id
-        @ew.test_data = "invalid data"
+        @ew.test_data = ["invalid data"]
         @ew.button_id_entry.signal_emit("clicked")
       end
 
@@ -162,7 +178,7 @@ describe Exam_window do
       end
 
       it "AudioExamのインスタンスが生成されないこと" do
-        @ew.audioexam.should be_nil
+        @ew.exam.should be_nil
       end
     end
 
@@ -171,7 +187,7 @@ describe Exam_window do
         @ew.id_entry.text = @hyphened_hp_id
         @ew.test_data = Raw_audiosample
         @ew.button_id_entry.signal_emit("clicked")
-        @ew.audioexam.should_not be_nil
+        @ew.exam.should_not be_nil
       end
     end
   end
@@ -189,10 +205,10 @@ describe Exam_window do
         @ew.id_entry.text.should == ""
       end
 
-      it "@audioexamが空になること" do
-        @ew.audioexam.data[:data].should_not == ""
+      it "@examが空になること" do
+        @ew.exam.data[:data].should_not == ""
         @ew.button_abort.signal_emit("clicked")
-        @ew.audioexam.data[:data].should == ""
+        @ew.exam.data[:data].should == ""
       end
 
       it "stateがtransmitからscanに戻ること" do
@@ -233,7 +249,7 @@ describe Exam_window do
       end
 
       it "requestが発行されること" do
-        @ew.http_request.should match Regexp.new(Raw_audiosample)
+        @ew.http_request.should match Regexp.new(Raw_audiosample[0])
       end
 
       it "requestにID, commentが反映されること" do
@@ -246,8 +262,8 @@ describe Exam_window do
         @ew.id_entry.text.should == ""
       end
 
-      it "@audioexamが空になること" do
-        @ew.audioexam.data[:data].should == ""
+      it "@examが空になること" do
+        @ew.exam.data[:data].should == ""
       end
 
       it "stateがtransmitからscanに戻ること" do
@@ -268,7 +284,7 @@ describe Exam_window do
     context "聴力検査データが得られていない場合" do
       it "requestが発行されないこと" do
         @ew.id_entry.text = @hp_id
-        @ew.test_data = 'Timeout'
+        @ew.test_data = ['Timeout']
         @ew.button_id_entry.signal_emit("clicked")
         @ew.button_transmit.signal_emit("clicked")
         @ew.http_request.should be_nil
