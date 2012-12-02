@@ -16,27 +16,24 @@ end
 class Impedance < Bitmap
   def initialize(impedancedata)  # 引数は class ImpedanceData のインスタンス
     prepare_font
-    @data = impedancedata
-    case @data.mode
-    when "tympanometry"
-      if File.exist?(Image_parts_location+"background_tympanogram.png")
-        @png = ChunkyPNG::Image.from_file(Image_parts_location +
-	                                          "background_tympanogram.png")
-      else
-        @png = ChunkyPNG::Image.new(400,400,WHITE)
-        make_tympano_background
-        @png.save(Image_parts_location+"background_tympanogram.png", :fast_rgba)
-      end
-    when "reflex"
-#      if File.exist?(Image_parts_location+"background_reflex.png")
-#        @png = ChunkyPNG::Image.from_file(Image_parts_location+"background_reflex.png")
-#      else
-#        @png = ChunkyPNG::Image.new(400,400,WHITE)
-#        make_reflex_background
-#        @png.save(Image_parts_location+"background_reflex.png", :fast_rgba)
-#      end
+    if File.exist?(Image_parts_location+"background_tympanogram.png")
+      @png = ChunkyPNG::Image.from_file(Image_parts_location +
+                                         "background_tympanogram.png")
+    else
+      @png = ChunkyPNG::Image.new(400,400,WHITE)
+      make_tympano_background
+      @png.save(Image_parts_location+"background_tympanogram.png", :fast_rgba)
     end
+#    if File.exist?(Image_parts_location+"background_reflex.png")
+#      @png = ChunkyPNG::Image.from_file(Image_parts_location+"background_reflex.png")
+#    else
+#      @png = ChunkyPNG::Image.new(400,400,WHITE)
+#      make_reflex_background
+#      @png.save(Image_parts_location+"background_reflex.png", :fast_rgba)
+#    end
 
+    @tympanodata = impedancedata.extract[:tympano]
+    @reflexdata = impedancedata.extract[:reflex]
   end
 
   def make_tympano_background
@@ -78,15 +75,14 @@ class Impedance < Bitmap
   end
 
   def draw_tympanogram
-    tympanograms = @data.extract
-    tympanograms.each do |t|
-      side = (t[0] == :R)? "R": "L"
-      interval = t[1][:interval]
-      pvt = t[1][:pvt]
-      sc = t[1][:sc]
-      peak = t[1][:peak]
+    @tympanodata.each do |t|
+      side = (t[:side] == "R")? "R": "L"
+      interval = t[:interval]
+      pvt = t[:pvt]
+      sc = t[:sc]
+      peak = t[:peak]
       p_v = [200, 0]
-      t[1][:values].each do |v|
+      t[:values].each do |v|
         new_p_v = [p_v[0]-interval, v - pvt]
         draw_line_tympano(p_v, new_p_v, side, "line")
         p_v = new_p_v
@@ -113,35 +109,41 @@ class Impedance < Bitmap
     line(x1.to_i, y1.to_i, x2.to_i, y2.to_i, color, line)
   end
 
+  def tympano_misc_data
+    result = {"R" => {}, "L" => {}}
+    @tympanodata.each do |t|
+      side = (t[:side] == "R")? "R": "L"
+      result[side] = {:pvt => t[:pvt], :sc => t[:sc], :peak => t[:peak]}
+    end
+    return result
+  end
+
   def pvt
-    return {:rt => @data.extract[:R][:pvt], :lt => @data.extract[:L][:pvt]}
+    return {:rt => tympano_misc_data["R"][:pvt], :lt => tympano_misc_data["L"][:pvt]}
   end
 
   def sc
-    return {:rt => @data.extract[:R][:sc], :lt => @data.extract[:L][:sc]}
+    return {:rt => tympano_misc_data["R"][:sc], :lt => tympano_misc_data["L"][:sc]}
   end
 
   def peak
-    return {:rt => @data.extract[:R][:peak], :lt => @data.extract[:L][:peak]}
-  end
-
-  def make_graph
-    case @data.mode
-    when "tympanometry"
-      draw_tympanogram
-    when "reflex"
-#    do nothing so far
-    end
+    return {:rt => tympano_misc_data["R"][:peak], :lt => tympano_misc_data["L"][:peak]}
   end
 
   def dump_png
-    make_graph
-    return dump
+    dumps = Array.new
+    draw_tympanogram
+    dumps = {:tympanogram => dump, :reflex => nil}
+#    draw_reflexgram
+#    dumps[:reflex] = dump
+    return dumps
   end
 
-  def draw(filename)
-    make_graph
-    output(filename)
+  def draw(tympano_filename, reflex_filename)
+    draw_tympanogram
+    output(tympano_filename)
+#    draw_reflexgram
+#    output(reflex_filename)
   end
 
 end

@@ -21,6 +21,8 @@
 
 # Ignore temporary pngs in lib/*png made by tests
 /lib/output.png
+/lib/output_t.png
+/lib/output_r.png
 /lib/result.png
 /lib/dump.png
 
