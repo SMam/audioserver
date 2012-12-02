@@ -2,10 +2,19 @@
 
 require './frontend'
 
-Raw_audiosample = ["7@/          /  080604  //   0   30 ,  10   35 ,  20   40 ,          ,  30   45 ,          ,  40   50 ,          ,  50   55 ,          ,  60   60 ,          , -10   55 ,  -5   55 ,          ,   0   55 ,          ,   5   55 ,          ,  10   55 ,          ,  15   55 ,  4>  4<,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,/P"]
+data = Hash.new
+File.open('./rawdata_sample.dat','r') do |f|
+  while (l = f.gets) do
+    if /(.+)::"(.+)"/ =~ l
+      data[$1] = $2
+    end
+  end
+end
+Raw_audiosample = [data["audiogram_data"]]
 #  125 250 500  1k  2k  4k  8k
 #R   0  10  20  30  40  50  60
 #L  30  35  40  45  50  55  60
+
 
 =begin
 describe ImpedanceExam do
@@ -302,3 +311,6 @@ describe Exam_window do
     end
   end
 end
+__END__
+audiogram_data::"7@/          /  080604  //   0   30 ,  10   35 ,  20   40 ,          ,  30   45 ,          ,  40   50 ,          ,  50   55 ,          ,  60   60 ,          , -10   55 ,  -5   55 ,          ,   0   55 ,          ,   5   55 ,          ,  10   55 ,          ,  15   55 ,  4>  4<,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,        ,  4>  4<,/P"
+
