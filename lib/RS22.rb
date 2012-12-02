@@ -9,92 +9,76 @@ class ImpedanceData
     if not data_array[0][0..1] == "5"               # Impedance audiometerの確認
       raise "format error"
     end
-    case data_array[0][2]
-    when 'J'
-      @mode = "tympanometry"
-    when 'M', 'K'
-      @mode = "reflex"
-    else
-      raise "format error"
+    @results = {:tympano => [], :reflex => []} 
+    data_array.each do |d|
+      case d[2]
+      when 'J'         # when "tympanometry"
+        set_tympanodata(d)
+      when 'M', 'K'    # when "reflex"
+        set_reflexdata(d)
+      else
+        # do nothing
+      end
     end
-    @results = {:R => {}, :L => {}} 
+  end
 
-    case @mode
-    when "tympanometry"
-      data_array.each do |d|
-        break if d[2] != 'J'   # tympanomatryではないデータが含まれていた場合は飛ばして次へ
-	if /(.+)\/(.+)/ =~ clip_data(d)
-          property_data = $1   
-	  value_data =  $2
-        end
-	data_length = property_data[0..2].to_i
-	interval = property_data[3..6].to_f * 0.01
-        side = property_data[7]           # 'R' or 'L'
-	value = value_data.split(/,/)
-        pvt = conv_to_value(value[0])     # PVT:  +200daPa時の等価容積      [mL]
-        sc = conv_to_value(value[1])      # SC:   Static Comliance 等価容積 [mL]
-        peak = (value[2][0] == '+'? 1: -1) * (value[2][1].to_i * 100 + value[2][2].to_i * 10 + value[2][3].to_i)
-	                                   # PEAK: 等価容積が最大の時の圧力  [daPa]
-	value_arr = Array.new
-        3.upto(data_length - 1) do |i|
-	  value_arr[i-3] =  conv_to_value(value[i])
-        end
-	case side
-	when 'R'
-	  @results[:R] = {:pvt => pvt, :sc => sc, :peak => peak, :values => value_arr, :interval => interval}
-	when 'L'
-	  @results[:L] = {:pvt => pvt, :sc => sc, :peak => peak, :values => value_arr, :interval => interval}
-        end
-      end
-    when "reflex"
-      lookup_frequency = {"2" => "250Hz", "3" => "500Hz", "4" => "1kHz", "5" => "2kHz", "6" => "4kHz", "7" => "8kHz",
-                          "@" => "WideNoise", "A" => "LowNoise", "B" => "HighNoise"}
-      data_array.each do |d|
-        break if ( d[2] != 'K' && d[2] != 'M')   # reflexではないデータが含まれていた場合は飛ばして次へ
-        if /(.+)\/(.+)/ =~ clip_data(d)
-          property_data = $1   
-          value_data =  $2
-        end
-        data_length = property_data[0..2].to_i
-        interval = property_data[3..6].to_f * 0.01
-        side = property_data[7]           # 'R' or 'L'
-        pressure = (property_data[8] == '+'? 1: -1) * 
-                    property_data[9].to_i * 100 + property_data[10].to_i * 10 + property_data[11].to_i
-                                          # 圧力  [daPa]
-        value = value_data.split(/,/)
-        pvt = conv_to_value(value[0])     # PVT:  +200daPa時の等価容積      [mL]
-        value_arr = Array.new
-        freq = lookup_frequency[value[3][0]]
-        stim_side = value[3][2].to_i < 2? "ipsi": "cntr"
-        3.upto(data_length - 1) do |i|
-          lev = 50 + (value[i][1].getbyte(0) - 58) * 5
-	  lev -= 75 if lev > 120
-          stim_on = value[i][2].to_i % 2 == 0? true: false
-          vol = conv_to_value(value[i][3..6])
-          value_arr << {:lev => lev, :stim_on => stim_on, :vol => vol}
-        end
-        case side
-        when 'R'
-          @results[:R][freq] = {} if not @results[:R].has_key?(freq)
-          @results[:R][freq][stim_side] = {} if not @results[:R][freq].has_key?(stim_side)
-          @results[:R][freq][stim_side] = 
-	                    { :pvt => pvt, :pressure => pressure, :interval => interval, :values => value_arr }
-        when 'L'
-          @results[:L][freq] = {} if not @results[:L].has_key?(freq)
-          @results[:L][freq][stim_side] = {} if not @results[:L][freq].has_key?(stim_side)
-          @results[:L][freq][stim_side] = 
-	                    { :pvt => pvt, :pressure => pressure, :interval => interval, :values => value_arr }
-        end
-      end
+  def set_tympanodata(data)
+    if /(.+)\/(.+)/ =~ clip_data(data)
+      property_data = $1   
+      value_data =  $2
     end
+    data_length = property_data[0..2].to_i
+    interval = property_data[3..6].to_f * 0.01
+    side = property_data[7]           # 'R' or 'L'
+    value = value_data.split(/,/)
+    pvt = conv_to_value(value[0])     # PVT:  +200daPa時の等価容積      [mL]
+    sc = conv_to_value(value[1])      # SC:   Static Comliance 等価容積 [mL]
+    peak = (value[2][0] == '+'? 1: -1) *\
+           (value[2][1].to_i * 100 + value[2][2].to_i * 10 + value[2][3].to_i)
+                                      # PEAK: 等価容積が最大の時の圧力  [daPa]
+    value_arr = Array.new
+    3.upto(data_length - 1) do |i|
+      value_arr[i-3] =  conv_to_value(value[i])
+    end
+    @results[:tympano] << {:side => side, :pvt => pvt, :sc => sc, :peak => peak,\
+                           :values => value_arr, :interval => interval}
+  end
+    
+  def set_reflexdata(data)
+    lookup_frequency = {"2" => "250Hz", "3" => "500Hz", "4" => "1kHz", "5" => "2kHz",\
+                        "6" => "4kHz", "7" => "8kHz",\
+                        "@" => "WideNoise", "A" => "LowNoise", "B" => "HighNoise"}
+    if /(.+)\/(.+)/ =~ clip_data(data)
+      property_data = $1   
+      value_data =  $2
+    end
+    data_length = property_data[0..2].to_i
+    interval = property_data[3..6].to_f * 0.01
+    side = property_data[7]           # 'R' or 'L'
+    pressure = (property_data[8] == '+'? 1: -1) * 
+                property_data[9].to_i * 100 + property_data[10].to_i * 10 + property_data[11].to_i
+                                      # 圧力  [daPa]
+    value = value_data.split(/,/)
+    pvt = conv_to_value(value[0])     # PVT:  +200daPa時の等価容積      [mL]
+    freq = lookup_frequency[value[3][0]]
+    stim_side = value[3][2].to_i < 2? "ipsi": "cntr"
+    values = Hash.new
+    3.upto(data_length - 1) do |i|
+      lev = 50 + (value[i][1].getbyte(0) - 58) * 5
+      lev -= 75 if lev > 120
+      lev = lev.to_s
+      values[lev] = Array.new if not values.has_key?(lev)
+      stim_on = value[i][2].to_i % 2 == 0? true: false
+      vol = conv_to_value(value[i][3..6])
+      values[lev] << {:stim_on => stim_on, :vol => vol}
+    end
+    @results[:reflex] << {:side => side, :freq => freq, :stim_side => stim_side,\
+                          :pvt => pvt, :pressure => pressure, :interval => interval,\
+                          :values => values }
   end
 
   def extract
     return @results
-  end
-
-  def mode
-    return @mode    # "tympanometry" or "reflex"
   end
 
   def conv_to_value(str_arr)
@@ -176,6 +160,5 @@ if ($0 == __FILE__)
     reflexes << buf
   end
   d = ImpedanceData.new(reflexes)
-#  p  d.extract
-
+  p  d.extract
 end
