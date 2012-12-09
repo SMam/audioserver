@@ -27,7 +27,7 @@ tympano_reflex_sample = [data["tympano_data_R"], data["tympano_data_L"],\
 describe Impedance do
   before :each do
     @tympano_bg_file = "./assets/background_tympanogram.png"
-    @reflex_bg_file = "./assets/background_reflexgram.png"
+    @reflex_bg_file = "./assets/background_reflex.png"
     @tympano_output_file = "./output_t.png"
     @reflex_output_file = "./output_r.png"
 
@@ -116,4 +116,24 @@ describe Impedance do
       end
     end
   end
+
+=begin
+  context 'reflexについて' do
+    before do
+      @reflex_data = reflex_sample
+    end
+
+    context 'reflexgramの背景画像(background_reflexgram.png)がない場合' do
+      it '新しく背景画像を作ること' do
+        File::delete(@reflex_bg_file) if File::exists?(@reflex_bg_file)
+        i = Impedance.new(ImpedanceData.new(@reflex_data))
+        File::exists?(@reflex_bg_file).should be_true
+
+i.draw(@tympano_output_file, @reflex_output_file)
+
+      end
+    end
+
+  end
+=end
 end

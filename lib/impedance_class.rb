@@ -16,21 +16,23 @@ end
 class Impedance < Bitmap
   def initialize(impedancedata)  # 引数は class ImpedanceData のインスタンス
     prepare_font
+
     if File.exist?(Image_parts_location+"background_tympanogram.png")
-      @png = ChunkyPNG::Image.from_file(Image_parts_location +
+      @png_t = ChunkyPNG::Image.from_file(Image_parts_location +
                                          "background_tympanogram.png")
     else
-      @png = ChunkyPNG::Image.new(400,400,WHITE)
+      @png_t = ChunkyPNG::Image.new(400,400,WHITE)
       make_tympano_background
-      @png.save(Image_parts_location+"background_tympanogram.png", :fast_rgba)
+      @png_t.save(Image_parts_location+"background_tympanogram.png", :fast_rgba)
     end
-#    if File.exist?(Image_parts_location+"background_reflex.png")
-#      @png = ChunkyPNG::Image.from_file(Image_parts_location+"background_reflex.png")
-#    else
-#      @png = ChunkyPNG::Image.new(400,400,WHITE)
-#      make_reflex_background
-#      @png.save(Image_parts_location+"background_reflex.png", :fast_rgba)
-#    end
+
+    if File.exist?(Image_parts_location+"background_reflex.png")
+      @png_r = ChunkyPNG::Image.from_file(Image_parts_location+"background_reflex.png")
+    else
+      @png_r = ChunkyPNG::Image.new(400,400,WHITE)
+      make_reflex_background
+      @png_r.save(Image_parts_location+"background_reflex.png", :fast_rgba)
+    end
 
     @tympanodata = impedancedata.extract[:tympano]
     @reflexdata = impedancedata.extract[:reflex]
@@ -40,38 +42,60 @@ class Impedance < Bitmap
     [0, 200].each do |offset|
       x1 = 70; x2 = 369; x01 = 169; x02 = 269 
       y1 = 30+offset; y2 = 169+offset; y0 = 149+offset
-      line(x1, y1, x1, y2, GRAY, "line")
-      line(x2, y1, x2, y2, GRAY, "line")
-      line(x1, y1, x2, y1, GRAY, "line")
-      line(x1, y2, x2, y2, GRAY, "line")
-      line(x01, y1, x01, y2, GRAY, "dot")
-      line(x02, y1, x02, y2, GRAY, "line")
-      line(x1, y0, x2, y0, GRAY, "line")
+      line(@png_t, x1, y1, x1, y2, GRAY, "line")
+      line(@png_t, x2, y1, x2, y2, GRAY, "line")
+      line(@png_t, x1, y1, x2, y1, GRAY, "line")
+      line(@png_t, x1, y2, x2, y2, GRAY, "line")
+      line(@png_t, x01, y1, x01, y2, GRAY, "dot")
+      line(@png_t, x02, y1, x02, y2, GRAY, "line")
+      line(@png_t, x1, y0, x2, y0, GRAY, "line")
       
-      put_font( 20, 100+offset-8, ["R", "L"][offset == 0? 0: 1])
-      put_font( 49, y1-15-8, "mL")
-      put_font( x2-25, y2+15, "daPa")
+      put_font(@png_t, 20, 100+offset-8, ["R", "L"][offset == 0? 0: 1])
+      put_font(@png_t, 49, y1-15-8, "mL")
+      put_font(@png_t, x2-25, y2+15, "daPa")
 
       l = [["0", 58, y0-8], ["0.5", 42, y0-40-8], ["1.0", 42, y0-80-8], ["1.5", 42, y1-8],
            ["-400", x1-16, y2], ["-200", x01-16, y2], ["0", x02-4, y2], ["200", x2-12 ,y2]]
       l.each do |ll|
-        put_string(ll[1], ll[2], ll[0])
+        put_string(@png_t, ll[1], ll[2], ll[0])
       end
     end
   end
 
-  def put_string(x, y, str)
+  def make_reflex_background
+    line(40,42,399,42,GRAY,"line")
+    line(40,82,399,82,GRAY,"line")
+    line(40,134,399,134,GRAY,"line")
+    line(40,174,399,174,GRAY,"line")
+    line(40,226,399,226,GRAY,"line")
+    line(40,266,399,266,GRAY,"line")
+    line(40,318,399,318,GRAY,"line")
+    line(40,358,399,358,GRAY,"line")
+  end
+
+  def put_string(png, x, y, str)
     str.each_byte do |c|
       case c
       when 45                  # if character is "-"
-        put_font(x, y, "minus")
+        put_font(png, x, y, "minus")
       when 46                  # if character is "."
-        put_font(x, y, "dot")
+        put_font(png, x, y, "dot")
       else
-        put_font(x, y, "%c" % c)
+        put_font(png, x, y, "%c" % c)
       end
       x += 8
     end
+  end
+
+  def draw_reflexgram
+=begin
+require      'pp' 
+    @reflexdata.each do |r|
+      if (r[:side] == "R" && r[:freq] == "500Hz" && r[:stim_side] == "ipsi")
+#pp    r[]
+      end
+    end
+=end
   end
 
   def draw_tympanogram
@@ -91,7 +115,7 @@ class Impedance < Bitmap
 #      draw_line_tympano(peak_p_v, [200, sc], side, "ref")
 #      draw_line_tympano(peak_p_v, [peak, 1.5], side, "ref")
 #      sc_round = (sc * 100).round / 100.0
-#      put_string(350, 149 + (side == "R"? 0: 200) - (sc * 80).to_i, sc_round.to_s)
+#      put_string(@png_t, 350, 149 + (side == "R"? 0: 200) - (sc * 80).to_i, sc_round.to_s)
     end
   end
 
@@ -106,7 +130,7 @@ class Impedance < Bitmap
     y1 = 149 + offset - p_v1[1] * 80
     x2 = 269 + p_v2[0]/2 
     y2 = 149 + offset - p_v2[1] * 80
-    line(x1.to_i, y1.to_i, x2.to_i, y2.to_i, color, line)
+    line(@png_t, x1.to_i, y1.to_i, x2.to_i, y2.to_i, color, line)
   end
 
   def tympano_misc_data
@@ -133,7 +157,7 @@ class Impedance < Bitmap
   def dump_png
     dumps = Array.new
     draw_tympanogram
-    dumps = {:tympanogram => dump, :reflex => nil}
+    dumps = {:tympanogram => dump(@png_t), :reflex => nil}
 #    draw_reflexgram
 #    dumps[:reflex] = dump
     return dumps
@@ -141,7 +165,7 @@ class Impedance < Bitmap
 
   def draw(tympano_filename, reflex_filename)
     draw_tympanogram
-    output(tympano_filename)
+    output(@png_t, tympano_filename)
 #    draw_reflexgram
 #    output(reflex_filename)
   end
