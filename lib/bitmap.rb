@@ -47,15 +47,15 @@ class Bitmap
     prepare_font
   end
 
-  def point(x,y,rgb)
-    @png.set_pixel(x,y,rgb)
+  def point(png, x, y, rgb)
+    png.set_pixel(x,y,rgb)
   end
 
   def swap(a,b)
     return b,a
   end
 
-  def line(x1,y1,x2,y2,rgb,dotted)
+  def line(png, x1, y1, x2, y2, rgb, dotted)
     # Bresenhamアルゴリズムを用いた自力描画から変更
     if x1 > x2  # x2がx1以上であることを保証
       x1, x2 = swap(x1,x2)
@@ -64,7 +64,7 @@ class Bitmap
     sign_modifier = (y1 < y2)? 1 : -1 # yが減少していく時(右上がり)の符号補正
     case dotted
     when "line"
-      @png.line(x1,y1,x2,y2,rgb)
+      png.line(x1,y1,x2,y2,rgb)
     when "dot"
       dx = x2 - x1
       dy = y2 - y1
@@ -89,17 +89,17 @@ class Bitmap
           y_to = y2
           y_line_end = true
         end
-        @png.line(x_from.round, y_from.round, x_to.round, y_to.round, c)
+        png.line(x_from.round, y_from.round, x_to.round, y_to.round, c)
         c = (c == WHITE)? rgb: WHITE
       end  
     end
   end
 
-  def put_symbol(symbol, x, y, rgb) # symbol is Symbol, like :circle
+  def put_symbol(png, symbol, x, y, rgb) # symbol is Symbol, like :circle
     xr = x.round
     yr = y.round
     SYMBOL_PTN[symbol].each do |xy|
-      point(xr+xy[0],yr+xy[1],rgb)
+      point(png, xr+xy[0], yr+xy[1], rgb)
     end
   end
 
@@ -121,18 +121,18 @@ class Bitmap
     end
   end
 
-  def put_font(x1,y1,fontname)
+  def put_font(png, x1, y1, fontname)
     return if not @font[fontname]
     dx = @font[fontname][1] * 10
     dy = 15
-    @png.compose!(@font[fontname][0],x1,y1)
+    png.compose!(@font[fontname][0],x1,y1)
   end
 
-  def output(filename)
-    @png.save(filename, :fast_rgba)
+  def output(png, filename)
+    png.save(filename, :fast_rgba)
   end
 
-  def dump
-    return @png.to_datastream.to_blob
+  def dump(png)
+    return png.to_datastream.to_blob
   end
 end

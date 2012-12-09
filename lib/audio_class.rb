@@ -40,22 +40,22 @@ class Audio < Bitmap
   def draw_lines               # audiogramの縦横の線を引いている
     y1=30
     y2=348
-    line(50,y1,50,y2,GRAY,"line")
+    line(@png, 50,y1,50,y2,GRAY,"line")
     for x in 0..6
       x1=70+x*45
-      line(x1,y1,x1,y2,GRAY,"line")
+      line(@png, x1,y1,x1,y2,GRAY,"line")
     end
-    line(360,y1,360,y2,GRAY,"line")
+    line(@png, 360,y1,360,y2,GRAY,"line")
     x1=50
     x2=360
-    line(x1,30,x2,30,GRAY,"line")
-    line(x1,45,x2,45,GRAY,"line")
-    line(x1,69,x2,69,BLACK,"line")
+    line(@png, x1,30,x2,30,GRAY,"line")
+    line(@png, x1,45,x2,45,GRAY,"line")
+    line(@png, x1,69,x2,69,BLACK,"line")
     for y in 0..10
       y1=93+y*24
-      line(x1,y1,x2,y1,GRAY,"line")
+      line(@png, x1,y1,x2,y1,GRAY,"line")
     end
-    line(x1,348,x2,348,GRAY,"line")
+    line(@png, x1,348,x2,348,GRAY,"line")
   end
 
   def add_fonts
@@ -67,14 +67,14 @@ class Audio < Bitmap
       x += (3 - hear_level.length) * 8
       hear_level.each_byte do |c|
         if c == 45                  # if character is "-"
-          put_font(x, y, "minus")
+          put_font(@png, x, y, "minus")
         else
-          put_font(x, y, "%c" % c)
+          put_font(@png, x, y, "%c" % c)
         end
         x += 8
       end
     end
-    put_font(23, 15, "dB")
+    put_font(@png, 23, 15, "dB")
 
     # add holizontal scale
     cycle = ["125","250","500","1k","2k","4k","8k"]
@@ -82,11 +82,11 @@ class Audio < Bitmap
       y = 358
       x = 70 + i * 45 - cycle[i].length * 4 # 8px for each char / 2
       cycle[i].each_byte do |c|
-        put_font(x, y, "%c" % c)
+        put_font(@png, x, y, "%c" % c)
         x += 8
       end
     end
-    put_font(360, 358, "Hz")
+    put_font(@png, 360, 358, "Hz")
   end
 
   def put_rawdata
@@ -188,27 +188,27 @@ class Audio < Bitmap
         when "Rt"
           case audiodata[:mode]
           when "Air"
-            put_symbol(:circle, X_pos[i], threshold[i] / 10 * 24 + 69, rt_color)
+            put_symbol(@png, :circle, X_pos[i], threshold[i] / 10 * 24 + 69, rt_color)
             if scaleout[i]
-              put_symbol(:r_scaleout, X_pos[i], threshold[i] / 10 * 24 + 69, rt_color)
+              put_symbol(@png, :r_scaleout, X_pos[i], threshold[i] / 10 * 24 + 69, rt_color)
             end
           when "Bone"
-            put_symbol(:r_bracket, X_pos[i], threshold[i] / 10 * 24 + 69, bc_color)
+            put_symbol(@png, :r_bracket, X_pos[i], threshold[i] / 10 * 24 + 69, bc_color)
             if scaleout[i]
-              put_symbol(:r_scaleout, X_pos[i], threshold[i] / 10 * 24 + 69, bc_color)
+              put_symbol(@png, :r_scaleout, X_pos[i], threshold[i] / 10 * 24 + 69, bc_color)
             end
           end
         when "Lt"
           case audiodata[:mode]
           when "Air"
-            put_symbol(:cross, X_pos[i], threshold[i] / 10 * 24 + 69, lt_color)
+            put_symbol(@png, :cross, X_pos[i], threshold[i] / 10 * 24 + 69, lt_color)
             if scaleout[i]
-              put_symbol(:l_scaleout, X_pos[i], threshold[i] / 10 * 24 + 69, lt_color)
+              put_symbol(@png, :l_scaleout, X_pos[i], threshold[i] / 10 * 24 + 69, lt_color)
             end
           when "Bone"
-            put_symbol(:l_bracket, X_pos[i], threshold[i] / 10 * 24 + 69, bc_color)
+            put_symbol(@png, :l_bracket, X_pos[i], threshold[i] / 10 * 24 + 69, bc_color)
             if scaleout[i]
-              put_symbol(:l_scaleout, X_pos[i], threshold[i] / 10 * 24 + 69, bc_color)
+              put_symbol(@png, :l_scaleout, X_pos[i], threshold[i] / 10 * 24 + 69, bc_color)
             end
           end
         end
@@ -239,9 +239,9 @@ class Audio < Bitmap
             line_to = [X_pos[j],(threshold[j] / 10 * 24 + 69).to_i]
             case audiodata[:side]
             when "Rt"
-              line(line_from[0],line_from[1],line_to[0],line_to[1],rt_color,"line")
+              line(@png, line_from[0],line_from[1],line_to[0],line_to[1],rt_color,"line")
             when "Lt"
-              line(line_from[0],line_from[1]+1,line_to[0],line_to[1]+1,lt_color,"dot")
+              line(@png, line_from[0],line_from[1]+1,line_to[0],line_to[1]+1,lt_color,"dot")
             end
             i = j
             break
@@ -257,7 +257,7 @@ class Audio < Bitmap
     draw_sub(@bone_rt, "latest")
     draw_sub(@bone_lt, "latest")
 
-    output(filename)
+    output(@png, filename)
   end
 
   def predraw(preexams) # preexams は以前のデータの配列，要素はAudiodata
