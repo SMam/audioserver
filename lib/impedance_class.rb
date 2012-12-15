@@ -16,6 +16,7 @@ end
 class Impedance < Bitmap
   def initialize(impedancedata)  # 引数は class ImpedanceData のインスタンス
     prepare_font
+    @r_y_ofs = [42, 82, 134, 174, 226, 266, 318, 358]   # reflex y-axis offset
 
     if File.exist?(Image_parts_location+"background_tympanogram.png")
       @png_t = ChunkyPNG::Image.from_file(Image_parts_location +
@@ -63,23 +64,49 @@ class Impedance < Bitmap
   end
 
   def make_reflex_background
-    line(40,42,399,42,GRAY,"line")
-    line(40,82,399,82,GRAY,"line")
-    line(40,134,399,134,GRAY,"line")
-    line(40,174,399,174,GRAY,"line")
-    line(40,226,399,226,GRAY,"line")
-    line(40,266,399,266,GRAY,"line")
-    line(40,318,399,318,GRAY,"line")
-    line(40,358,399,358,GRAY,"line")
+    @r_y_ofs.each do |o|         # @r_y_ofs = [42, 82, 134, 174, 226, 266, 318, 358] # reflex y-axis offset
+      line(@png_r, 110, o, 365, o, GRAY, "line")
+    end
+    line(@png_r, 110, 20, 110, 379, GRAY, "line")
+    line(@png_r, 365, 20, 365, 379, GRAY, "line")
+    put_string(@png_r, 15,  57, "R 500Hz")
+    put_string(@png_r, 15, 149, "R  1kHz")
+    put_string(@png_r, 15, 241, "L 500Hz")
+    put_string(@png_r, 15, 333, "L  1kHz")
+    put_font(@png_r, 365, 6, "dB")
+    4.times do |i|
+      put_font(@png_r, 80, @r_y_ofs[i*2] - 7,   "ipsi")
+      put_font(@png_r, 80, @r_y_ofs[i*2+1] - 7, "cntr")
+    end
+    4.times do |i|
+      x = 15 + 60 * i
+      s = (80 + 10 * i).to_s
+      line(@png_r, 110+ x, 19, 140+x, 19, BLACK, "line")
+      line(@png_r, 110+ x, 20, 140+x, 20, GRAY, "line")
+      put_string(@png_r, 110+x, 6, s)
+      line(@png_r, 110+ x, 199, 140+x, 199, BLACK, "line")
+      line(@png_r, 110+ x, 200, 140+x, 200, GRAY, "line")
+      line(@png_r, 110+ x, 20, 110+ x, 379, GRAY, "dot")
+      line(@png_r, 140+ x, 20, 140+ x, 379, GRAY, "dot")
+    end
   end
 
   def put_string(png, x, y, str)
+    hz_flag = false
     str.each_byte do |c|
       case c
+      when 32   # " "
+        # do nothing
       when 45                  # if character is "-"
         put_font(png, x, y, "minus")
       when 46                  # if character is "."
         put_font(png, x, y, "dot")
+      when 72   # "H"
+        hz_flag = true
+	x -= 8
+      when 122  # "z"
+        put_font(png, x, y, "Hz") if hz_flag
+	hz_flag = false
       else
         put_font(png, x, y, "%c" % c)
       end
@@ -88,14 +115,39 @@ class Impedance < Bitmap
   end
 
   def draw_reflexgram
-=begin
-require      'pp' 
+    y_offset = {"R500Hzipsi" => @r_y_ofs[0], "R500Hzcntr" => @r_y_ofs[1], "R1kHzipsi" => @r_y_ofs[2], "R1kHzcntr" => @r_y_ofs[3],\
+                "L500Hzipsi" => @r_y_ofs[4], "L500Hzcntr" => @r_y_ofs[5], "L1kHzipsi" => @r_y_ofs[6], "L1kHzcntr" => @r_y_ofs[7]}
+    color_list = {"R500Hzipsi" => RED,  "R500Hzcntr" => RED_PRE1,  "R1kHzipsi" => RED,  "R1kHzcntr" => RED_PRE1,\
+                  "L500Hzipsi" => BLUE, "L500Hzcntr" => BLUE_PRE1, "L1kHzipsi" => BLUE, "L1kHzcntr" => BLUE_PRE1}
     @reflexdata.each do |r|
-      if (r[:side] == "R" && r[:freq] == "500Hz" && r[:stim_side] == "ipsi")
-#pp    r[]
+      pvt = r[:pvt]          # その他のパラメータ "#{r[:side]} / #{r[:freq]} / #{r[:stim_side]} / #{r[:interval]}"
+      condition = r[:side] + r[:freq] + r[:stim_side]
+
+#      r[:values].each do |v| # 刺激音の状態の調査用
+#        s = String.new
+#        puts "#{v[0]}/#{condition}: #{ v[1].each {|value| s << (value[:stim_on]? "o": "x")}; s } : #{s.size}"
+#      end
+
+      x0, y0 = 110, y_offset[condition]
+      x1, y1 = x0, y0
+      x = x1
+      color = color_list[condition]
+      r[:values].each do |v|
+        v[1].each do |value|
+          v = value[:vol] - pvt  # その他のパラメータ value[:stim_on]
+          y = y0 - (v * 150).to_i
+#          line(@png_r, x1, y1, x.to_i, y, (value[:stim_on]? color: BLACK), "line")  # alternate appearance: not work well for now
+          line(@png_r, x1, y1, x.to_i, y, color, "line")
+          x1 = x.to_i
+          y1 = y
+          x += 1
+        end
       end
     end
-=end
+  line(@png_r, 368, 379 - 0.1 * 150, 368, 379, GRAY, "line") 
+  line(@png_r, 369, 379 - 0.1 * 150, 369, 379, BLACK, "line") 
+  put_string(@png_r, 372, 367, "0.1")
+  put_font(@png_r, 377, 379, "mL")
   end
 
   def draw_tympanogram
@@ -111,11 +163,6 @@ require      'pp'
         draw_line_tympano(p_v, new_p_v, side, "line")
         p_v = new_p_v
       end
-#      peak_p_v = [peak, sc]
-#      draw_line_tympano(peak_p_v, [200, sc], side, "ref")
-#      draw_line_tympano(peak_p_v, [peak, 1.5], side, "ref")
-#      sc_round = (sc * 100).round / 100.0
-#      put_string(@png_t, 350, 149 + (side == "R"? 0: 200) - (sc * 80).to_i, sc_round.to_s)
     end
   end
 
@@ -166,8 +213,8 @@ require      'pp'
   def draw(tympano_filename, reflex_filename)
     draw_tympanogram
     output(@png_t, tympano_filename)
-#    draw_reflexgram
-#    output(reflex_filename)
+    draw_reflexgram
+    output(@png_r, reflex_filename)
   end
 
 end

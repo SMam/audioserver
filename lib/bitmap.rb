@@ -105,13 +105,13 @@ class Bitmap
 
   def prepare_font
     font_name = ["0","1","2","3","4","5","6","7","8","9","dot",
-                 "k","Hz","dB","minus","R","L","daPa","mL"]
+                 "k","Hz","dB","minus","R","L","daPa","mL","ipsi","cntr"]
     @font = Hash.new
     font_name.each do |f|
       @font[f] = Array.new
       @font[f] << ChunkyPNG::Image.from_file(Image_parts_location+"#{f}.png")
       case f
-      when "daPa"
+      when "daPa","ipsi","cntr"
         @font[f] << 4  # 文字幅の情報
       when "Hz","dB","mL"
         @font[f] << 2  # 文字幅の情報

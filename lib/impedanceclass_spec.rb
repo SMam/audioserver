@@ -60,18 +60,18 @@ describe Impedance do
       end
 
       it 'pvt (physical volume test) の出力が正しいこと' do
-        @i.pvt[:rt].should be_within(@delta).of(1.805)
-        @i.pvt[:lt].should be_within(@delta).of(1.912)
+        @i.pvt[:rt].should be_within(@delta).of(1.945)
+        @i.pvt[:lt].should be_within(@delta).of(2.257)
       end
 
       it 'sc (static compliance) の出力が正しいこと' do
-        @i.sc[:rt].should be_within(@delta).of(0.327)
-        @i.sc[:lt].should be_within(@delta).of(0.295)
+        @i.sc[:rt].should be_within(@delta).of(0.427)
+        @i.sc[:lt].should be_within(@delta).of(0.322)
       end
 
       it 'peakの出力が正しいこと' do
-        @i.peak[:rt].should be_within(@delta).of(-4)
-        @i.peak[:lt].should be_within(@delta).of(0)
+        @i.peak[:rt].should be_within(@delta).of(-6)
+        @i.peak[:lt].should be_within(@delta).of(-7)
       end
 
       it '出力は background_tympanogram.pngと異なったサイズであること' do
@@ -102,13 +102,13 @@ describe Impedance do
       end
 
       it 'sc (static compliance) の出力が正しいこと' do
-        @i.sc[:rt].should be_within(@delta).of(0.327)
-        @i.sc[:lt].should be_within(@delta).of(0.295)
+        @i.sc[:rt].should be_within(@delta).of(0.427)
+        @i.sc[:lt].should be_within(@delta).of(0.322)
       end
 
       it 'peakの出力が正しいこと' do
-        @i.peak[:rt].should be_within(@delta).of(-4)
-        @i.peak[:lt].should be_within(@delta).of(0)
+        @i.peak[:rt].should be_within(@delta).of(-6)
+        @i.peak[:lt].should be_within(@delta).of(-7)
       end
 
       it '出力は background_tympanogram.pngと異なったサイズであること' do
@@ -117,7 +117,6 @@ describe Impedance do
     end
   end
 
-=begin
   context 'reflexについて' do
     before do
       @reflex_data = reflex_sample
@@ -128,12 +127,19 @@ describe Impedance do
         File::delete(@reflex_bg_file) if File::exists?(@reflex_bg_file)
         i = Impedance.new(ImpedanceData.new(@reflex_data))
         File::exists?(@reflex_bg_file).should be_true
-
-i.draw(@tympano_output_file, @reflex_output_file)
-
       end
     end
 
+    context 'Impedanceを正しいdataで作成した場合' do
+      before do
+        @i = Impedance.new(ImpedanceData.new(@reflex_data))
+        @i.draw(@tympano_output_file, @reflex_output_file)
+	@delta = 0.0001
+      end
+
+      it 'ファイル出力されること' do
+        File::exists?(@reflex_output_file).should be_true
+      end
+    end
   end
-=end
 end
