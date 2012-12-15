@@ -18,11 +18,11 @@ end
 tympano_sample = [data["tympano_data_R"], data["tympano_data_L"] ]
 reflex_sample = [data["reflex_data0"], data["reflex_data1"], data["reflex_data2"],\
                  data["reflex_data3"], data["reflex_data4"], data["reflex_data5"],\
-		 data["reflex_data6"], data["reflex_data7"] ] 
+                 data["reflex_data6"], data["reflex_data7"] ] 
 tympano_reflex_sample = [data["tympano_data_R"], data["tympano_data_L"],\
                  data["reflex_data0"], data["reflex_data1"], data["reflex_data2"],\
                  data["reflex_data3"], data["reflex_data4"], data["reflex_data5"],\
-		 data["reflex_data6"], data["reflex_data7"] ] 
+                 data["reflex_data6"], data["reflex_data7"] ] 
 
 describe Impedance do
   before :each do
@@ -30,6 +30,7 @@ describe Impedance do
     @reflex_bg_file = "./assets/background_reflex.png"
     @tympano_output_file = "./output_t.png"
     @reflex_output_file = "./output_r.png"
+    @delta = 0.0000001  # 許容される誤差(float型のために生じる誤差)
 
     File::delete(@tympano_output_file) if File::exists?(@tympano_output_file)
     File::delete(@reflex_output_file) if File::exists?(@reflex_output_file)
@@ -52,7 +53,6 @@ describe Impedance do
       before do
         @i = Impedance.new(ImpedanceData.new(@tympano_data))
         @i.draw(@tympano_output_file, @reflex_output_file)
-	@delta = 0.0001
       end
 
       it 'ファイル出力されること' do
@@ -79,11 +79,11 @@ describe Impedance do
       end
 
       it 'dumpしたpngが出力と一致すること' do
-	require 'digest/md5'
+        require 'digest/md5'
         @file_from_dump = './dump.png'
-	File::delete(@file_from_dump) if File::exists?(@file_from_dump)
-	p = ChunkyPNG::Image.from_datastream(ChunkyPNG::Datastream.from_blob(@i.dump_png[:tympanogram]))
-	p.save(@file_from_dump, :fast_rgba)
+        File::delete(@file_from_dump) if File::exists?(@file_from_dump)
+        p = ChunkyPNG::Image.from_datastream(ChunkyPNG::Datastream.from_blob(@i.dump_png[:tympanogram]))
+        p.save(@file_from_dump, :fast_rgba)
         Digest::MD5.hexdigest(File.open(@tympano_output_file, 'rb').read).should ==\
           Digest::MD5.hexdigest(File.open(@file_from_dump, 'rb').read)
       end
@@ -94,7 +94,6 @@ describe Impedance do
         @tympano_data = tympano_reflex_sample
         @i = Impedance.new(ImpedanceData.new(@tympano_data))
         @i.draw(@tympano_output_file, @reflex_output_file)
-	@delta = 0.0001
       end
 
       it 'ファイル出力されること' do
@@ -134,11 +133,55 @@ describe Impedance do
       before do
         @i = Impedance.new(ImpedanceData.new(@reflex_data))
         @i.draw(@tympano_output_file, @reflex_output_file)
-	@delta = 0.0001
       end
 
       it 'ファイル出力されること' do
         File::exists?(@reflex_output_file).should be_true
+      end
+
+      it 'reflex検査での pvt (physical volume test) の出力が正しいこと' do
+        @i.reflex_pvt[:rt].should be_within(@delta).of(2.232)
+        @i.reflex_pvt[:lt].should be_within(@delta).of(2.532)
+      end
+
+      it 'reflex検査での測定圧 pressure の出力が正しいこと' do
+        @i.reflex_pressure[:rt].should be_within(@delta).of(2)
+        @i.reflex_pressure[:lt].should be_within(@delta).of(1)
+      end
+
+      it '出力は background_reflex.pngと異なったサイズであること' do
+        File::stat(@reflex_output_file).size.should_not == File::stat(@reflex_bg_file).size
+      end
+
+      it 'dumpしたpngが出力と一致すること' do
+        require 'digest/md5'
+        @file_from_dump = './dump.png'
+        File::delete(@file_from_dump) if File::exists?(@file_from_dump)
+        p = ChunkyPNG::Image.from_datastream(ChunkyPNG::Datastream.from_blob(@i.dump_png[:reflex]))
+        p.save(@file_from_dump, :fast_rgba)
+        Digest::MD5.hexdigest(File.open(@reflex_output_file, 'rb').read).should ==\
+          Digest::MD5.hexdigest(File.open(@file_from_dump, 'rb').read)
+      end
+    end
+
+    context 'Tympano & Reflex のデータを用いた場合' do
+      before do
+        @reflex_data = tympano_reflex_sample
+        @i = Impedance.new(ImpedanceData.new(@reflex_data))
+        @i.draw(@tympano_output_file, @reflex_output_file)
+      end
+
+      it 'ファイル出力されること' do
+        File::exists?(@reflex_output_file).should be_true
+      end
+
+      it 'reflex検査での pvt (physical volume test) の出力が正しいこと' do
+        @i.reflex_pvt[:rt].should be_within(@delta).of(2.232)
+        @i.reflex_pvt[:lt].should be_within(@delta).of(2.532)
+      end
+
+      it '出力は background_reflex.pngと異なったサイズであること' do
+        File::stat(@reflex_output_file).size.should_not == File::stat(@reflex_bg_file).size
       end
     end
   end

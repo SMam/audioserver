@@ -70,9 +70,9 @@ class Impedance < Bitmap
     line(@png_r, 110, 20, 110, 379, GRAY, "line")
     line(@png_r, 365, 20, 365, 379, GRAY, "line")
     put_string(@png_r, 15,  57, "R 500Hz")
-    put_string(@png_r, 15, 149, "R  1kHz")
+    put_string(@png_r, 15, 149, "R 1kHz")
     put_string(@png_r, 15, 241, "L 500Hz")
-    put_string(@png_r, 15, 333, "L  1kHz")
+    put_string(@png_r, 15, 333, "L 1kHz")
     put_font(@png_r, 365, 6, "dB")
     4.times do |i|
       put_font(@png_r, 80, @r_y_ofs[i*2] - 7,   "ipsi")
@@ -201,12 +201,33 @@ class Impedance < Bitmap
     return {:rt => tympano_misc_data["R"][:peak], :lt => tympano_misc_data["L"][:peak]}
   end
 
+  def reflex_misc_data
+    result = {"R" => {}, "L" => {}}
+    @reflexdata.each do |r|
+      side = (r[:side] == "R")? "R": "L"
+      result[side] = {:pvt => r[:pvt], :pressure => r[:pressure]}
+    end
+    return result
+  end
+
+  def reflex_pvt
+    return {:rt => reflex_misc_data["R"][:pvt], :lt => reflex_misc_data["L"][:pvt]}
+  end
+
+  def reflex_pressure
+    return {:rt => reflex_misc_data["R"][:pressure], :lt => reflex_misc_data["L"][:pressure]}
+#    @reflexdata.each do |r|
+#:side => side, :freq => freq, :stim_side => stim_side,\ :pvt => pvt, :pressure => pressure, :interval => interval,\
+#      p r[:pressure]
+#p r[:pvt]
+#    end
+  end
+
   def dump_png
     dumps = Array.new
     draw_tympanogram
-    dumps = {:tympanogram => dump(@png_t), :reflex => nil}
-#    draw_reflexgram
-#    dumps[:reflex] = dump
+    dumps = {:tympanogram => dump(@png_t), :reflex => dump(@png_r)}
+    draw_reflexgram
     return dumps
   end
 
