@@ -9,12 +9,15 @@ class ImpedanceData
     if not data_array[0][0..1] == "5"               # Impedance audiometerの確認
       raise "format error"
     end
+    @raw_data = [] 
     @results = {:tympano => [], :reflex => []} 
     data_array.each do |d|
       case d[2]
       when 'J'         # when "tympanometry"
+        @raw_data << d
         set_tympanodata(d)
       when 'M', 'K'    # when "reflex"
+        @raw_data << d
         set_reflexdata(d)
       else
         # do nothing
@@ -79,6 +82,10 @@ class ImpedanceData
 
   def extract
     return @results
+  end
+
+  def put_rawdata
+    return @raw_data
   end
 
   def conv_to_value(str_arr)

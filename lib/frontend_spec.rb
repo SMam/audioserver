@@ -20,8 +20,10 @@ Raw_audiosample = [data["audiogram_data"]]
 #  125 250 500  1k  2k  4k  8k
 #R   0  10  20  30  40  50  60
 #L  30  35  40  45  50  55  60
+Raw_impedance_sample = [data["tympano_data_R"], data["tympano_data_L"],\
+                        data["reflex_data0"], data["reflex_data1"], data["reflex_data2"], data["reflex_data3"],\
+			data["reflex_data4"], data["reflex_data5"], data["reflex_data6"], data["reflex_data7"] ] 
 
-=begin
 describe ImpedanceExam do
   before do
     @impedanceexam = ImpedanceExam.new('test')
@@ -29,9 +31,11 @@ describe ImpedanceExam do
     @examdate = Time.now.strftime("%Y:%m:%d-%H:%M:%S")
     @audiometer = "RS-22"
     @comment = "a_comment"
-    @raw_impedancesample = Raw_inpedancesample
-    @output_file = "./result.png"
-    @bg_file = "./assets/background_audiogram.png"
+    @raw_impedancesample = Raw_impedance_sample
+    @output_t_file = "./result_t.png"
+    @output_r_file = "./result_r.png"
+    @bg_t_file = "./assets/background_tympanogram.png"
+    @bg_r_file = "./assets/background_reflex.png"
   end
 
   it "test mode/flight modeを使い分けられること" do
@@ -41,8 +45,66 @@ describe ImpedanceExam do
     ImpedanceExam.new.mode.should_not == 'test'
     ImpedanceExam.new('wrong mode').mode.should_not == 'test'
   end
+
+  context 'ID、検査値などが正しく与えられた時' do
+    before do
+      @impedanceexam.set_data(@hp_id, @examdate, @comment, @raw_impedancesample)
+    end
+
+    it 'ID、検査値などがセットできること' do
+      @impedanceexam.data[:hp_id].should == @hp_id
+      @impedanceexam.data[:examdate].should == @examdate
+      @impedanceexam.data[:audiometer].should == @audiometer
+      @impedanceexam.data[:comment].should == @comment
+      @impedanceexam.data[:datatype].should == "impedance"
+      @impedanceexam.data[:data].should == @raw_impedancesample
+    end
+
+    it 'tympanogramが生成されること' do
+      File::delete(@output_t_file) if File::exists?(@output_t_file)
+      @impedanceexam.output
+      File::exists?(@output_t_file).should be_true
+    end
+
+    it '生成されたtympanogramが白紙ではない = 背景と異なっていること' do
+      require 'digest/md5'
+      File::delete(@output_t_file) if File::exists?(@output_t_file)
+      @impedanceexam.output
+      Digest::MD5.hexdigest(File.open(@output_t_file, 'rb').read).should_not ==\
+        Digest::MD5.hexdigest(File.open(@bg_t_file, 'rb').read)
+    end
+
+    it 'reflex-gramが生成されること' do
+      File::delete(@output_r_file) if File::exists?(@output_r_file)
+      @impedanceexam.output
+      File::exists?(@output_r_file).should be_true
+    end
+
+    it '生成されたreflex-gramが白紙ではない = 背景と異なっていること' do
+      require 'digest/md5'
+      File::delete(@output_r_file) if File::exists?(@output_r_file)
+      @impedanceexam.output
+      Digest::MD5.hexdigest(File.open(@output_r_file, 'rb').read).should_not ==\
+        Digest::MD5.hexdigest(File.open(@bg_r_file, 'rb').read)
+    end
+  end
+
+  it 'POST#direct_createの際のリクエスト用文字列を作れること' do
+    @impedanceexam.set_data(@hp_id, @examdate, @comment, @raw_impedancesample)
+    message = @impedanceexam.request_body
+    boundary = 'image_boundary'
+    r = Regexp.new(".+#{boundary}.+form-data.+#{@hp_id}.+#{boundary}.+#{@examdate}.+#{boundary}.+#{@audiometer}.+#{boundary}.+#{@comment}.+#{boundary}.+impedance.+#{boundary}", Regexp::MULTILINE)
+    message.should match r
+    Raw_impedance_sample.each do |s|
+      if /(.+\/\/.+,\/).+/ =~ s
+        ss = $1.gsub('+', '\\!!!').gsub('!!!', '+')
+        message.should match Regexp.new(ss)
+      end
+    end
+    message.should match Regexp.new("name=\"data_size\";\r\n\r\n#{Raw_impedance_sample.size.to_s}\r\n")
+    message.should match Regexp.new("data#{Raw_impedance_sample.size-1}")
+  end
 end
-=end
 
 describe AudioExam do
   before do
@@ -97,7 +159,7 @@ describe AudioExam do
     @audioexam.set_data(@hp_id, @examdate, @comment, @raw_audiosample)
     message = @audioexam.request_body
     boundary = 'image_boundary'
-    r = Regexp.new(".+#{boundary}.+form-data.+#{@hp_id}.+#{boundary}.+#{@examdate}.+#{boundary}.+#{@audiometer}.+#{boundary}.+#{@comment}.+#{boundary}.+audiogram.+#{boundary}.+#{@raw_audiosample}.+#{boundary}", Regexp::MULTILINE)
+    r = Regexp.new(".+#{boundary}.+form-data.+#{@hp_id}.+#{boundary}.+#{@examdate}.+#{boundary}.+#{@audiometer}.+#{boundary}.+#{@comment}.+#{boundary}.+audiogram.+#{boundary}.+#{@raw_audiosample[0]}.+#{boundary}", Regexp::MULTILINE)
     message.should match r
   end
 end

@@ -35,6 +35,7 @@ class Impedance < Bitmap
       @png_r.save(Image_parts_location+"background_reflex.png", :fast_rgba)
     end
 
+    @impedancedata = impedancedata
     @tympanodata = impedancedata.extract[:tympano]
     @reflexdata = impedancedata.extract[:reflex]
   end
@@ -216,11 +217,6 @@ class Impedance < Bitmap
 
   def reflex_pressure
     return {:rt => reflex_misc_data["R"][:pressure], :lt => reflex_misc_data["L"][:pressure]}
-#    @reflexdata.each do |r|
-#:side => side, :freq => freq, :stim_side => stim_side,\ :pvt => pvt, :pressure => pressure, :interval => interval,\
-#      p r[:pressure]
-#p r[:pvt]
-#    end
   end
 
   def dump_png
@@ -236,6 +232,16 @@ class Impedance < Bitmap
     output(@png_t, tympano_filename)
     draw_reflexgram
     output(@png_r, reflex_filename)
+  end
+
+  def put_rawdata
+=begin
+    result = {:tympanogram => nil, :reflex => nil}
+    result[:tympanogram] = @tympanodata
+#    result[:reflex] = @reflexdata
+    return result
+=end
+@impedancedata.put_rawdata
   end
 
 end

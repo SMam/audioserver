@@ -6,10 +6,12 @@ require 'net/http'
 require './id_validation'
 require './com_RS232C'
 require './audio_class'
+require './impedance_class'
 
 SERVER_IP = '127.0.0.1' #SERVER_IP = '172.16.41.20' #SERVER_IP = '192.168.1.6'
 SERVER_URI = "http://#{SERVER_IP}:3000/audiograms/direct_create/"
 AUDIOMETER = "AA-79S"
+IMPEDANCEMETER = "RS-22"
 
 if defined? Rails
   Assets_location = "lib/assets/"
@@ -17,8 +19,6 @@ else
   Assets_location = "./assets/"
 end
 
-#==================================================
-=begin
 class ImpedanceExam
   def initialize(* mode)
     case mode[0]
@@ -35,18 +35,26 @@ class ImpedanceExam
   def set_data(hp_id, examdate, comment, data)
     @data[:hp_id] = hp_id
     @data[:examdate] = examdate
-    @data[:audiometer] = AUDIOMETER
-    @data[:datatype] = "audiogram"
-    @data[:data] = data[0]
+    @data[:audiometer] = IMPEDANCEMETER
+    @data[:datatype] = "impedance"
+    @data[:data] = data
     @data[:comment] = comment
   end
 
   def output
-    a = Audio.new( Audiodata.new("raw", @data[:data]))
-    a.draw("./result.png")
+    i = Impedance.new( ImpedanceData.new(@data[:data]))
+    i.draw("./result_t.png", "./result_r.png")
   end
 
   def request_body
+    i = Impedance.new( ImpedanceData.new(@data[:data]))
+    impedance_data_stream = String.new
+    n = 0
+    i.put_rawdata.each do |d|
+      impedance_data_stream << "--image_boundary\r\ncontent-disposition: form-data; "
+      impedance_data_stream << "name=\"data#{n}\";\r\n\r\n#{d}\r\n"
+      n += 1
+    end
     body = String.new
     body << "--image_boundary\r\ncontent-disposition: form-data; "
     body << "name=\"hp_id\";\r\n\r\n#{@data[:hp_id]}\r\n"
@@ -57,9 +65,11 @@ class ImpedanceExam
     body << "--image_boundary\r\ncontent-disposition: form-data; "
     body << "name=\"comment\";\r\n\r\n#{@data[:comment]}\r\n"
     body << "--image_boundary\r\ncontent-disposition: form-data; "
-    body << "name=\"datatype\";\r\n\r\naudiogram\r\n"
+    body << "name=\"datatype\";\r\n\r\nimpedance\r\n"
     body << "--image_boundary\r\ncontent-disposition: form-data; "
-    body << "name=\"data\";\r\n\r\n#{@data[:data]}\r\n"
+    body << "name=\"data_size\";\r\n\r\n#{i.put_rawdata.size}\r\n"
+    body << "--image_boundary\r\ncontent-disposition: form-data; "
+    body << impedance_data_stream
     body << "--image_boundary--\r\n"
     return body
   end
@@ -85,9 +95,6 @@ class ImpedanceExam
     end
   end
 end
-
-=end
-#==================================================
 
 class AudioExam
   def initialize(* mode)
