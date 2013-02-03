@@ -38,6 +38,7 @@ class Impedance < Bitmap
     @impedancedata = impedancedata
     @tympanodata = impedancedata.extract[:tympano]
     @reflexdata = impedancedata.extract[:reflex]
+    @graph_drawn_flag = false
   end
 
   def make_tympano_background
@@ -227,11 +228,37 @@ class Impedance < Bitmap
     return dumps
   end
 
-  def draw(tympano_filename, reflex_filename)
+  def draw_sub
     draw_tympanogram
-    output(@png_t, tympano_filename)
     draw_reflexgram
-    output(@png_r, reflex_filename)
+    @graph_drawn_flag = true
+  end
+
+  def draw(tympano_filename, reflex_filename)
+    draw_sub if not @graph_drawn_flag
+    if @tympanodata.size != 0
+      output(@png_t, tympano_filename)
+    end
+    if @reflexdata.size != 0
+      output(@png_r, reflex_filename)
+    end
+  end
+
+  def draw_for_confirm(confirm_filename)
+    draw_sub if not @graph_drawn_flag
+    if @tympanodata.size != 0
+      if @reflexdata.size != 0   # tympano and reflex
+        unified_png = ChunkyPNG::Image.new(400, 400, WHITE)
+        unified_png.compose!(@png_t.resample_bilinear(200, 200), 0, 0)
+        unified_png.compose!(@png_r.resample_bilinear(200, 200), 200, 200)
+        output(unified_png, confirm_filename)
+      else                       # tympanodata only
+        output(@png_t, confirm_filename)
+      end
+    elsif @reflexdata.size != 0  # reflexdata only
+      output(@png_r, confirm_filename)
+    else
+    end
   end
 
   def put_rawdata

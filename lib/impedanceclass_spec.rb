@@ -87,6 +87,15 @@ describe Impedance do
         Digest::MD5.hexdigest(File.open(@tympano_output_file, 'rb').read).should ==\
           Digest::MD5.hexdigest(File.open(@file_from_dump, 'rb').read)
       end
+
+      it '出力と検査確認用出力が一致すること' do
+        require 'digest/md5'
+        @file_for_confirm = './conf.png'
+        File::delete(@file_for_confirm) if File::exists?(@file_for_confirm)
+        @i.draw_for_confirm(@file_for_confirm)
+        Digest::MD5.hexdigest(File.open(@tympano_output_file, 'rb').read).should ==\
+          Digest::MD5.hexdigest(File.open(@file_for_confirm, 'rb').read)
+      end
     end
 
     context 'Tympano & Reflex のデータを用いた場合' do
@@ -112,6 +121,15 @@ describe Impedance do
 
       it '出力は background_tympanogram.pngと異なったサイズであること' do
         File::stat(@tympano_output_file).size.should_not == File::stat(@tympano_bg_file).size
+      end
+
+      it '出力と検査確認用出力が一致しないこと' do
+        require 'digest/md5'
+        @file_for_confirm = './conf.png'
+        File::delete(@file_for_confirm) if File::exists?(@file_for_confirm)
+        @i.draw_for_confirm(@file_for_confirm)
+        Digest::MD5.hexdigest(File.open(@tympano_output_file, 'rb').read).should_not ==\
+          Digest::MD5.hexdigest(File.open(@file_for_confirm, 'rb').read)
       end
     end
   end
@@ -162,6 +180,15 @@ describe Impedance do
         Digest::MD5.hexdigest(File.open(@reflex_output_file, 'rb').read).should ==\
           Digest::MD5.hexdigest(File.open(@file_from_dump, 'rb').read)
       end
+
+      it '出力と検査確認用出力が一致すること' do
+        require 'digest/md5'
+        @file_for_confirm = './conf.png'
+        File::delete(@file_for_confirm) if File::exists?(@file_for_confirm)
+        @i.draw_for_confirm(@file_for_confirm)
+        Digest::MD5.hexdigest(File.open(@reflex_output_file, 'rb').read).should ==\
+          Digest::MD5.hexdigest(File.open(@file_for_confirm, 'rb').read)
+      end
     end
 
     context 'Tympano & Reflex のデータを用いた場合' do
@@ -182,6 +209,15 @@ describe Impedance do
 
       it '出力は background_reflex.pngと異なったサイズであること' do
         File::stat(@reflex_output_file).size.should_not == File::stat(@reflex_bg_file).size
+      end
+
+      it '出力と検査確認用出力が一致しないこと' do
+        require 'digest/md5'
+        @file_for_confirm = './conf.png'
+        File::delete(@file_for_confirm) if File::exists?(@file_for_confirm)
+        @i.draw_for_confirm(@file_for_confirm)
+        Digest::MD5.hexdigest(File.open(@reflex_output_file, 'rb').read).should_not ==\
+          Digest::MD5.hexdigest(File.open(@file_for_confirm, 'rb').read)
       end
     end
   end
